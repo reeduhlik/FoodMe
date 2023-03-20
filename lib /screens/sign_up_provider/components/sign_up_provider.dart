@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'components/custom_surfix_icon.dart';
-import 'components/default_button.dart';
-import 'components/form_error.dart';
-import 'screens/complete_profile/complete_profile_screen.dart';
+import '../../../components/custom_surfix_icon.dart';
+import '../../../components/default_button.dart';
+import '../../../components/form_error.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
-
 
 class SignUpProvider extends StatefulWidget {
   @override
@@ -67,7 +65,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
-                Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+                Navigator.pushNamed(context, '/sign_up_provider_success');
               }
             },
           ),
@@ -263,7 +261,6 @@ class _SignUpProviderState extends State<SignUpProvider> {
       ),
     );
   }
-
 
   TextFormField buildFirstNameFormField() {
     return TextFormField(

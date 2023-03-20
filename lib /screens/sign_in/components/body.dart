@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'components/no_account_text.dart';
-import 'components/socal_card.dart';
+import '../../../components/no_account_text.dart';
+import '../../../components/socal_card.dart';
 import '../../../size_config.dart';
 import 'sign_form.dart';
 

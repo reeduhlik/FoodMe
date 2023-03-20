@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gsc2023_food_app/routes.dart';
-import 'package:gsc2023_food_app/screens/profile/profile_screen.dart';
-import 'package:gsc2023_food_app/screens/splash/splash_screen.dart';
-import 'package:gsc2023_food_app/theme.dart';
+import './routes.dart';
+import './screens/profile/profile_screen.dart';
+import './screens/splash/splash_screen.dart';
+import './theme.dart';
 
 void main() {
   runApp(MyApp());

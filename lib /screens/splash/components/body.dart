@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
-import 'screens/sign_in/sign_in_screen.dart';
-import 'screens/user_types/user_types_screen.dart';
-import 'size_config.dart';
+import '../../../constants.dart';
+import '../../../screens/sign_in/sign_in_screen.dart';
+import '../../../screens/user_types/user_types_screen.dart';
+import '../../../size_config.dart';
 
 // This is the best practice
 import '../components/splash_content.dart';
@@ -16,10 +16,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> splashData = [
-    {
-      "text": "Welcome to FoodApp",
-      "image": "assets/images/splash_1.png"
-    },
+    {"text": "Welcome to FoodApp", "image": "assets/images/splash_1.png"},
   ];
   @override
   Widget build(BuildContext context) {
@@ -74,5 +71,4 @@ class _BodyState extends State<Body> {
       ),
     );
   }
-
 }

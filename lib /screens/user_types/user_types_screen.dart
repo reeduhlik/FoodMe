@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/user_types/components/body.dart';
-import 'size_config.dart';
+import '../user_types/components/body.dart';
+import '../../size_config.dart';
 
 class UserTypes extends StatelessWidget {
   static String routeName = "/user_types";

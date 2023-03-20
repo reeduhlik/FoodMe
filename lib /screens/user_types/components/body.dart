@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
-import 'screens/sign_up_business/sign_up_screen.dart';
-import 'screens/sign_up_personal/sign_up_screen.dart';
-import 'screens/sign_up_provider/sign_up_screen.dart';
-import 'size_config.dart';
+import '../../../constants.dart';
+import '../../../screens/sign_up_business/sign_up_screen.dart';
+import '../../../screens/sign_up_personal/sign_up_screen.dart';
+import '../../../screens/sign_up_provider/sign_up_screen.dart';
+import '../../../size_config.dart';
 
 // This is the best practice
 import 'user_types_content.dart';
@@ -30,7 +30,8 @@ class _BodyState extends State<Body> {
     },
     {
       "title": "Provider",
-      "text": "You are an establishment that is able to give food to others and can accept food from businesses",
+      "text":
+          "You are an establishment that is able to give food to others and can accept food from businesses",
       "image": "assets/images/splash_3.png"
     },
     {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'components/socal_card.dart';
-import 'constants.dart';
-import 'size_config.dart';
+import '../../../components/socal_card.dart';
+import '../../../constants.dart';
+import '../../../size_config.dart';
 
-import 'sign_up_personal.dart';
+import './sign_up_personal.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -13,9 +13,9 @@ class Body extends StatelessWidget {
         child: SizedBox(
           width: double.infinity,
           child: Padding(
-            padding:
-                EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-             child: Column(
+            padding: EdgeInsets.symmetric(
+                horizontal: getProportionateScreenWidth(20)),
+            child: Column(
               children: [
                 SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
                 Text("Create Personal Profile", style: headingStyle),
