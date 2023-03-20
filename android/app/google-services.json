@@ -29,6 +29,13 @@
             {
               "client_id": "562673538895-f715tnkocg3q8p6lqd1h005a6a14bvbv.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "562673538895-tltfou581o444nlrc8h5puurp1o9h1sj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gsc2023FoodApp"
+              }
             }
           ]
         }
