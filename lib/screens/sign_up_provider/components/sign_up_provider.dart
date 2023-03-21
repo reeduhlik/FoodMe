@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/default_button.dart';
 import '../../../components/form_error.dart';
+import 'package:gsc2023_food_app/screens/provider_home/provider_home_screen.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -65,7 +66,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
-                Navigator.pushNamed(context, '/sign_up_provider_success');
+                Navigator.pushNamed(context, ProviderHomeScreen.routeName);
               }
             },
           ),

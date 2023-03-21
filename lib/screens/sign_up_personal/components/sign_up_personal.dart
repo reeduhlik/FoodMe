@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/default_button.dart';
 import '../../../components/form_error.dart';
-import '../../../screens/otp/otp_screen.dart';
+import 'package:gsc2023_food_app/screens/personal_home/personal_home_screen.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -63,7 +63,7 @@ class _SignUpPersonalState extends State<SignUpPersonal> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
-                Navigator.pushNamed(context, OtpScreen.routeName);
+                Navigator.pushNamed(context, PersonalHomeScreen.routeName);
               }
             },
           ),
