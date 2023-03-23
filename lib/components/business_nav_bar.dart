@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../screens/business_home/business_home_screen.dart';
-import '../screens/personal_profile/profile_screen.dart';
+import '../screens/business_add/business_add.dart';
+import '../screens/business_profile/profile_screen.dart';
+import '../screens/impact/impact.dart';
+
 
 import '../constants.dart';
 import '../enums.dart';
@@ -40,31 +42,23 @@ class BusinessNavBar extends StatelessWidget {
             children: [
               IconButton(
                 icon: SvgPicture.asset(
-                  "assets/icons/Shop Icon.svg",
-                  color: BusinessMenuState.home == selectedMenu
-                      ? kPrimaryColor
-                      : inActiveIconColor,
-                ),
+                  "assets/icons/Plus Icon.svg",
+                  color: ProviderMenuState.add == selectedMenu
+                        ? kPrimaryColor
+                        : inActiveIconColor,
+                      ),
                 onPressed: () =>
-                    Navigator.pushNamed(context, BusinessHomeScreen.routeName),
-              ),
-              IconButton(
-                icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg"),
-                onPressed: () {},
+                    Navigator.pushNamed(context, BusinessAdd.routeName),
               ),
               IconButton(
                 icon: SvgPicture.asset(
                   "assets/icons/User Icon.svg",
-                  color: BusinessMenuState.profile == selectedMenu
+                  color: ProviderMenuState.profile == selectedMenu
                       ? kPrimaryColor
                       : inActiveIconColor,
                 ),
                 onPressed: () =>
-                    Navigator.pushNamed(context, PersonalProfileScreen.routeName),
+                    Navigator.pushNamed(context, BusinessProfileScreen.routeName),
               ),
             ],
           )),

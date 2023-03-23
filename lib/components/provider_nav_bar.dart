@@ -1,10 +1,15 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../screens/impact/impact.dart';
+import '../screens/provider_add/provider_add.dart';
 import '../screens/provider_home/provider_home_screen.dart';
 import '../screens/personal_profile/profile_screen.dart';
 
 import '../constants.dart';
 import '../enums.dart';
+import '../screens/provider_profile/profile_screen.dart';
 
 class ProviderNavBar extends StatelessWidget {
   const ProviderNavBar({
@@ -15,7 +20,7 @@ class ProviderNavBar extends StatelessWidget {
   final ProviderMenuState selectedMenu;
 
   @override
-Widget build(BuildContext context) {
+ Widget build(BuildContext context) {
     final Color inActiveIconColor = Color(0xFFB6B6B6);
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14),
@@ -40,8 +45,8 @@ Widget build(BuildContext context) {
             children: [
               IconButton(
                 icon: SvgPicture.asset(
-                  "assets/icons/Shop Icon.svg",
-                  color: BusinessMenuState.home == selectedMenu
+                  "assets/icons/Discover.svg",
+                  color: ProviderMenuState.home == selectedMenu
                       ? kPrimaryColor
                       : inActiveIconColor,
                 ),
@@ -49,22 +54,34 @@ Widget build(BuildContext context) {
                     Navigator.pushNamed(context, ProviderHomeScreen.routeName),
               ),
               IconButton(
-                icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg"),
-                onPressed: () {},
+                icon: SvgPicture.asset(
+                  "assets/icons/Plus Icon.svg",
+                  color: ProviderMenuState.add == selectedMenu
+                        ? kPrimaryColor
+                        : inActiveIconColor,
+                      ),
+                onPressed: () =>
+                    Navigator.pushNamed(context, ProviderAdd.routeName),
               ),
               IconButton(
                 icon: SvgPicture.asset(
                   "assets/icons/User Icon.svg",
-                  color: BusinessMenuState.profile == selectedMenu
+                  color: ProviderMenuState.profile == selectedMenu
                       ? kPrimaryColor
                       : inActiveIconColor,
                 ),
                 onPressed: () =>
-                    Navigator.pushNamed(context, PersonalProfileScreen.routeName),
+                    Navigator.pushNamed(context, ProviderProfileScreen.routeName),
+              ),
+              IconButton(
+                icon: SvgPicture.asset(
+                  "assets/icons/Flash Icon.svg",
+                   color: ProviderMenuState.impact == selectedMenu
+                        ? kPrimaryColor
+                        : inActiveIconColor,
+                      ),
+                onPressed: () =>
+                    Navigator.pushNamed(context, Impact.routeName),
               ),
             ],
           )),
