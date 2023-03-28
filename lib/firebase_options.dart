@@ -67,8 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '562673538895',
     projectId: 'gsc2023-food-app',
     storageBucket: 'gsc2023-food-app.appspot.com',
-    iosClientId:
-        '562673538895-tltfou581o444nlrc8h5puurp1o9h1sj.apps.googleusercontent.com',
+    iosClientId: '562673538895-tltfou581o444nlrc8h5puurp1o9h1sj.apps.googleusercontent.com',
     iosBundleId: 'com.example.gsc2023FoodApp',
   );
 
@@ -78,8 +77,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '562673538895',
     projectId: 'gsc2023-food-app',
     storageBucket: 'gsc2023-food-app.appspot.com',
-    iosClientId:
-        '562673538895-tltfou581o444nlrc8h5puurp1o9h1sj.apps.googleusercontent.com',
+    iosClientId: '562673538895-tltfou581o444nlrc8h5puurp1o9h1sj.apps.googleusercontent.com',
     iosBundleId: 'com.example.gsc2023FoodApp',
   );
 }
