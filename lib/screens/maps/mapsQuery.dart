@@ -165,6 +165,8 @@ zoom: 17.0,
 
 */
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -261,10 +263,12 @@ class _HomePageState extends State<HomePage> {
     String description = data['description'];
     Timestamp time = data['timestamp'];
     DateTime timeDate = time.toDate();
+    Bool personal = data['personal'];
 
     String fdatetime = DateFormat('yyyy-MM-dd hh:mm').format(timeDate);
     print(fdatetime);
 
+    if (personal == true) {
     return Marker(
       icon: BitmapDescriptor.defaultMarker,
       markerId: markerId,
@@ -274,6 +278,12 @@ class _HomePageState extends State<HomePage> {
         snippet: 'description: $description\n' 'time: $timeDate',
       ),
     );
+  } else {
+    return Marker(
+      markerId: MarkerId(doc.id),
+      visible: false,
+    ); 
+  }
   }
 
   void _onMapCreated(GoogleMapController controller) {
