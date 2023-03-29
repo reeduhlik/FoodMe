@@ -18,7 +18,7 @@ class PersonalListings extends StatelessWidget {
           PersonalListingsBar(selectedMenu: PersonalListingsMenuState.list)
         ],
       ), 
-      body: Body(),
+      body: MyApp(),
       bottomNavigationBar: PersonalNavBar(selectedMenu: PersonalMenuState.home),
     );
   }

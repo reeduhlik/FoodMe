@@ -18,6 +18,8 @@ import './screens/user_types/user_types_screen.dart';
 import 'screens/provider_profile/profile_screen.dart';
 import 'screens/sign_up_personal/sign_up_screen.dart';
 import 'screens/sign_up_business/sign_up_screen.dart';
+import 'screens/maps/maps.dart'; 
+
 
 
 // We use name route

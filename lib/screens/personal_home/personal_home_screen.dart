@@ -1,10 +1,11 @@
+import 'package:gsc2023_food_app/screens/maps/mapsQuery.dart';
 import 'package:flutter/material.dart';
 import '../../components/personal_listings_bar.dart';
 import '../../components/personal_nav_bar.dart';
 import '../../constants.dart';
 import '../../enums.dart';
-
 import 'components/body.dart';
+
 
 class PersonalHomeScreen extends StatelessWidget {
   static String routeName = "/personal_home";
@@ -18,8 +19,9 @@ class PersonalHomeScreen extends StatelessWidget {
           PersonalListingsBar(selectedMenu: PersonalListingsMenuState.map)
         ],
       ), 
-      body: Body(),
+      body: MyApp(),
       bottomNavigationBar: PersonalNavBar(selectedMenu: PersonalMenuState.home),
     );
   }
 }
+
