@@ -18,7 +18,7 @@ class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> userData = [
     {
-      "title": "FoodApp",
+      "title": "FoodMe",
       "text": "Choose your profile type, swipe to see options!",
       "image": "assets/images/splash_1.png"
     },

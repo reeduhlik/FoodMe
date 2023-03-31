@@ -16,7 +16,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> splashData = [
-    {"text": "Welcome to FoodApp", "image": "assets/images/splash_1.png"},
+    {"text": "Welcome to FoodMe", "image": "assets/images/splash_1.png"},
   ];
   @override
   Widget build(BuildContext context) {
