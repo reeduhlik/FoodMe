@@ -1,168 +1,267 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:gsc2023_food_app/screens/personal_listings/personal_listings_screen.dart';
-
-import '../../components/custom_surfix_icon.dart';
-import '../../components/default_button.dart';
-import '../../components/personal_nav_bar.dart';
-import '../../constants.dart';
-import '../../enums.dart';
-import '../../size_config.dart';
-import 'components/body.dart';
-
+import 'package:date_format/date_format.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:location_geocoder/location_geocoder.dart';
+ 
 class PersonalAdd extends StatefulWidget {
   static String routeName = "/personal_add";
+  const PersonalAdd({Key? key}) : super(key: key);
+ 
+  @override
+  State<PersonalAdd> createState() => _InsertDataState();
+}
+ 
+class _InsertDataState extends State<PersonalAdd> {
+  
+    final  userNameController = TextEditingController();
+    final  userDescriptionController= TextEditingController();
+    final  userLocationController = TextEditingController();
+    final  userTimeController = TextEditingController();
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    late DatabaseReference dbRef;
+
+    //Might Delete
+    late double _height;
+    late double _width;
+    late String _setTime, _setDate;
+    late String _hour, _minute, _time;
+    late String dateTime;
+
+    DateTime selectedDate = DateTime.now();
+
+    TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
+
+    TextEditingController _dateController = TextEditingController();
+    TextEditingController _timeController = TextEditingController();
+
+    Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(2101));
+    if (picked != null)
+      setState(() {
+        selectedDate = picked;
+        _dateController.text = DateFormat.yMd().format(selectedDate);
+      });
+  }
+
+  Future<Null> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (picked != null)
+      setState(() {
+        selectedTime = picked;
+        _hour = selectedTime.hour.toString();
+        _minute = selectedTime.minute.toString();
+        _time = _hour + ' : ' + _minute;
+        _timeController.text = _time;
+        _timeController.text = formatDate(
+            DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
+            [hh, ':', nn, " ", am]).toString();
+      });
+  }
 
   @override
-  _AddPersonalState createState() => _AddPersonalState();
-}
+  void initState() {
+    super.initState();
+    dbRef = FirebaseDatabase.instance.ref().child('food-posts');
 
-class _AddPersonalState extends State<PersonalAdd> {
-  final _formKey = GlobalKey<FormState>();
-  String? title;
-  String? descript;
-  String? address;
-
-  bool remember = false;
-  final List<String?> errors = [];
-
-  void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
+    //DateTime Picker initialzeer
+    _dateController.text = DateFormat.yMd().format(DateTime.now());
+    _timeController.text = formatDate(
+        DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
+        [hh, ':', nn, " ", am]).toString();
+    super.initState();
   }
-
-  void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-}
-
-Widget build(BuildContext context) {
-  return Scaffold(
-    body: SingleChildScrollView(
-      child: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          child: Padding(
-            padding:
-                EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(40)),
-              key: _formKey,
-              child: Column(
-                children: [
-                  SizedBox(height: SizeConfig.screenHeight * 0.09), // 4%
-                  Text("Add a listing", style: headingStyle),
-                  SizedBox(height: getProportionateScreenHeight(40)),
-                  buildTitleFormField(),
-                  SizedBox(height: getProportionateScreenHeight(20)),
-                  buildDescriptFormField(),
-                  SizedBox(height: getProportionateScreenHeight(20)),
-                  buildAddressFormField(),
-                  SizedBox(height: getProportionateScreenHeight(20)),
-                  DefaultButton(
-                    text: "Add Listing",
-                    press: () {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        // if all are valid then go to success screen
-                        Navigator.pushNamed(context, PersonalListings.routeName);
-                      }
-                    },
-                  ),
-                ],
-              ),
-          ),
-        ),
-      ),
-    ),
-    bottomNavigationBar: PersonalNavBar(selectedMenu: PersonalMenuState.add),
-  );
-}
-
-
-
  
+  @override
+  Widget build(BuildContext context) {
 
-  TextFormField buildAddressFormField() {
-    return TextFormField(
-      onSaved: (newValue) => address = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kAddressNullError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kAddressNullError);
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Address",
-        hintText: "Enter your address",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon:
-            CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
-      ),
-    );
-  }
+    //Using Google Maps API Call to use Google GeoLocation
+    const _apiKey = "AIzaSyC0IIiLl6i89dT9IiieDhayF1xcWRJgHs4";
+    late LocatitonGeocoder geocoder = LocatitonGeocoder(_apiKey);
 
-  TextFormField buildTitleFormField() {
-    return TextFormField(
-      onSaved: (newValue) => title = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kNamelNullError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kNamelNullError);
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Title",
-        hintText: "Enter the name of the food",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+    _height = MediaQuery.of(context).size.height;
+    _width = MediaQuery.of(context).size.width;
+    dateTime = DateFormat.yMd().format(DateTime.now());
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Add Listing'),
       ),
-    );
-  }
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 50,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              TextField(
+                controller: userNameController,
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Title',
+                  hintText: 'Enter Your List Title',
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              TextField(
+                controller: userDescriptionController,
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Description',
+                  hintText: 'Enter Your Event Description',
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              TextField(
+                controller: userLocationController,
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Location',
+                  hintText: 'Enter Where Your Food Event Is',
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+            Column(
+              children: <Widget>[
+                Text(
+                  'Choose Date',
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5),
+                ),
+                InkWell(
+                  onTap: () {
+                    _selectDate(context);
+                  },
+                  child: Container(
+                    width: _width / 1.7,
+                    height: _height / 9,
+                    margin: EdgeInsets.only(top: 30),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(color: Colors.grey[200]),
+                    child: TextFormField(
+                      style: TextStyle(fontSize: 40),
+                      textAlign: TextAlign.center,
+                      enabled: false,
+                      keyboardType: TextInputType.text,
+                      controller: _dateController,
+                      onSaved: (String? val) {
+                        _setDate = val ?? '';
+                      },
+                      decoration: InputDecoration(
+                          disabledBorder:
+                              UnderlineInputBorder(borderSide: BorderSide.none),
+                          // labelText: 'Time',
+                          contentPadding: EdgeInsets.only(top: 0.0)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  'Choose Time',
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5),
+                ),
+                InkWell(
+                  onTap: () {
+                    _selectTime(context);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 30),
+                    width: _width / 1.7,
+                    height: _height / 9,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(color: Colors.grey[200]),
+                    child: TextFormField(
+                      style: TextStyle(fontSize: 40),
+                      textAlign: TextAlign.center,
+                      onSaved: (String? val) {
+                        _setTime = val ?? '';
+                      },
+                      enabled: false,
+                      keyboardType: TextInputType.text,
+                      controller: _timeController,
+                      decoration: InputDecoration(
+                          disabledBorder:
+                              UnderlineInputBorder(borderSide: BorderSide.none),
+                          // labelText: 'Time',
+                          contentPadding: EdgeInsets.all(5)),
+                    ),
+                  ),
+                ),
 
-  TextFormField buildDescriptFormField() {
-    return TextFormField(
-      onSaved: (newValue) => descript = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kNamelNullError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kNamelNullError);
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Description",
-        hintText: "Enter description",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+              MaterialButton(
+                onPressed: () async {
+                  GeoPoint geoPoint = GeoPoint(37.4219999, -122.0840575);
+
+                  String cDate = _dateController.text + " " + _timeController.text; 
+                  DateFormat formateDate = DateFormat('M/dd/yyyy hh:mm a');
+                  DateTime inputDate = formateDate.parse(cDate);
+
+                  final address = await geocoder.findAddressesFromQuery(userLocationController.text);
+                  var place = address.first.coordinates;
+
+
+                  if(place.latitude != null && place.longitude != null) {
+                    double lat = place.latitude!;
+                    double lng = place.longitude!;  
+                  } else {
+                    double lat = 0;
+                    double lng = 0;
+                  }
+
+                  GeoPoint listing = GeoPoint(place.latitude!, place.longitude!); 
+                  Map<String, dynamic> foodPost = {
+                    'title': userNameController.text,
+                    'description': userDescriptionController.text,
+                    'location': listing,
+                    'timestamp': inputDate, 
+                    'type': 'personal',
+                    'place': userLocationController.text, 
+                  };
+                  await firestore.collection('food-posts').add(foodPost);
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Insert Data'),
+                color: Color.fromARGB(255, 252, 130, 0),
+                textColor: Colors.white,
+                minWidth: 300,
+                height: 40,
+              ),
+            ],
+          ),
+            ]
+        ), 
       ),
+      )
     );
   }
 }

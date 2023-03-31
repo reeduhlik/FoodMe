@@ -254,37 +254,38 @@ class _HomePageState extends State<HomePage> {
 
   Marker _buildMarker(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data();
-
-    final GeoPoint location = data!['location'];
     final MarkerId markerId = MarkerId(doc.id);
-    GeoPoint geoPoint = data['location'];
 
-    String title = data['title'];
-    String description = data['description'];
-    Timestamp time = data['timestamp'];
+    final GeoPoint? location = data!['location'];
+    String? title = data['title'];
+    String? description = data['description'];
+    Timestamp? time = data['timestamp'];
+    String? type = data['type'];
+
+    if (time != null && type == "personal") {
     DateTime timeDate = time.toDate();
-    Bool personal = data['personal'];
+    String fdatetime = DateFormat('MM-dd-yy hh:mm a').format(timeDate);
 
-    String fdatetime = DateFormat('yyyy-MM-dd hh:mm').format(timeDate);
-    print(fdatetime);
-
-    if (personal == true) {
+  if (location != null && title != null && description != null && type != null) {
     return Marker(
       icon: BitmapDescriptor.defaultMarker,
       markerId: markerId,
       position: LatLng(location.latitude, location.longitude),
       infoWindow: InfoWindow(
         title: data['title'],
-        snippet: 'description: $description\n' 'time: $timeDate',
+        snippet: 'Description: $description\n' 'Time: $fdatetime',
       ),
     );
-  } else {
-    return Marker(
-      markerId: MarkerId(doc.id),
-      visible: false,
-    ); 
   }
-  }
+}
+
+// Return a marker with `visible: false` if type is not "personal"
+return Marker(
+    markerId: MarkerId(doc.id),
+    visible: type == "personal" ? true : false,
+    );
+    
+}
 
   void _onMapCreated(GoogleMapController controller) {
     setState(() {

@@ -18,7 +18,7 @@ class ProviderListings extends StatelessWidget {
           ProviderListingsBar(selectedMenu: ProviderListingsMenuState.list)
         ],
       ), 
-      body: Body(),
+      body: MyApp(),
       bottomNavigationBar: ProviderNavBar(selectedMenu: ProviderMenuState.home),
     );
   }

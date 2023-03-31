@@ -18,7 +18,7 @@ class ProviderHomeScreen extends StatelessWidget {
           ProviderListingsBar(selectedMenu: ProviderListingsMenuState.map)
         ],
       ), 
-      body: Body(),
+      body: MyApp(),
       bottomNavigationBar: ProviderNavBar(selectedMenu: ProviderMenuState.home),
     );
   }

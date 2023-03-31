@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geoflutterfire2/geoflutterfire2.dart';
-import 'package:rxdart/rxdart.dart';
-import 'dart:async';
-import 'package:location/location.dart';
 import 'package:intl/intl.dart';
+import 'package:location_geocoder/location_geocoder.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,9 +36,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
     final CollectionReference<Map<String, dynamic>> foodPostRef =
     FirebaseFirestore.instance.collection('food-posts');
-
     @override
     Widget build(BuildContext context) {
+    const _apiKey = 'AIzaSyC0IIiLl6i89dT9IiieDhayF1xcWRJgHs4';
+    final LocatitonGeocoder geocoder = LocatitonGeocoder(_apiKey);
     return Scaffold (
         body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: foodPostRef.snapshots(),
@@ -59,21 +56,29 @@ class _HomePageState extends State<HomePage> {
                 return ListView(
                 children: snapshot.data!.docs.map((doc) {
                 Timestamp? time = doc.data()['timestamp'];
-                String? description = doc.data()['description'];
                 DateTime timeDate = time!.toDate();
-                String fdatetime = DateFormat('MM-dd-yyyy hh:mm').format(timeDate);
-                return Card(
+                String fdatetime = DateFormat('MM-dd-yyyy hh:mm a').format(timeDate);
+
+                String? description = doc.data()['description'];
+                String? place = doc.data()['place']; 
+                
+                String type = doc.data()['type']; 
+                if(type == 'personal') {
+                  return Card(
                   child: ListTile(
                     title: Text(doc.data()['title']),
-                    subtitle: description != null ? Text('$description\n' '$fdatetime') : null,
+                    subtitle: description != null ? Text('Description: $description\n' 'Time: $fdatetime\n' 'Address: $place') : null,
                   ),
                 );
+                } else {
+                  return Card();
+                }
               }).toList(),
             );
-          }
+          } 
       )
     );
-  }
+  } 
 }
 
 
