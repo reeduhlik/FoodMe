@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsc2023_food_app/screens/business_profile/components/businessOwn.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
@@ -19,6 +20,7 @@ class Body extends StatelessWidget {
                 /*
                 ADD CODE FOR ADDING A LISTING HERE
                 */
+                MyApp(), 
               ],
             ),
           ),

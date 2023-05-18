@@ -4,6 +4,8 @@ import '../../../constants.dart';
 import '../../../size_config.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
+import 'package:gsc2023_food_app/screens/business_profile/components/businessOwn.dart'; 
+
 
 class Body extends StatelessWidget {
   @override
@@ -21,10 +23,6 @@ class Body extends StatelessWidget {
           ),
           SizedBox(height: SizeConfig.screenHeight * 0.02), // 4%
           Text("My Listings", style: headingStyle),
-            
-          /*
-           PLACE THE CODE FOR THE YOUR OWN PROFILE LISTINGS HERE
-           */
         ],
       ),
     );

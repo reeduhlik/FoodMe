@@ -5,6 +5,8 @@ import 'package:date_format/date_format.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:location_geocoder/location_geocoder.dart';
+import '../../constants.dart';
+import '../../size_config.dart';
  
 class PersonalAdd extends StatefulWidget {
   static String routeName = "/personal_add";
@@ -93,17 +95,13 @@ class _InsertDataState extends State<PersonalAdd> {
     _width = MediaQuery.of(context).size.width;
     dateTime = DateFormat.yMd().format(DateTime.now());
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Listing'),
-      ),
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(8.0),
           child: Column(
             children: [
-              const SizedBox(
-                height: 50,
-              ),
+              SizedBox(height: SizeConfig.screenHeight * 0.09), // 4%
+              Text("Add a listing", style: headingStyle),
               const SizedBox(
                 height: 30,
               ),
@@ -158,8 +156,8 @@ class _InsertDataState extends State<PersonalAdd> {
                   },
                   child: Container(
                     width: _width / 1.7,
-                    height: _height / 9,
-                    margin: EdgeInsets.only(top: 30),
+                    height: _height / 10,
+                    //margin: EdgeInsets.only(top: 30),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(color: Colors.grey[200]),
                     child: TextFormField(
@@ -195,9 +193,10 @@ class _InsertDataState extends State<PersonalAdd> {
                     _selectTime(context);
                   },
                   child: Container(
-                    margin: EdgeInsets.only(top: 30),
+                    //margin: EdgeInsets.only(top: 30),
+                    margin: EdgeInsets.only(bottom: 30),
                     width: _width / 1.7,
-                    height: _height / 9,
+                    height: _height / 10,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(color: Colors.grey[200]),
                     child: TextFormField(
@@ -217,7 +216,7 @@ class _InsertDataState extends State<PersonalAdd> {
                     ),
                   ),
                 ),
-
+/*
               MaterialButton(
                 onPressed: () async {
                   GeoPoint geoPoint = GeoPoint(37.4219999, -122.0840575);
@@ -250,12 +249,58 @@ class _InsertDataState extends State<PersonalAdd> {
                   await firestore.collection('food-posts').add(foodPost);
                   Navigator.of(context).pop();
                 },
-                child: const Text('Insert Data'),
+                child: const Text('Submit Post'),
                 color: Color.fromARGB(255, 252, 130, 0),
                 textColor: Colors.white,
                 minWidth: 300,
                 height: 40,
+
               ),
+*/
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.0),
+                color: Color.fromARGB(255, 252, 130, 0),
+              ),
+              child: MaterialButton(
+                onPressed: () async {
+                 GeoPoint geoPoint = GeoPoint(37.4219999, -122.0840575);
+
+                  String cDate = _dateController.text + " " + _timeController.text; 
+                  DateFormat formateDate = DateFormat('M/dd/yyyy hh:mm a');
+                  DateTime inputDate = formateDate.parse(cDate);
+
+                  final address = await geocoder.findAddressesFromQuery(userLocationController.text);
+                  var place = address.first.coordinates;
+
+
+                  if(place.latitude != null && place.longitude != null) {
+                    double lat = place.latitude!;
+                    double lng = place.longitude!;  
+                  } else {
+                    double lat = 0;
+                    double lng = 0;
+                  }
+
+                  GeoPoint listing = GeoPoint(place.latitude!, place.longitude!); 
+                  Map<String, dynamic> foodPost = {
+                    'title': userNameController.text,
+                    'description': userDescriptionController.text,
+                    'location': listing,
+                    'timestamp': inputDate, 
+                    'type': 'personal',
+                    'place': userLocationController.text, 
+                  };
+                  await firestore.collection('food-posts').add(foodPost);
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Submit Post'),
+                textColor: Colors.white,
+                minWidth: 300,
+                height: 40,
+              ),
+            ),
+
             ],
           ),
             ]
