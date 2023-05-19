@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../components/default_button.dart';
-import '../../../constants.dart';
+import '../../../../constants.dart';
 import '../../../screens/personal_home/personal_home_screen.dart';
-import '../../../size_config.dart';
+import '../../../../sizeconfig.dart';
 
 class Body extends StatelessWidget {
   @override

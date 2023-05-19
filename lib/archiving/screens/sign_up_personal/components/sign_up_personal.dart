@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/default_button.dart';
 import '../../../components/form_error.dart';
-import 'package:gsc2023_food_app/screens/personal_home/personal_home_screen.dart';
+import 'package:gsc2023_food_app/archiving/screens/personal_home/personal_home_screen.dart';
 
-import '../../../constants.dart';
-import '../../../size_config.dart';
+import '../../../../constants.dart';
+import '../../../../sizeconfig.dart';
 
 class SignUpPersonal extends StatefulWidget {
   @override

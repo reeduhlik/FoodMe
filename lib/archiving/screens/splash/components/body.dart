@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../constants.dart';
+import '../../../../constants.dart';
 import '../../../screens/sign_in/sign_in_screen.dart';
 import '../../../screens/user_types/user_types_screen.dart';
-import '../../../size_config.dart';
+import '../../../../sizeconfig.dart';
 
 // This is the best practice
 import '../components/splash_content.dart';

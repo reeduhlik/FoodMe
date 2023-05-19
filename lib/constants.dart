@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import './size_config.dart';
+import 'sizeconfig.dart';
 
 //Color palette
 const Color black = Colors.black;

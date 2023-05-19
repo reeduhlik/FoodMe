@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gsc2023_food_app/screens/business_profile/profile_screen.dart';
+import 'package:gsc2023_food_app/archiving/screens/business_profile/profile_screen.dart';
 import '../../../components/default_button.dart';
 import '../../personal_home/personal_home_screen.dart';
-import '../../../size_config.dart';
+import '../../../../sizeconfig.dart';
 
 class Body extends StatelessWidget {
   @override

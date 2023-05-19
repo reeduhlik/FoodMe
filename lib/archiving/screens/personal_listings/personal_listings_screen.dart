@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../components/personal_listings_bar.dart';
 import '../../components/personal_nav_bar.dart';
-import '../../constants.dart';
-import '../../enums.dart';
+import '../../../constants.dart';
+import '../../../enums.dart';
 
 import 'components/body.dart';
 

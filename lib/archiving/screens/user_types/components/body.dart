@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../constants.dart';
+import '../../../../constants.dart';
 import '../../../screens/sign_up_business/sign_up_screen.dart';
 import '../../../screens/sign_up_personal/sign_up_screen.dart';
 import '../../../screens/sign_up_provider/sign_up_screen.dart';
-import '../../../size_config.dart';
+import '../../../../sizeconfig.dart';
 
 // This is the best practice
 import 'user_types_content.dart';
