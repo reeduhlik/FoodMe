@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gsc2023_food_app">
    <application
+   
         android:label="gsc2023_food_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
@@ -30,5 +31,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+             <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyAvfDPm_k6b_xjUGUpwXgFZ1yuuQ0ywQO8"/>
     </application>
 </manifest>

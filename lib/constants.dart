@@ -4,6 +4,7 @@ import 'sizeconfig.dart';
 
 //Color palette
 const Color black = Colors.black;
+const Color white = Colors.white;
 const Color backgroundColor = Colors.white;
 const Color kPrimaryColor = Color(0xFFFF7643);
 const Color kPrimaryLightColor = Color(0xFFFFECDF);

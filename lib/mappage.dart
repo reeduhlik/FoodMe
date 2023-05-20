@@ -2,6 +2,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gsc2023_food_app/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:gsc2023_food_app/post.dart';
 import 'package:intl/intl.dart';
 
 class MapPage extends StatefulWidget {
@@ -60,7 +61,7 @@ class _MapPageState extends State<MapPage> {
               alignment: Alignment.topRight,
               child: SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 8.0, top: 8.0),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.2,
                     height: 40,
@@ -136,13 +137,18 @@ class _MapPageState extends State<MapPage> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.35,
                   height: 40,
-                  child: Material(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: UnconstrainedBox(
-                      child: Icon(Icons.add_rounded),
+                  child: GestureDetector(
+                    onTap: () {
+                      displayPostDialogue(context);
+                    },
+                    child: Material(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: UnconstrainedBox(
+                        child: Icon(Icons.add_rounded),
+                      ),
                     ),
                   ),
                 ),

@@ -2,9 +2,10 @@ import 'package:gsc2023_food_app/constants.dart';
 import 'package:gsc2023_food_app/sizeconfig.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
-import 'accountpage.dart';
+import 'package:gsc2023_food_app/texts.dart';
 import 'impactpage.dart';
 import 'mappage.dart';
+import 'profilepage.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -26,7 +27,6 @@ class _MainViewState extends State<MainView> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return Scaffold(
       body: SafeArea(
         top: false,
@@ -41,46 +41,88 @@ class _MainViewState extends State<MainView> {
                 children: [
                   ImpactPage(),
                   MapPage(),
-                  AccountPage(),
+                  ProfilePage(),
                 ],
               ),
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                    icon: SvgPicture.asset(
-                      "assets/icons/Flash Icon.svg",
-                      color: (pageIndex == 0) ? kPrimaryColor : kSecondaryColor,
-                    ),
-                    onPressed: () {
-                      animateToPage(0);
-                    },
-                  ),
-                  IconButton(
-                    icon: SvgPicture.asset(
-                      "assets/icons/Discover.svg",
-                      color: (pageIndex == 1) ? kPrimaryColor : kSecondaryColor,
-                    ),
-                    onPressed: () {
-                      animateToPage(1);
-                    },
-                  ),
-                  IconButton(
-                    icon: SvgPicture.asset(
-                      "assets/icons/User Icon.svg",
-                      color: (pageIndex == 2) ? kPrimaryColor : kSecondaryColor,
-                    ),
-                    onPressed: () {
-                      animateToPage(2);
-                    },
-                  ),
-                ],
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                animateToPage(0);
+                              },
+                              child: SvgPicture.asset(
+                                "assets/icons/Flash Icon.svg",
+                                color: (pageIndex == 0)
+                                    ? kPrimaryColor
+                                    : kSecondaryColor,
+                              ),
+                            ),
+                            PrimaryText(
+                              text: "Impact",
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                animateToPage(1);
+                              },
+                              child: SvgPicture.asset(
+                                "assets/icons/Discover.svg",
+                                color: (pageIndex == 1)
+                                    ? kPrimaryColor
+                                    : kSecondaryColor,
+                              ),
+                            ),
+                            PrimaryText(
+                              text: "Discover",
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                animateToPage(2);
+                              },
+                              child: SvgPicture.asset(
+                                "assets/icons/User Icon.svg",
+                                color: (pageIndex == 2)
+                                    ? kPrimaryColor
+                                    : kSecondaryColor,
+                              ),
+                            ),
+                            PrimaryText(
+                              text: "Profile",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
-            )
+            ),
           ],
         ),
       ),
