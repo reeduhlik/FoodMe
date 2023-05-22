@@ -5,15 +5,15 @@ import 'sizeconfig.dart';
 //Color palette
 const Color black = Colors.black;
 const Color white = Colors.white;
-const Color backgroundColor = Colors.white;
-const Color kPrimaryColor = Color(0xFFFF7643);
-const Color kPrimaryLightColor = Color(0xFFFFECDF);
+const Color backgroundColor = Color.fromRGBO(207,255,199, 1);
+const Color kPrimaryColor = Color(0xFF1E5631);
+const Color kPrimaryLightColor = Color.fromRGBO(207,255,199, 1);
 const Color kSecondaryColor = Color(0xFF979797);
 const Color kTextColor = Color(0xFF757575);
 const LinearGradient GradientkPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
-  colors: [Color(0xFFFFA53E), Color(0xFFFF7643)],
+  colors: [Color.fromRGBO(207,255,199, 1), Color(0xFF1E5631)],
 );
 
 //Other
@@ -54,7 +54,7 @@ final OutlineInputBorder outlineInputBorder = OutlineInputBorder(
   borderSide: BorderSide(color: kTextColor),
 );
 final ThemeData theme = ThemeData(
-  scaffoldBackgroundColor: Colors.white,
+  scaffoldBackgroundColor: Color.fromRGBO(207,255,199, 1),
   fontFamily: "Muli",
   appBarTheme: appBarTheme,
   textTheme: textTheme,
@@ -66,7 +66,7 @@ final TextTheme textTheme = TextTheme(
   bodyMedium: TextStyle(color: kTextColor),
 );
 final AppBarTheme appBarTheme = AppBarTheme(
-  color: Colors.white,
+  color: Color.fromRGBO(207,255,199, 1),
   elevation: 0,
   iconTheme: IconThemeData(color: Colors.black),
   systemOverlayStyle: SystemUiOverlayStyle.dark,

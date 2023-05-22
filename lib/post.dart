@@ -252,7 +252,7 @@ class _InsertDataState extends State<BusinessAdd> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25.0),
-                    color: Color.fromARGB(255, 252, 130, 0),
+                    color: Color(0xFF1E5631),
                   ),
                   child: const PrimaryText(
                     text: "Submit Post",

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gsc2023_food_app/login/loginscreen.dart';
 import 'package:gsc2023_food_app/login/signupform.dart';
+import 'package:gsc2023_food_app/mainview.dart';
 import '../buttons.dart';
 import '../constants.dart';
 import '../sizeconfig.dart';
@@ -7,6 +9,7 @@ import '../sizeconfig.dart';
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
+  
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
@@ -44,6 +47,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+          },
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [

@@ -7,6 +7,7 @@ import '../constants.dart';
 import '../mainview.dart';
 import '../sizeconfig.dart';
 import 'formerror.dart';
+import 'loginscreen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -19,6 +20,17 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+          },
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding:
