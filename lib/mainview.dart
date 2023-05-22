@@ -1,5 +1,4 @@
 import 'package:gsc2023_food_app/constants.dart';
-import 'package:gsc2023_food_app/sizeconfig.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/texts.dart';

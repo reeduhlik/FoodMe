@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:gsc2023_food_app/archiving/screens/sign_in/sign_in_screen.dart';
-import 'package:gsc2023_food_app/archiving/screens/splash/splash_screen.dart';
+import 'package:gsc2023_food_app/login/loginscreen.dart';
 import 'package:gsc2023_food_app/sizeconfig.dart';
 import 'firebase_options.dart';
 import 'constants.dart';
-import 'login/login..dart';
 import 'mainview.dart';
 
 Future<void> main() async {
@@ -43,13 +41,14 @@ class _UserInitializationState extends State<UserInitialization> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == 0) {
-            return LogIn();
+            return LoginScreen();
           } else {
             return MainView();
           }
         } else {
           return Placeholder();
         }
+        //return MainView();
       },
     );
   }
