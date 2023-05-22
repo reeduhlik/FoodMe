@@ -1,53 +1,51 @@
 import 'package:flutter/material.dart';
-
 import '../buttons.dart';
 import '../constants.dart';
 import '../sizeconfig.dart';
 
-class Body extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
   @override
-  _BodyState createState() => _BodyState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _BodyState extends State<Body> {
+class _SignUpScreenState extends State<SignUpScreen> {
   int currentPage = 0;
   final List<Map<String, String>> userData = [
     {
       "title": "FoodMe",
       "text":
           "Swipe to see the different profile options and choose the one in which you resonate the most.",
-      "image": "assets/images/udsignup.png", // change image
+      "image": "assets/images/udsignup.png",
     },
     {
       "title": "Personal",
       "text":
           "I want to view all food listings and events around me or post my own community food listings.",
-      "image": "assets/images/udpeople.png", // change image
+      "image": "assets/images/udpeople.png",
       "button": "Sign up for Personal"
     },
     {
       "title": "Provider",
       "text":
           "I organize food donations to people and also recieve food donations from local businesses.",
-      "image": "assets/images/udprovidor.png", // change image
+      "image": "assets/images/udprovidor.png",
       "button": "Sign up for Provider"
     },
     {
       "title": "Business",
       "text":
           "I own a business and want to donate leftover food to local food banks, soup kitchens, etc.",
-      "image": "assets/images/udbusiness.png", // change image
+      "image": "assets/images/udbusiness.png",
       "button": "Sign up for Business"
     },
   ];
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SizedBox(
-        width: double.infinity,
+    return Scaffold(
+      body: SafeArea(
         child: Column(
-          children: <Widget>[
+          children: [
             Expanded(
               flex: 3,
               child: PageView.builder(
@@ -70,7 +68,7 @@ class _BodyState extends State<Body> {
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(20)),
                 child: Column(
-                  children: <Widget>[
+                  children: [
                     Spacer(),
                     if (currentPage > 0)
                       DefaultButton(
@@ -144,7 +142,7 @@ class UserTypes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[
+      children: [
         Spacer(),
         Text(
           title!,

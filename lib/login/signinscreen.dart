@@ -2,12 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../buttons.dart';
 import '../constants.dart';
 import '../sizeconfig.dart';
-
-//TODO: CustomSurffixIcon
-//TODO: KeyboardUtil
+import 'formerror.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -19,44 +18,72 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SizedBox(
-        width: double.infinity,
+    return Scaffold(
+      body: SafeArea(
         child: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: SizeConfig.screenHeight * 0.04),
-                Text(
-                  "Welcome Back",
-                  style: TextStyle(
-                    color: Color.fromRGBO(30, 86, 49, 1),
-                    fontSize: getProportionateScreenWidth(35),
-                    fontWeight: FontWeight.bold,
+          child: Column(
+            children: [
+              const Spacer(),
+              Text(
+                "Welcome Back",
+                style: TextStyle(
+                  color: Color.fromRGBO(30, 86, 49, 1),
+                  fontSize: getProportionateScreenWidth(35),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "Sign in with your email and password  \nor continue with Google",
+                textAlign: TextAlign.center,
+              ),
+              const Spacer(flex: 2),
+              SignForm(),
+              const Spacer(flex: 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: getProportionateScreenWidth(10)),
+                      padding: EdgeInsets.all(getProportionateScreenWidth(12)),
+                      height: getProportionateScreenHeight(40),
+                      width: getProportionateScreenWidth(40),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF5F6F9),
+                        shape: BoxShape.circle,
+                      ),
+                      child: SvgPicture.asset("assets/icons/google-icon.svg"),
+                    ),
                   ),
-                ),
-                Text(
-                  "Sign in with your email and password  \nor continue with Google",
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
-                //TODO:SignForm(),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // TODO: SocalCard(
-                    //   icon: "assets/icons/google-icon.svg",
-                    //   press: () {},
-                    // ),
-                  ],
-                ),
-                SizedBox(height: getProportionateScreenHeight(20)),
-                //TODO: NoAccountText(),
-              ],
-            ),
+                ],
+              ),
+              SizedBox(height: getProportionateScreenHeight(20)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don’t have an account? ",
+                    style: TextStyle(fontSize: getProportionateScreenWidth(16)),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      //TODO: Go to sign up
+                    },
+                    child: Text(
+                      "Sign Up",
+                      style: TextStyle(
+                          fontSize: getProportionateScreenWidth(16),
+                          color: kPrimaryColor),
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+            ],
           ),
         ),
       ),
@@ -118,7 +145,7 @@ class _SignFormState extends State<SignForm> {
               )
             ],
           ),
-          //TODO: FormError(errors: errors),
+          FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Continue",
@@ -126,7 +153,10 @@ class _SignFormState extends State<SignForm> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
-                //KeyboardUtil.hideKeyboard(context);
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
                 await signIn();
                 //print('The input email is: $email, the password is: $password, and the errors are: $errors, and check is: $check'); //for debugging output
                 if (errors.isEmpty) {
@@ -168,7 +198,18 @@ class _SignFormState extends State<SignForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        suffixIcon: Padding(
+          padding: EdgeInsets.fromLTRB(
+            0,
+            getProportionateScreenWidth(20),
+            getProportionateScreenWidth(20),
+            getProportionateScreenWidth(20),
+          ),
+          child: SvgPicture.asset(
+            "assets/icons/Lock.svg",
+            height: getProportionateScreenWidth(18),
+          ),
+        ),
       ),
     );
   }
@@ -201,7 +242,18 @@ class _SignFormState extends State<SignForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+        suffixIcon: Padding(
+          padding: EdgeInsets.fromLTRB(
+            0,
+            getProportionateScreenWidth(20),
+            getProportionateScreenWidth(20),
+            getProportionateScreenWidth(20),
+          ),
+          child: SvgPicture.asset(
+            "assets/icons/Mail.svg",
+            height: getProportionateScreenWidth(18),
+          ),
+        ),
       ),
     );
   }
