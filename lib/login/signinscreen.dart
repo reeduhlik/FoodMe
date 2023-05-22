@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gsc2023_food_app/login/signupscreen.dart';
+import '../backend.dart';
 import '../buttons.dart';
 import '../constants.dart';
+import '../mainview.dart';
 import '../sizeconfig.dart';
 import 'formerror.dart';
 
@@ -39,7 +39,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 textAlign: TextAlign.center,
               ),
               const Spacer(flex: 2),
-              SignForm(),
+              SignInForm(),
               const Spacer(flex: 2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +71,12 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      //TODO: Go to sign up
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUpScreen(),
+                        ),
+                      );
                     },
                     child: Text(
                       "Sign Up",
@@ -91,12 +96,12 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 
-class SignForm extends StatefulWidget {
+class SignInForm extends StatefulWidget {
   @override
-  _SignFormState createState() => _SignFormState();
+  _SignInFormState createState() => _SignInFormState();
 }
 
-class _SignFormState extends State<SignForm> {
+class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
@@ -104,9 +109,6 @@ class _SignFormState extends State<SignForm> {
   String? typeField;
   bool? remember = false;
   final List<String?> errors = [];
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  late DatabaseReference dbRef;
-  final _auth = FirebaseAuth.instance;
 
   void addError({String? error}) {
     if (!errors.contains(error))
@@ -157,10 +159,25 @@ class _SignFormState extends State<SignForm> {
                 if (!currentFocus.hasPrimaryFocus) {
                   currentFocus.unfocus();
                 }
-                await signIn();
-                //print('The input email is: $email, the password is: $password, and the errors are: $errors, and check is: $check'); //for debugging output
-                if (errors.isEmpty) {
-                  //TODO: Go to main view
+                setState(() {
+                  errors.clear(); // Clear the existing errors
+                });
+                final result = await Backend.signIn(email!, password!);
+
+                //Error
+                if (result is String) {
+                  setState(() {
+                    errors.clear(); // Clear the existing errors
+                    addError(error: 'Wrong email or password');
+                  });
+                } else {
+                  //Success
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MainView(),
+                    ),
+                  );
                 }
               }
             },
@@ -195,8 +212,6 @@ class _SignFormState extends State<SignForm> {
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -239,8 +254,6 @@ class _SignFormState extends State<SignForm> {
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: Padding(
           padding: EdgeInsets.fromLTRB(
@@ -256,35 +269,5 @@ class _SignFormState extends State<SignForm> {
         ),
       ),
     );
-  }
-
-  Future<void> signIn() async {
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email!,
-        password: password!,
-      );
-
-      setState(() {
-        errors.clear(); // Clear the existing errors
-      });
-
-      userID = userCredential.user!.uid;
-
-      final CollectionReference<Map<String, dynamic>> usersRef =
-          FirebaseFirestore.instance.collection('users');
-
-      DocumentSnapshot<Map<String, dynamic>> userDoc =
-          await usersRef.doc(userID).get();
-
-      typeField = userDoc.get('type');
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-        setState(() {
-          errors.clear(); // Clear the existing errors
-          addError(error: 'Wrong email or password');
-        });
-      }
-    }
   }
 }

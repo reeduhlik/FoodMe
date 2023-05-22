@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gsc2023_food_app/login/signupform.dart';
 import '../buttons.dart';
 import '../constants.dart';
 import '../sizeconfig.dart';
@@ -74,18 +75,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       DefaultButton(
                         text: userData[currentPage]['button'],
                         press: () {
-                          //TODO: hook up
-                          // if (currentPage == 1) {
-                          //   Navigator.pushNamed(
-                          //       context, SignUpPersonal.routeName);
-                          // } else if (currentPage == 2) {
-                          //   Navigator.pushNamed(
-                          //       context, SignUpProvider.routeName);
-                          // } else if (currentPage == 3) {
-                          //   Navigator.pushNamed(
-                          //       context, SignUpBusiness.routeName);
-                          // }
-                          // Handle button press for each page
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpForm(
+                                type: (currentPage == 1)
+                                    ? "personal"
+                                    : (currentPage == 2)
+                                        ? "provider"
+                                        : "business",
+                              ),
+                            ),
+                          );
                         },
                       )
                     else
@@ -153,7 +154,7 @@ class UserTypes extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(16.0), // Set your desired padding value
+          padding: EdgeInsets.all(16.0),
           child: Text(
             text!,
             textAlign: TextAlign.center,

@@ -6,7 +6,6 @@ import 'package:gsc2023_food_app/texts.dart';
 import 'package:intl/intl.dart';
 import 'package:location_geocoder/location_geocoder.dart';
 import '../../../constants.dart';
-import '../../../sizeconfig.dart';
 
 Future<void> displayPostDialogue(BuildContext context) async {
   return showModalBottomSheet(
