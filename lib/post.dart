@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:date_format/date_format.dart';
 import 'package:gsc2023_food_app/texts.dart';
 import 'package:intl/intl.dart';
@@ -44,7 +43,6 @@ class _InsertDataState extends State<BusinessAdd> {
   final userLocationController = TextEditingController();
   final userTimeController = TextEditingController();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  late DatabaseReference dbRef;
 
   //Might Delete
   late double _height;
@@ -95,8 +93,6 @@ class _InsertDataState extends State<BusinessAdd> {
   @override
   void initState() {
     super.initState();
-    dbRef = FirebaseDatabase.instance.ref().child('food-posts');
-
     //DateTime Picker initialzeer
     _dateController.text = DateFormat.yMd().format(DateTime.now());
     _timeController.text = formatDate(
