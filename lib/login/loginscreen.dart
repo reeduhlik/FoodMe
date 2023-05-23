@@ -20,67 +20,80 @@ class _LoginScreenState extends State<LoginScreen> {
   };
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const Spacer(),
-            Text(
-              "FoodMe",
-              style: TextStyle(
-                fontSize: getProportionateScreenWidth(36),
-                color: kPrimaryColor,
-                fontWeight: FontWeight.bold,
+ Widget build(BuildContext context) {
+  return Scaffold(
+    body: SafeArea(
+      child: Column(
+        children: [
+          Spacer(flex: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center, 
+            children: [
+              Text(
+                "FoodMe",
+                style: TextStyle(
+                  fontSize: getProportionateScreenWidth(36),
+                  color: kPrimaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Text(
-              loginData['text']!,
-              textAlign: TextAlign.center,
-            ),
-            const Spacer(flex: 2),
-            Image.asset(
-              loginData["image"]!,
-              height: getProportionateScreenHeight(295),
-              width: getProportionateScreenWidth(265),
-            ),
-            const Spacer(flex: 10),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: getProportionateScreenWidth(20)),
-              child: DefaultButton(
-                text: "Sign In",
-                press: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SignInScreen(),
-                    ),
-                  );
-                },
+              SizedBox(width: 7), 
+              Container(
+                height: getProportionateScreenWidth(40), 
+                width: getProportionateScreenWidth(40), 
+                child: Image.asset('assets/images/foodme.png'), 
               ),
+            ],
+          ),
+          Text(
+            loginData['text']!,
+            textAlign: TextAlign.center,
+          ),
+          const Spacer(flex: 2),
+          Image.asset(
+            loginData["image"]!,
+            height: getProportionateScreenHeight(295),
+            width: getProportionateScreenWidth(265),
+          ),
+          const Spacer(flex: 10),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenWidth(20),
             ),
-            const Spacer(),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenWidth(20),
-              ),
-              child: DefaultButton(
-                text: "Sign Up",
-                press: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SignUpScreen(),
-                    ),
-                  );
-                },
-              ),
+            child: DefaultButton(
+              text: "Sign In",
+              press: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SignInScreen(),
+                  ),
+                );
+              },
             ),
-            const Spacer(flex: 2),
-          ],
-        ),
+          ),
+          const Spacer(),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenWidth(20),
+            ),
+            child: DefaultButton(
+              text: "Sign Up",
+              press: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SignUpScreen(),
+                  ),
+                );
+              },
+            ),
+          ),
+          const Spacer(flex: 2),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }
+}
+

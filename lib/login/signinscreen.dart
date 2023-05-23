@@ -22,7 +22,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
         appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: Color(0xFF1E5631)),
           onPressed: () {
             Navigator.push(
                   context,
@@ -37,7 +37,6 @@ class _SignInScreenState extends State<SignInScreen> {
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: Column(
             children: [
-              const Spacer(),
               Text(
                 "Welcome Back",
                 style: TextStyle(
