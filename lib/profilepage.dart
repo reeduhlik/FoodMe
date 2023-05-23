@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    PrimaryText(
+                    const PrimaryText(
                       text: "Food Me",
                     ),
                     Container(
@@ -31,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: constraints.maxHeight * 0.125,
                       decoration: BoxDecoration(
                         color: kPrimaryLightColor,
-                        image: DecorationImage(
+                        image: const DecorationImage(
                             image:
                                 AssetImage("assets/images/Profile Image.png")),
                         shape: BoxShape.circle,
@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     Column(
-                      children: [
+                      children: const [
                         ProfileText(text: "John Doe"),
                         PrimaryText(text: "johndoe@gmail.com")
                       ],
@@ -62,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(
                           width: constraints.maxWidth / 3,
                           child: Column(
-                            children: [
+                            children: const [
                               ProfileText(
                                 text: "25",
                                 color: kPrimaryLightColor,
@@ -77,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(
                           width: constraints.maxWidth / 3,
                           child: Column(
-                            children: [
+                            children: const [
                               ProfileText(
                                 text: "8",
                                 color: kPrimaryLightColor,
@@ -92,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(
                           width: constraints.maxWidth / 3,
                           child: Column(
-                            children: [
+                            children: const [
                               ProfileText(
                                 text: "42",
                                 color: kPrimaryLightColor,
@@ -117,7 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      HeaderText(text: "Account Options"),
+                      const HeaderText(text: "Account Options"),
                       const Spacer(flex: 4),
                       AccountButton(
                           width: double.infinity,

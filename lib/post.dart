@@ -22,7 +22,7 @@ Future<void> displayPostDialogue(BuildContext context) async {
         heightFactor: 0.8,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return BusinessAdd();
+            return const BusinessAdd();
           },
         ),
       );
@@ -45,49 +45,51 @@ class _InsertDataState extends State<BusinessAdd> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   //Might Delete
-  late double _height;
-  late double _width;
-  late String _setTime, _setDate;
+  // late double _height;
+  // late double _width;
+  // late String _setTime, _setDate;
   late String _hour, _minute, _time;
   late String dateTime;
 
   DateTime selectedDate = DateTime.now();
 
-  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay selectedTime = const TimeOfDay(hour: 00, minute: 00);
 
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController _timeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
 
-  Future<Null> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         initialDatePickerMode: DatePickerMode.day,
         firstDate: DateTime(2015),
         lastDate: DateTime(2101));
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         selectedDate = picked;
         _dateController.text = DateFormat.yMd().format(selectedDate);
       });
+    }
   }
 
-  Future<Null> _selectTime(BuildContext context) async {
+  Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: selectedTime,
     );
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         selectedTime = picked;
         _hour = selectedTime.hour.toString();
         _minute = selectedTime.minute.toString();
-        _time = _hour + ' : ' + _minute;
+        _time = '$_hour : $_minute';
         _timeController.text = _time;
         _timeController.text = formatDate(
             DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
             [hh, ':', nn, " ", am]).toString();
       });
+    }
   }
 
   @override
@@ -104,19 +106,19 @@ class _InsertDataState extends State<BusinessAdd> {
   @override
   Widget build(BuildContext context) {
     //Using Google Maps API Call to use Google GeoLocation
-    const _apiKey = "AIzaSyC0IIiLl6i89dT9IiieDhayF1xcWRJgHs4";
-    final LocatitonGeocoder geocoder = LocatitonGeocoder(_apiKey);
+    const apiKey = "AIzaSyC0IIiLl6i89dT9IiieDhayF1xcWRJgHs4";
+    final LocatitonGeocoder geocoder = LocatitonGeocoder(apiKey);
 
-    _height = MediaQuery.of(context).size.height;
-    _width = MediaQuery.of(context).size.width;
+    // _height = MediaQuery.of(context).size.height;
+    // _width = MediaQuery.of(context).size.width;
     dateTime = DateFormat.yMd().format(DateTime.now());
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: LayoutBuilder(
         builder: (context, constraints) {
           return Column(
             children: [
-              HeaderText(text: "Add a Listing"),
+              const HeaderText(text: "Add a Listing"),
               const Spacer(),
               SizedBox(
                 width: constraints.maxWidth,
@@ -155,7 +157,7 @@ class _InsertDataState extends State<BusinessAdd> {
                 ),
               ),
               const Spacer(),
-              ItalicizedText(text: "Choose Time"),
+              const ItalicizedText(text: "Choose Time"),
               GestureDetector(
                 onTap: () {
                   _selectDate(context);
@@ -169,15 +171,15 @@ class _InsertDataState extends State<BusinessAdd> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: TextFormField(
-                    style: TextStyle(fontSize: 25),
+                    style: const TextStyle(fontSize: 25),
                     textAlign: TextAlign.center,
                     enabled: false,
                     keyboardType: TextInputType.text,
                     controller: _dateController,
                     onSaved: (String? val) {
-                      _setDate = val ?? '';
+                      //_setDate = val ?? '';
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       disabledBorder:
                           UnderlineInputBorder(borderSide: BorderSide.none),
                       contentPadding: EdgeInsets.only(top: 0.0),
@@ -185,10 +187,10 @@ class _InsertDataState extends State<BusinessAdd> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              ItalicizedText(text: "Choose Time"),
+              const ItalicizedText(text: "Choose Time"),
               GestureDetector(
                 onTap: () {
                   _selectTime(context);
@@ -202,15 +204,15 @@ class _InsertDataState extends State<BusinessAdd> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: TextFormField(
-                    style: TextStyle(fontSize: 25),
+                    style: const TextStyle(fontSize: 25),
                     textAlign: TextAlign.center,
                     onSaved: (String? val) {
-                      _setTime = val ?? '';
+                      //_setTime = val ?? '';
                     },
                     enabled: false,
                     keyboardType: TextInputType.text,
                     controller: _timeController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       disabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide.none,
                       ),
@@ -223,7 +225,7 @@ class _InsertDataState extends State<BusinessAdd> {
               GestureDetector(
                 onTap: () async {
                   String cDate =
-                      _dateController.text + " " + _timeController.text;
+                      "${_dateController.text} ${_timeController.text}";
                   DateFormat formateDate = DateFormat('M/dd/yyyy hh:mm a');
                   DateTime inputDate = formateDate.parse(cDate);
                   final address = await geocoder
@@ -248,7 +250,7 @@ class _InsertDataState extends State<BusinessAdd> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25.0),
-                    color: Color(0xFF1E5631),
+                    color: const Color(0xFF1E5631),
                   ),
                   child: const PrimaryText(
                     text: "Submit Post",

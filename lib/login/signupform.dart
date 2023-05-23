@@ -22,7 +22,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
-  String? conform_password;
+  String? conformPassword;
   String? firstName;
   String? phoneNumber;
   String? address;
@@ -31,17 +31,19 @@ class _SignUpFormState extends State<SignUpForm> {
   final List<String?> errors = [];
 
   void addError({String? error}) {
-    if (!errors.contains(error))
+    if (!errors.contains(error)) {
       setState(() {
         errors.add(error);
       });
+    }
   }
 
   void removeError({String? error}) {
-    if (errors.contains(error))
+    if (errors.contains(error)) {
       setState(() {
         errors.remove(error);
       });
+    }
   }
 
   String capitalizeFirstLetter(String text) {
@@ -69,11 +71,11 @@ class _SignUpFormState extends State<SignUpForm> {
                 "Create a ${capitalizeFirstLetter(widget.type)} Profile",
                 style: TextStyle(
                   fontSize: getProportionateScreenWidth(24),
-                  color: Color.fromRGBO(30, 86, 49, 1),
+                  color: const Color.fromRGBO(30, 86, 49, 1),
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
+              const Text(
                 "Complete your details",
                 textAlign: TextAlign.center,
               ),
@@ -118,7 +120,7 @@ class _SignUpFormState extends State<SignUpForm> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MainView(),
+                                  builder: (context) => const MainView(),
                                 ),
                               );
                             }
@@ -144,14 +146,14 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildConformPassFormField() {
     return TextFormField(
       obscureText: true,
-      onSaved: (newValue) => conform_password = newValue,
+      onSaved: (newValue) => conformPassword = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.isNotEmpty && password == conform_password) {
+        } else if (value.isNotEmpty && password == conformPassword) {
           removeError(error: kMatchPassError);
         }
-        conform_password = value;
+        conformPassword = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -163,7 +165,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: "Confirm Password",
         hintText: "Re-enter your password",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -194,7 +196,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -214,7 +216,7 @@ class _SignUpFormState extends State<SignUpForm> {
           removeError(error: kInvalidEmailError);
         }
         setState(() {}); // Trigger a rebuild
-        return null;
+        return;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -226,7 +228,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -242,7 +244,7 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value.isNotEmpty) {
           removeError(error: kAddressNullError);
         }
-        return null;
+        return;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -251,7 +253,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: "Address",
         hintText: "Enter your address",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -269,7 +271,7 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value.isNotEmpty) {
           removeError(error: kPhoneNumberNullError);
         }
-        return null;
+        return;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -278,7 +280,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: "Phone Number",
         hintText: "Enter your phone number",
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -294,7 +296,7 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value.isNotEmpty) {
           removeError(error: kNamelNullError);
         }
-        return null;
+        return;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -303,7 +305,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: "Name",
         hintText: "Enter your name",
         floatingLabelBehavior: FloatingLabelBehavior.always,

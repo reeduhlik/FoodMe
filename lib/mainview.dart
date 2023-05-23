@@ -36,8 +36,8 @@ class _MainViewState extends State<MainView> {
             Expanded(
               child: PageView(
                 controller: pageController,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
+                physics: const NeverScrollableScrollPhysics(),
+                children: const [
                   ImpactPage(),
                   MapPage(),
                   ProfilePage(),
@@ -67,7 +67,7 @@ class _MainViewState extends State<MainView> {
                                     : kSecondaryColor,
                               ),
                             ),
-                            PrimaryText(
+                            const PrimaryText(
                               text: "Impact",
                             ),
                           ],
@@ -89,7 +89,7 @@ class _MainViewState extends State<MainView> {
                                     : kSecondaryColor,
                               ),
                             ),
-                            PrimaryText(
+                            const PrimaryText(
                               text: "Discover",
                             ),
                           ],
@@ -111,7 +111,7 @@ class _MainViewState extends State<MainView> {
                                     : kSecondaryColor,
                               ),
                             ),
-                            PrimaryText(
+                            const PrimaryText(
                               text: "Profile",
                             ),
                           ],
@@ -128,8 +128,8 @@ class _MainViewState extends State<MainView> {
     );
   }
 
-  void animateToPage(int _pageIndex) {
-    pageIndex = _pageIndex;
+  void animateToPage(int index) {
+    pageIndex = index;
     pageController.animateToPage(pageIndex,
         duration: const Duration(milliseconds: 200), curve: Curves.decelerate);
     setState(() {});

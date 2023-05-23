@@ -5,15 +5,15 @@ import 'sizeconfig.dart';
 //Color palette
 const Color black = Colors.black;
 const Color white = Colors.white;
-const Color backgroundColor = Color.fromRGBO(207,255,199, 1);
+const Color backgroundColor = Color.fromRGBO(207, 255, 199, 1);
 const Color kPrimaryColor = Color(0xFF1E5631);
-const Color kPrimaryLightColor = Color.fromRGBO(207,255,199, 1);
+const Color kPrimaryLightColor = Color.fromRGBO(207, 255, 199, 1);
 const Color kSecondaryColor = Color(0xFF979797);
 const Color kTextColor = Color(0xFF757575);
-const LinearGradient GradientkPrimaryGradientColor = LinearGradient(
+const LinearGradient gradientkPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
-  colors: [Color.fromRGBO(207,255,199, 1), Color(0xFF1E5631)],
+  colors: [Color.fromRGBO(207, 255, 199, 1), Color(0xFF1E5631)],
 );
 
 //Other
@@ -51,41 +51,41 @@ final InputDecoration otpInputDecoration = InputDecoration(
 );
 final OutlineInputBorder outlineInputBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(getProportionateScreenWidth(15)),
-  borderSide: BorderSide(color: kTextColor),
+  borderSide: const BorderSide(color: kTextColor),
 );
 final ThemeData theme = ThemeData(
-  scaffoldBackgroundColor: Color.fromRGBO(207,255,199, 1),
+  scaffoldBackgroundColor: const Color.fromRGBO(207, 255, 199, 1),
   fontFamily: "Muli",
   appBarTheme: appBarTheme,
   textTheme: textTheme,
   inputDecorationTheme: inputDecorationTheme(),
   visualDensity: VisualDensity.adaptivePlatformDensity,
 );
-final TextTheme textTheme = TextTheme(
+const TextTheme textTheme = TextTheme(
   bodyLarge: TextStyle(color: kTextColor),
   bodyMedium: TextStyle(color: kTextColor),
 );
 final AppBarTheme appBarTheme = AppBarTheme(
-  color: Color.fromRGBO(207,255,199, 1),
+  color: const Color.fromRGBO(207, 255, 199, 1),
   elevation: 0,
-  iconTheme: IconThemeData(color: Colors.black),
+  iconTheme: const IconThemeData(color: Colors.black),
   systemOverlayStyle: SystemUiOverlayStyle.dark,
-  toolbarTextStyle: TextTheme(
+  toolbarTextStyle: const TextTheme(
     titleLarge: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18),
   ).bodyMedium,
-  titleTextStyle: TextTheme(
+  titleTextStyle: const TextTheme(
     titleLarge: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18),
   ).titleLarge,
 );
 InputDecorationTheme inputDecorationTheme() {
   OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(28),
-    borderSide: BorderSide(color: kTextColor),
+    borderSide: const BorderSide(color: kTextColor),
     gapPadding: 10,
   );
   return InputDecorationTheme(
     floatingLabelBehavior: FloatingLabelBehavior.always,
-    contentPadding: EdgeInsets.symmetric(horizontal: 42, vertical: 20),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 42, vertical: 20),
     enabledBorder: outlineInputBorder,
     focusedBorder: outlineInputBorder,
     border: outlineInputBorder,

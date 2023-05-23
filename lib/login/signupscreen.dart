@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/login/loginscreen.dart';
 import 'package:gsc2023_food_app/login/signupform.dart';
-import 'package:gsc2023_food_app/mainview.dart';
 import '../buttons.dart';
 import '../constants.dart';
 import '../sizeconfig.dart';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
-  
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
@@ -49,12 +49,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF1E5631)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF1E5631)),
           onPressed: () {
             Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
           },
         ),
       ),
@@ -84,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     horizontal: getProportionateScreenWidth(20)),
                 child: Column(
                   children: [
-                    Spacer(),
+                    const Spacer(),
                     if (currentPage > 0)
                       DefaultButton(
                         text: userData[currentPage]['button'],
@@ -107,12 +107,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Text(
                         "How will you use FoodMe...",
                         style: TextStyle(
-                          color: Color.fromRGBO(30, 86, 49, 1),
+                          color: const Color.fromRGBO(30, 86, 49, 1),
                           fontSize: getProportionateScreenWidth(20),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
@@ -133,11 +133,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   AnimatedContainer buildDot({int? index}) {
     return AnimatedContainer(
       duration: kAnimationDuration,
-      margin: EdgeInsets.only(right: 5),
+      margin: const EdgeInsets.only(right: 5),
       height: 6,
       width: currentPage == index ? 20 : 6,
       decoration: BoxDecoration(
-        color: currentPage == index ? kPrimaryColor : Color(0xFFD8D8D8),
+        color: currentPage == index ? kPrimaryColor : const Color(0xFFD8D8D8),
         borderRadius: BorderRadius.circular(3),
       ),
     );
@@ -158,7 +158,7 @@ class UserTypes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Spacer(),
+        const Spacer(),
         Text(
           title!,
           style: TextStyle(
@@ -168,13 +168,13 @@ class UserTypes extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Text(
             text!,
             textAlign: TextAlign.center,
           ),
         ),
-        Spacer(flex: 2),
+        const Spacer(flex: 2),
         Image.asset(
           image!,
           height: getProportionateScreenHeight(265),

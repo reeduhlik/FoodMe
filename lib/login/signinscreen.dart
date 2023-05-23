@@ -20,14 +20,14 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF1E5631)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF1E5631)),
           onPressed: () {
             Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
           },
         ),
       ),
@@ -40,17 +40,17 @@ class _SignInScreenState extends State<SignInScreen> {
               Text(
                 "Welcome Back",
                 style: TextStyle(
-                  color: Color.fromRGBO(30, 86, 49, 1),
+                  color: const Color.fromRGBO(30, 86, 49, 1),
                   fontSize: getProportionateScreenWidth(35),
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
+              const Text(
                 "Sign in with your email and password  \nor continue with Google",
                 textAlign: TextAlign.center,
               ),
               const Spacer(flex: 2),
-              SignInForm(),
+              const SignInForm(),
               const Spacer(flex: 2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +63,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       padding: EdgeInsets.all(getProportionateScreenWidth(12)),
                       height: getProportionateScreenHeight(40),
                       width: getProportionateScreenWidth(40),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Color(0xFFF5F6F9),
                         shape: BoxShape.circle,
                       ),
@@ -85,7 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SignUpScreen(),
+                          builder: (context) => const SignUpScreen(),
                         ),
                       );
                     },
@@ -108,8 +108,10 @@ class _SignInScreenState extends State<SignInScreen> {
 }
 
 class SignInForm extends StatefulWidget {
+  const SignInForm({super.key});
+
   @override
-  _SignInFormState createState() => _SignInFormState();
+  State<SignInForm> createState() => _SignInFormState();
 }
 
 class _SignInFormState extends State<SignInForm> {
@@ -122,17 +124,19 @@ class _SignInFormState extends State<SignInForm> {
   final List<String?> errors = [];
 
   void addError({String? error}) {
-    if (!errors.contains(error))
+    if (!errors.contains(error)) {
       setState(() {
         errors.add(error);
       });
+    }
   }
 
   void removeError({String? error}) {
-    if (errors.contains(error))
+    if (errors.contains(error)) {
       setState(() {
         errors.remove(error);
       });
+    }
   }
 
   @override
@@ -151,7 +155,7 @@ class _SignInFormState extends State<SignInForm> {
                 onTap: () {
                   //TODO: forgot password
                 },
-                child: Text(
+                child: const Text(
                   "Forgot Password",
                   style: TextStyle(decoration: TextDecoration.underline),
                 ),
@@ -186,7 +190,7 @@ class _SignInFormState extends State<SignInForm> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MainView(),
+                      builder: (context) => const MainView(),
                     ),
                   );
                 }
@@ -208,7 +212,7 @@ class _SignInFormState extends State<SignInForm> {
         } else if (value.length >= 8) {
           removeError(error: kShortPassError);
         }
-        return null;
+        return;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -250,7 +254,7 @@ class _SignInFormState extends State<SignInForm> {
         } else if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
-        return null;
+        return;
       },
       validator: (value) {
         if (value!.isEmpty) {

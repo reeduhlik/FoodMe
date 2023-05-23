@@ -17,9 +17,9 @@ class Backend {
       String userID) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
-      final _auth = FirebaseAuth.instance;
+      final auth = FirebaseAuth.instance;
       final UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+          await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -44,8 +44,8 @@ class Backend {
 
   static Future<dynamic> signIn(String email, String password) async {
     try {
-      final _auth = FirebaseAuth.instance;
-      await _auth.signInWithEmailAndPassword(
+      final auth = FirebaseAuth.instance;
+      await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );

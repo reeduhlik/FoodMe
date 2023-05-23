@@ -6,10 +6,10 @@ import 'package:gsc2023_food_app/post.dart';
 import 'package:intl/intl.dart';
 
 class MapPage extends StatefulWidget {
-  const MapPage({Key? key}) : super(key: key);
+  const MapPage({super.key});
 
   @override
-  _MapPageState createState() => _MapPageState();
+  State<MapPage> createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> {
@@ -50,13 +50,13 @@ class _MapPageState extends State<MapPage> {
                     myLocationButtonEnabled: true,
                     mapType: MapType.hybrid,
                     zoomGesturesEnabled: true,
-                    initialCameraPosition: CameraPosition(
+                    initialCameraPosition: const CameraPosition(
                       target: LatLng(38.9097, -77.0654),
                       zoom: 15,
                     ),
                     markers: Set<Marker>.of(markers),
                   )
-                : Placeholder(),
+                : const Placeholder(),
             Align(
               alignment: Alignment.topRight,
               child: SafeArea(
@@ -146,7 +146,7 @@ class _MapPageState extends State<MapPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
-                      child: UnconstrainedBox(
+                      child: const UnconstrainedBox(
                         child: Icon(Icons.add_rounded),
                       ),
                     ),

@@ -11,16 +11,18 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(FoodMe());
+  runApp(const FoodMe());
 }
 
 class FoodMe extends StatelessWidget {
+  const FoodMe({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: theme,
-      home: UserInitialization(),
+      home: const UserInitialization(),
     );
   }
 }
@@ -41,12 +43,12 @@ class _UserInitializationState extends State<UserInitialization> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == 0) {
-            return LoginScreen();
+            return const LoginScreen();
           } else {
-            return MainView();
+            return const MainView();
           }
         } else {
-          return Placeholder();
+          return const Placeholder();
         }
         //return MainView();
       },
