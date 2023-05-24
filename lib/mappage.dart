@@ -143,11 +143,12 @@ class _MapPageState extends State<MapPage> {
                     },
                     child: Material(
                       elevation: 5,
+                      color: Color.fromRGBO(207, 255, 199, 1).withOpacity(.85),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: const UnconstrainedBox(
-                        child: Icon(Icons.add_rounded),
+                        child: Icon(Icons.add_rounded, color:  Color(0xFF1E5631)),
                       ),
                     ),
                   ),
