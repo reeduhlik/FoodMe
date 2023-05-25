@@ -179,14 +179,15 @@ class _SignInFormState extends State<SignInForm> {
                 });
                 final result = await Backend.signIn(email!, password!);
 
-                //Error
-                if (result is String) {
+                //failure
+                if (result == false) {
+                  print('sign in failed and was caught');
                   setState(() {
-                    errors.clear(); // Clear the existing errors
+                    errors.clear();
                     addError(error: 'Wrong email or password');
                   });
                 } else {
-                  //Success
+                  //success
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
