@@ -225,7 +225,7 @@ class _ImpactPageState extends State<ImpactPage> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
                         child: Text(
-                          "Our initial inspiration for this app came from a GroupMe at Georgetown University, where we are students, where students and faculty announce if they have food left over from club meetings or other such events. We loved this idea of community food waste reduction and wanted to expand the  concept to our greater community of Washington DC and beyond.",
+                          "Our initial inspiration for this app came from a GroupMe at Georgetown University, where we are students, where students and faculty announce if they have food left over from club meetings or other such events. We loved this idea of community food waste reduction and wanted to expand the concept to our greater community of Washington DC and beyond.",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: getProportionateScreenWidth(12),
