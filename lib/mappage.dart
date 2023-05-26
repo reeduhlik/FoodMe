@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gsc2023_food_app/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:gsc2023_food_app/item_info.dart';
 import 'package:gsc2023_food_app/post.dart';
 import 'package:intl/intl.dart';
+import 'package:geolocator/geolocator.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -12,16 +16,78 @@ class MapPage extends StatefulWidget {
   State<MapPage> createState() => _MapPageState();
 }
 
+class ListItem extends StatelessWidget {
+  final DocumentSnapshot<Map<String, dynamic>> doc;
+
+  const ListItem(this.doc);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+          color: white,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+        padding: const EdgeInsets.all(15),
+        child: GestureDetector(
+            onTap: () => displayItemInfo(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(doc['title'],
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 20)),
+                Text(doc['description']),
+                Container(
+                  margin: const EdgeInsets.only(top: 5),
+                  child: Row(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.location_on,
+                              color: kSecondaryColor, size: 16),
+                          Text(
+                            " 0.1 mile away      ",
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(Icons.access_time,
+                              color: kSecondaryColor, size: 16),
+                          Text(DateFormat(' kk:mm EEE')
+                              .format(doc['timestamp'].toDate())),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            )));
+  }
+}
+
 class _MapPageState extends State<MapPage> {
   final CollectionReference<Map<String, dynamic>> foodPostRef =
       FirebaseFirestore.instance.collection('food-posts');
   late final GoogleMapController mapController;
   late String interfaceType;
 
+  late LatLng _initialPosition;
+
   @override
   void initState() {
     super.initState();
     interfaceType = "map";
+    _getUserLocation();
+  }
+
+  void _getUserLocation() async {
+    var position = await GeolocatorPlatform.instance.getCurrentPosition();
+    setState(() {
+      _initialPosition = LatLng(position.latitude, position.longitude);
+    });
   }
 
   @override
@@ -42,21 +108,30 @@ class _MapPageState extends State<MapPage> {
         final markers =
             documents.map((doc) => buildMarker(doc)).toList(growable: false);
 
+        //get user current location using geolocator
+
         return Stack(
           children: [
             (interfaceType == "map")
                 ? GoogleMap(
                     myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
+                    myLocationButtonEnabled: false,
                     mapType: MapType.hybrid,
                     zoomGesturesEnabled: true,
-                    initialCameraPosition: const CameraPosition(
-                      target: LatLng(38.9097, -77.0654),
+                    initialCameraPosition: CameraPosition(
+                      target: _initialPosition,
                       zoom: 15,
                     ),
                     markers: Set<Marker>.of(markers),
                   )
-                : const Placeholder(),
+                : ListView.builder(
+                    //iterate through all documents and create ListItems
+                    itemCount: documents.length,
+                    itemBuilder: (context, index) {
+                      final doc = documents[index];
+                      return ListItem(doc);
+                    },
+                  ),
             Align(
               alignment: Alignment.topRight,
               child: SafeArea(
@@ -131,12 +206,12 @@ class _MapPageState extends State<MapPage> {
               ),
             ),
             Align(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.bottomRight,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
+                padding: const EdgeInsets.all(12.0),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.35,
-                  height: 40,
+                  width: 50,
+                  height: 50,
                   child: GestureDetector(
                     onTap: () {
                       displayPostDialogue(context);
@@ -144,7 +219,7 @@ class _MapPageState extends State<MapPage> {
                     child: Material(
                       elevation: 5,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: const UnconstrainedBox(
                         child: Icon(Icons.add_rounded),
@@ -182,6 +257,7 @@ class _MapPageState extends State<MapPage> {
           icon: BitmapDescriptor.defaultMarker,
           markerId: markerId,
           position: LatLng(location.latitude, location.longitude),
+          onTap: () => displayPostDialogue(context),
           infoWindow: InfoWindow(
             title: data['title'],
             snippet: 'Description: $description\n' 'Time: $fdatetime',
