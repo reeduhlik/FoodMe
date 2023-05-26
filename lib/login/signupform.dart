@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gsc2023_food_app/login/loginscreen.dart';
+import 'package:gsc2023_food_app/login/signupscreen.dart';
 import 'package:gsc2023_food_app/mainview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../backend.dart';
@@ -62,13 +64,23 @@ class _SignUpFormState extends State<SignUpForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF1E5631)),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SignUpScreen()),
+            );
+          },
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: Column(
             children: [
-              const Spacer(),
               Text(
                 "Create a ${capitalizeFirstLetter(widget.type)} Profile",
                 style: TextStyle(
