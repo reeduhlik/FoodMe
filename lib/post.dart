@@ -6,11 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gsc2023_food_app/texts.dart';
 import 'package:location_geocoder/location_geocoder.dart';
 import '../../../constants.dart';
-import 'backend.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import 'package:intl/intl.dart';
 
 Future<void> displayPostDialogue(BuildContext context) async {
   return showModalBottomSheet(
@@ -30,7 +30,6 @@ Future<void> displayPostDialogue(BuildContext context) async {
           builder: (BuildContext context, BoxConstraints constraints) {
             return const BusinessAdd();
           },
-
         ),
       );
     },
@@ -48,17 +47,16 @@ class _InsertDataState extends State<BusinessAdd> {
   final userNameController = TextEditingController();
   final userDescriptionController = TextEditingController();
   final userLocationController = TextEditingController();
+  final userTimeController = TextEditingController();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  File? _photo;
-  final ImagePicker _picker = ImagePicker(); 
-  String imageUrl = '';
+  String imageUrl = ''; 
+  late String _hour, _minute, _time;
+  late String dateTime;
 
   DateTime selectedDate = DateTime.now();
 
-
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
+  TimeOfDay selectedTime = const TimeOfDay(hour: 00, minute: 00);
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +64,7 @@ class _InsertDataState extends State<BusinessAdd> {
     const apiKey = "AIzaSyC0IIiLl6i89dT9IiieDhayF1xcWRJgHs4";
     final LocatitonGeocoder geocoder = LocatitonGeocoder(apiKey);
 
+    dateTime = DateFormat.yMd().format(DateTime.now());
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: LayoutBuilder(
@@ -73,7 +72,7 @@ class _InsertDataState extends State<BusinessAdd> {
           return Column(
             children: [
               const HeaderText(text: "Add a Listing"),
-              const Spacer(),
+              //const Spacer(), /* this spacer is a problem all of a sudden, not sure why*/
               SizedBox(
                 width: constraints.maxWidth,
                 height: constraints.maxHeight * 0.4,
@@ -89,6 +88,7 @@ class _InsertDataState extends State<BusinessAdd> {
                         hintText: 'Enter Your List Title',
                       ),
                     ),
+                    const Spacer(),
                     TextField(
                       controller: userDescriptionController,
                       keyboardType: TextInputType.text,
@@ -98,6 +98,7 @@ class _InsertDataState extends State<BusinessAdd> {
                         hintText: 'Enter Your Event Description',
                       ),
                     ),
+                    const Spacer(),
                     TextField(
                       controller: userLocationController,
                       keyboardType: TextInputType.text,
@@ -107,6 +108,7 @@ class _InsertDataState extends State<BusinessAdd> {
                         hintText: 'Enter Where Your Food Event Is',
                       ),
                     ),
+                    const Spacer(),
                     IconButton(onPressed: () async{
                       ImagePicker imagePicker = ImagePicker();
                       XFile? file = await imagePicker.pickImage(source: ImageSource.camera); 
@@ -134,19 +136,13 @@ class _InsertDataState extends State<BusinessAdd> {
                     3. Get the URL of the uploaded image
                     4. Store the image inside the corresponding document
                     5. Display image on the list
-                    */
+                    */                   
                   ],
                 ),
               ),
 
               GestureDetector(
                 onTap: () async {
-
-                  if(imageUrl.isNotEmpty) {
-                    ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('Please upload an image')));
-                      return; 
-                  }
 
                   final address = await geocoder
                       .findAddressesFromQuery(userLocationController.text);
@@ -174,7 +170,7 @@ class _InsertDataState extends State<BusinessAdd> {
                   ),
                   child: const PrimaryText(
                     text: "Submit Post",
-                    color: Colors.blueGrey,
+                    color: white,
                   ),
                 ),
               ),

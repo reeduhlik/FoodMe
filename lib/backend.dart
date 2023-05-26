@@ -1,17 +1,8 @@
-import 'dart:io'; 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gsc2023_food_app/login/signupform.dart'; 
 import 'package:gsc2023_food_app/login/signinscreen.dart'; 
-
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:path/path.dart';
-import 'post.dart'; 
-
-
-
 class Backend {
   static Future<void> firebaseFunction() async {
     await Firebase.initializeApp(); 
@@ -66,26 +57,4 @@ class Backend {
       return false;
     }
   }
-
-  /*static Future<dynamic> uploadFile(File? _photo) async {
-      firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
-
-    if (_photo == null) return null;
-    final fileName = basename(_photo!.path);
-    final destination = 'files/$fileName';
-
-    try {
-      final ref = firebase_storage.FirebaseStorage.instance
-          .ref(destination)
-          .child('file/');
-      final uploadTask = ref.putFile(_photo);
-      final snapshot = await uploadTask.whenComplete(() {});
-      final downloadUrl = await snapshot.ref.getDownloadURL();
-      return downloadUrl;
-    } catch (e) {
-      print('error occured');
-      return null;
-    }
-  }*/
 }
