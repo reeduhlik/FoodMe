@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gsc2023_food_app/login/loginscreen.dart';
+import 'package:gsc2023_food_app/login/signupscreen.dart';
 import 'package:gsc2023_food_app/mainview.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../backend.dart';
 import '../buttons.dart';
 import 'formerror.dart';
@@ -27,6 +30,7 @@ class _SignUpFormState extends State<SignUpForm> {
   String? phoneNumber;
   String? address;
   String? userID;
+  final _auth = FirebaseAuth.instance;
   bool remember = false;
   final List<String?> errors = [];
 
@@ -60,13 +64,23 @@ class _SignUpFormState extends State<SignUpForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF1E5631)),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SignUpScreen()),
+            );
+          },
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: Column(
             children: [
-              const Spacer(),
               Text(
                 "Create a ${capitalizeFirstLetter(widget.type)} Profile",
                 style: TextStyle(
@@ -115,7 +129,6 @@ class _SignUpFormState extends State<SignUpForm> {
                                 firstName!,
                                 phoneNumber!,
                                 address!,
-                                userID!,
                               );
                               Navigator.pushReplacement(
                                 context,
@@ -210,14 +223,15 @@ class _SignUpFormState extends State<SignUpForm> {
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        setState(() {}); // Trigger a rebuild
-        return;
-      },
+      if (value.isNotEmpty) {
+        removeError(error: kEmailNullError);
+        checkEmailExists(value); // Check if email already exists
+      } else if (emailValidatorRegExp.hasMatch(value)) {
+        removeError(error: kInvalidEmailError);
+      }
+      setState(() {}); // Trigger a rebuild
+      return null;
+    },
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kEmailNullError);
@@ -231,11 +245,26 @@ class _SignUpFormState extends State<SignUpForm> {
       decoration: const InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );
   }
+
+void checkEmailExists(String email) async {
+  try {
+    final existingUser = await _auth.fetchSignInMethodsForEmail(email);
+    if (existingUser.isNotEmpty) {
+      addError(error: 'Email is already in use.');
+    } else {
+      removeError(error: 'Email is already in use.');
+    }
+  } catch (e) {
+    //print('Error checking email existence: $e');
+  }
+}
 
   TextFormField buildAddressFormField() {
     return TextFormField(

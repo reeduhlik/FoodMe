@@ -1,9 +1,20 @@
+import 'dart:io'; 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:gsc2023_food_app/login/signupform.dart'; 
+import 'package:gsc2023_food_app/login/signinscreen.dart'; 
+
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
+import 'post.dart'; 
+
+
 
 class Backend {
   static Future<void> firebaseFunction() async {
-    //Talk to firebase
+    await Firebase.initializeApp(); 
   }
 
   // Method for signing up a user with email and password
@@ -13,9 +24,9 @@ class Backend {
       String password,
       String firstName,
       String phoneNumber,
-      String address,
-      String userID) async {
-    try {
+      String address,) 
+      async {
+        try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final auth = FirebaseAuth.instance;
       final UserCredential userCredential =
@@ -25,7 +36,7 @@ class Backend {
       );
       // Access the user details using userCredential.user
       // You can save additional user data to the database here if needed
-
+  
       Map<String, dynamic> data = {
         'type': type,
         'email': email,
@@ -33,7 +44,7 @@ class Backend {
         'firstName': firstName,
         'phoneNumber': phoneNumber,
         'address': address,
-        'userID': userID = userCredential.user!.uid,
+        'userID': userCredential.user!.uid,
       };
       await firestore.collection('users').add(data);
     } catch (e) {
@@ -42,6 +53,7 @@ class Backend {
     }
   }
 
+
   static Future<dynamic> signIn(String email, String password) async {
     try {
       final auth = FirebaseAuth.instance;
@@ -49,10 +61,31 @@ class Backend {
         email: email,
         password: password,
       );
-
       return true;
     } on FirebaseAuthException catch (e) {
-      return e;
+      return false;
     }
   }
+
+  /*static Future<dynamic> uploadFile(File? _photo) async {
+      firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+
+    if (_photo == null) return null;
+    final fileName = basename(_photo!.path);
+    final destination = 'files/$fileName';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child('file/');
+      final uploadTask = ref.putFile(_photo);
+      final snapshot = await uploadTask.whenComplete(() {});
+      final downloadUrl = await snapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('error occured');
+      return null;
+    }
+  }*/
 }
