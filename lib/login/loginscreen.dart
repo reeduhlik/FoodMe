@@ -25,23 +25,24 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const Spacer(flex: 5),
+            const Spacer(flex: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SizedBox(
+                  height: getProportionateScreenWidth(50),
+                  width: getProportionateScreenWidth(50),
+                  child: Image.asset('assets/images/foodme.png'),
+                ),
+                const SizedBox(width: 5),
                 Text(
                   "FoodMe",
                   style: TextStyle(
-                    fontSize: getProportionateScreenWidth(36),
+                    fontSize: getProportionateScreenWidth(40),
                     color: kPrimaryColor,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-                const SizedBox(width: 7),
-                SizedBox(
-                  height: getProportionateScreenWidth(40),
-                  width: getProportionateScreenWidth(40),
-                  child: Image.asset('assets/images/foodme.png'),
                 ),
               ],
             ),
@@ -49,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
               loginData['text']!,
               textAlign: TextAlign.center,
             ),
-            const Spacer(flex: 2),
+            const Spacer(flex: 4),
             Image.asset(
               loginData["image"]!,
               height: getProportionateScreenHeight(295),
@@ -77,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: EdgeInsets.symmetric(
                 horizontal: getProportionateScreenWidth(20),
               ),
-              child: DefaultButton(
+              child: SecondaryButton(
                 text: "Sign Up",
                 press: () {
                   Navigator.pushReplacement(
@@ -89,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
             ),
-            const Spacer(flex: 2),
+            const Spacer(flex: 4),
           ],
         ),
       ),

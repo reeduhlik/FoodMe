@@ -16,7 +16,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   int currentPage = 0;
   final List<Map<String, String>> userData = [
     {
-      "title": "FoodMe",
+      "title": "How will you use FoodMe?",
       "text":
           "Swipe to see the different profile options and choose the one in which you resonate the most.",
       "image": "assets/images/udsignup.png",
@@ -102,15 +102,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           );
                         },
-                      )
-                    else
-                      Text(
-                        "How will you use FoodMe...",
-                        style: TextStyle(
-                          color: const Color.fromRGBO(30, 86, 49, 1),
-                          fontSize: getProportionateScreenWidth(20),
-                          fontWeight: FontWeight.bold,
-                        ),
                       ),
                     const Spacer(),
                     Row(
