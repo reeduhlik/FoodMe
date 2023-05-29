@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../constants.dart';
 
-Future<void> displayItemInfo(BuildContext context) async {
+void displayItemInfo(
+    BuildContext context, DocumentSnapshot<Map<String, dynamic>> doc) async {
   return showModalBottomSheet(
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
@@ -18,7 +19,7 @@ Future<void> displayItemInfo(BuildContext context) async {
         heightFactor: 0.6,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return const PostItem();
+            return PostItem(doc);
           },
         ),
       );
@@ -27,7 +28,9 @@ Future<void> displayItemInfo(BuildContext context) async {
 }
 
 class PostItem extends StatelessWidget {
-  const PostItem();
+  const PostItem(this.doc, {Key? key}) : super(key: key);
+
+  final DocumentSnapshot<Map<String, dynamic>> doc;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +39,7 @@ class PostItem extends StatelessWidget {
         color: white,
         borderRadius: BorderRadius.circular(5),
       ),
+      child: Text(doc['title']),
     );
   }
 }

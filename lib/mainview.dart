@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/texts.dart';
 import 'impactpage.dart';
-import 'mappage.dart';
+import 'discoverpage.dart';
 import 'profilepage.dart';
 
 class MainView extends StatefulWidget {
@@ -39,7 +39,7 @@ class _MainViewState extends State<MainView> {
                 physics: const NeverScrollableScrollPhysics(),
                 children: const [
                   ImpactPage(),
-                  MapPage(),
+                  DiscoverPage(),
                   ProfilePage(),
                 ],
               ),

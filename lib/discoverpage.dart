@@ -1,96 +1,26 @@
-import 'dart:convert';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gsc2023_food_app/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/item_info.dart';
+import 'package:gsc2023_food_app/listitem.dart';
 import 'package:gsc2023_food_app/post.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
-
-class MapPage extends StatefulWidget {
-  const MapPage({super.key});
+class DiscoverPage extends StatefulWidget {
+  const DiscoverPage({super.key});
 
   @override
-  State<MapPage> createState() => _MapPageState();
+  State<DiscoverPage> createState() => _DiscoverPageState();
 }
 
-class ListItem extends StatelessWidget {
-  final DocumentSnapshot<Map<String, dynamic>> doc;
-  const ListItem(this.doc);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-          color: white,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
-        padding: const EdgeInsets.all(15),
-        child: GestureDetector(
-            onTap: () => displayItemInfo(context),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                doc['imageUrl'] != ''
-                  ?   Image.network(
-                      doc['imageUrl'],
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                      )
-                  : Image.asset(
-                      'assets/images/placeholder.png',
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                  ),
-                SizedBox(width: 20),
-                Text(doc['title'],
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20)),
-                Text(doc['description']),
-                Container(
-                  margin: const EdgeInsets.only(top: 5),
-                  child: Row(
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.location_on,
-                              color: kSecondaryColor, size: 16),
-                          Text(
-                            " 0.1 mile away      ",
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Icon(Icons.access_time,
-                            color: kSecondaryColor, size: 16),
-                          Text(DateFormat(' kk:mm EEE')
-                            .format(doc['timestamp'].toDate())),
-                        ],
-                      ),
-                      //place the media image below here
-                    ],
-                  ),
-                )
-              ],
-            )));
-  }
-}
-
-class _MapPageState extends State<MapPage> {
+class _DiscoverPageState extends State<DiscoverPage> {
   final CollectionReference<Map<String, dynamic>> foodPostRef =
       FirebaseFirestore.instance.collection('food-posts');
   late final GoogleMapController mapController;
   late String interfaceType;
-  late Stream<QuerySnapshot> _stream; 
-  late LatLng _initialPosition = LatLng(37.7749, -122.4194);
+  late LatLng _initialPosition = const LatLng(37.7749, -122.4194);
 
   @override
   void initState() {
@@ -121,6 +51,7 @@ class _MapPageState extends State<MapPage> {
         final List<DocumentSnapshot<Map<String, dynamic>>> documents =
             snapshot.data!.docs;
 
+        //generates the markers to use to pass to the googlemap constructor
         final markers =
             documents.map((doc) => buildMarker(doc)).toList(growable: false);
 
@@ -131,7 +62,7 @@ class _MapPageState extends State<MapPage> {
             (interfaceType == "map")
                 ? GoogleMap(
                     myLocationEnabled: true,
-                    myLocationButtonEnabled: false,
+                    myLocationButtonEnabled: true,
                     mapType: MapType.hybrid,
                     zoomGesturesEnabled: true,
                     initialCameraPosition: CameraPosition(
@@ -148,6 +79,7 @@ class _MapPageState extends State<MapPage> {
                       return ListItem(doc);
                     },
                   ),
+            //the toggle buttons
             Align(
               alignment: Alignment.topRight,
               child: SafeArea(
@@ -239,7 +171,8 @@ class _MapPageState extends State<MapPage> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: const UnconstrainedBox(
-                        child: Icon(Icons.add_rounded, color:  Color(0xFF1E5631)),
+                        child:
+                            Icon(Icons.add_rounded, color: Color(0xFF1E5631)),
                       ),
                     ),
                   ),
@@ -263,7 +196,8 @@ class _MapPageState extends State<MapPage> {
     String? type = data['type'];
     String? imageUrl = data['imageUrl'];
 
-    if (time != null && imageUrl != null) { //was && imageUrl == 'provider'
+    if (time != null && imageUrl != null) {
+      //was && imageUrl == 'provider'
       DateTime timeDate = time.toDate();
       String fdatetime = DateFormat('MM-dd-yy hh:mm a').format(timeDate);
 
@@ -278,7 +212,7 @@ class _MapPageState extends State<MapPage> {
           infoWindow: InfoWindow(
             title: data['title'],
             snippet: 'Description: $description\n' 'Time: $fdatetime',
-          ), 
+          ),
         );
       }
     }
