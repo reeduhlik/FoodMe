@@ -149,9 +149,9 @@ class UserTypes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Spacer(),
         Text(
           title!,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: getProportionateScreenWidth(36),
             color: kPrimaryColor,
@@ -168,8 +168,8 @@ class UserTypes extends StatelessWidget {
         const Spacer(flex: 2),
         Image.asset(
           image!,
-          height: getProportionateScreenHeight(265),
-          width: getProportionateScreenWidth(235),
+          height: getProportionateScreenHeight(235),
+          width: getProportionateScreenWidth(205),
         ),
       ],
     );
