@@ -51,8 +51,6 @@ class _InsertDataState extends State<BusinessAdd> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   String imageUrl = ''; 
-  late String _hour, _minute, _time;
-  late String dateTime;
 
   DateTime selectedDate = DateTime.now();
 
@@ -64,7 +62,6 @@ class _InsertDataState extends State<BusinessAdd> {
     const apiKey = "AIzaSyC0IIiLl6i89dT9IiieDhayF1xcWRJgHs4";
     final LocatitonGeocoder geocoder = LocatitonGeocoder(apiKey);
 
-    dateTime = DateFormat.yMd().format(DateTime.now());
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: LayoutBuilder(
@@ -73,6 +70,7 @@ class _InsertDataState extends State<BusinessAdd> {
             children: [
               const HeaderText(text: "Add a Listing"),
               //const Spacer(), /* this spacer is a problem all of a sudden, not sure why*/
+              SizedBox(height: 30),
               SizedBox(
                 width: constraints.maxWidth,
                 height: constraints.maxHeight * 0.4,
@@ -89,6 +87,7 @@ class _InsertDataState extends State<BusinessAdd> {
                       ),
                     ),
                     const Spacer(),
+                    SizedBox(height: 8),
                     TextField(
                       controller: userDescriptionController,
                       keyboardType: TextInputType.text,
@@ -99,6 +98,7 @@ class _InsertDataState extends State<BusinessAdd> {
                       ),
                     ),
                     const Spacer(),
+                    SizedBox(height: 8),
                     TextField(
                       controller: userLocationController,
                       keyboardType: TextInputType.text,
@@ -144,9 +144,12 @@ class _InsertDataState extends State<BusinessAdd> {
               GestureDetector(
                 onTap: () async {
 
+                  DateTime dateTime = DateTime.now(); 
                   final address = await geocoder
                       .findAddressesFromQuery(userLocationController.text);
                   var place = address.first.coordinates;
+                  dynamic check = Timestamp.fromDate(dateTime); 
+                  print("For debugging, the timestamp is: $check , and the imageUrl is: $imageUrl"); 
                   GeoPoint listing =
                       GeoPoint(place.latitude!, place.longitude!);
                   Map<String, dynamic> foodPost = {
@@ -154,6 +157,7 @@ class _InsertDataState extends State<BusinessAdd> {
                     'description': userDescriptionController.text,
                     'location': listing,
                     'type': 'business', //TODO: GET WHAT TYPE OF USER
+                    'timestamp' : Timestamp.fromDate(dateTime),
                     'place': userLocationController.text,
                     'imageUrl': imageUrl, 
                   };

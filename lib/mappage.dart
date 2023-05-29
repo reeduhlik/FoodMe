@@ -9,6 +9,8 @@ import 'package:gsc2023_food_app/post.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
+
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
 
@@ -18,7 +20,6 @@ class MapPage extends StatefulWidget {
 
 class ListItem extends StatelessWidget {
   final DocumentSnapshot<Map<String, dynamic>> doc;
-
   const ListItem(this.doc);
 
   @override
@@ -35,6 +36,20 @@ class ListItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                doc['imageUrl'] != ''
+                  ?   Image.network(
+                      doc['imageUrl'],
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                      )
+                  : Image.asset(
+                      'assets/images/placeholder.png',
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                  ),
+                SizedBox(width: 20),
                 Text(doc['title'],
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 20)),
@@ -55,11 +70,12 @@ class ListItem extends StatelessWidget {
                       Row(
                         children: [
                           const Icon(Icons.access_time,
-                              color: kSecondaryColor, size: 16),
+                            color: kSecondaryColor, size: 16),
                           Text(DateFormat(' kk:mm EEE')
-                              .format(doc['timestamp'].toDate())),
+                            .format(doc['timestamp'].toDate())),
                         ],
                       ),
+                      //place the media image below here
                     ],
                   ),
                 )
@@ -73,8 +89,8 @@ class _MapPageState extends State<MapPage> {
       FirebaseFirestore.instance.collection('food-posts');
   late final GoogleMapController mapController;
   late String interfaceType;
-
-  late LatLng _initialPosition;
+  late Stream<QuerySnapshot> _stream; 
+  late LatLng _initialPosition = LatLng(37.7749, -122.4194);
 
   @override
   void initState() {
@@ -245,8 +261,9 @@ class _MapPageState extends State<MapPage> {
     String? description = data['description'];
     Timestamp? time = data['timestamp'];
     String? type = data['type'];
+    String? imageUrl = data['imageUrl'];
 
-    if (time != null && type == "provider") {
+    if (time != null && imageUrl != null) { //was && imageUrl == 'provider'
       DateTime timeDate = time.toDate();
       String fdatetime = DateFormat('MM-dd-yy hh:mm a').format(timeDate);
 
@@ -258,18 +275,17 @@ class _MapPageState extends State<MapPage> {
           icon: BitmapDescriptor.defaultMarker,
           markerId: markerId,
           position: LatLng(location.latitude, location.longitude),
-          onTap: () => displayPostDialogue(context),
           infoWindow: InfoWindow(
             title: data['title'],
             snippet: 'Description: $description\n' 'Time: $fdatetime',
-          ),
+          ), 
         );
       }
     }
 
     return Marker(
       markerId: MarkerId(doc.id),
-      visible: type == "provider" ? true : false,
+      //visible: type == "provider" ? true : false,
     );
   }
 }
