@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gsc2023_food_app/buttons.dart';
 import 'package:gsc2023_food_app/constants.dart';
+import 'package:gsc2023_food_app/login/loginscreen.dart';
+import 'package:gsc2023_food_app/sizeconfig.dart';
+import 'login/signinscreen.dart';
+import 'login/signupscreen.dart';
 import 'texts.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -23,9 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const PrimaryText(
-                      text: "Food Me",
-                    ),
+                    const SizedBox(height: 7),
                     Container(
                       width: constraints.maxHeight * 0.125,
                       height: constraints.maxHeight * 0.125,
@@ -52,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               Container(
                 width: constraints.maxWidth,
-                height: constraints.maxHeight * 0.2,
+                height: constraints.maxHeight * 0.15,
                 color: kPrimaryColor,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -115,28 +118,44 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Padding(
                   padding: EdgeInsets.all(constraints.maxWidth * 0.08),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const HeaderText(text: "Account Options"),
-                      const Spacer(flex: 4),
-                      AccountButton(
-                          width: double.infinity,
-                          height: constraints.maxHeight * 0.05,
-                          text: "Change password",
-                          callback: () {}),
-                      const Spacer(),
-                      AccountButton(
-                          width: double.infinity,
-                          height: constraints.maxHeight * 0.05,
-                          text: "Change password",
-                          callback: () {}),
-                      const Spacer(),
-                      AccountButton(
-                          width: double.infinity,
-                          height: constraints.maxHeight * 0.05,
-                          text: "Change password",
-                          callback: () {}),
-                      const Spacer(flex: 4),
+                      const Text(
+                        "Account Options",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: kPrimaryColor,
+                        ),
+                      ),
+                      const SizedBox(height: 7),
+                      DefaultButton(
+                        text: 'Change Password',
+                        press: () {
+                          //PLACE CODE HERE TO DO WHEN CHANGE PASSWORD
+                        },
+                      ),
+                      const SizedBox(height: 7),
+                      DefaultButton(
+                        text: 'Logout',
+                        press: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 25),
+                      const Text(
+                        "Current Listings",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: kPrimaryColor,
+                        ),
+                      ),
                     ],
                   ),
                 ),

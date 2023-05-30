@@ -28,7 +28,8 @@ class ProfileText extends StatelessWidget {
   const ProfileText({
     super.key,
     required this.text,
-    this.color = kPrimaryColor,
+    this.color = kPrimaryColor, 
+
   });
 
   @override

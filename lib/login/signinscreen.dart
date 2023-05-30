@@ -46,32 +46,16 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               const Text(
-                "Sign in with your email and password  \nor continue with Google",
+                "Sign in with your email and password",
                 textAlign: TextAlign.center,
               ),
-              const Spacer(flex: 2),
+              const SizedBox(height: 150),
               const SignInForm(),
               const Spacer(flex: 2),
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: getProportionateScreenWidth(10)),
-                      padding: EdgeInsets.all(getProportionateScreenWidth(12)),
-                      height: getProportionateScreenHeight(40),
-                      width: getProportionateScreenWidth(40),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF5F6F9),
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgPicture.asset("assets/icons/google-icon.svg"),
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(height: getProportionateScreenHeight(20)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -101,8 +85,10 @@ class _SignInScreenState extends State<SignInScreen> {
               const Spacer(),
             ],
           ),
+            ],
         ),
       ),
+      ), 
     );
   }
 }
