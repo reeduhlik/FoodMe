@@ -36,7 +36,7 @@ class UserInitialization extends StatefulWidget {
 }
 
 class _UserInitializationState extends State<UserInitialization> {
-  late final Future<void> getUser;
+  late final Future<int> getUser;
 
   @override
   void initState() {
