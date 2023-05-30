@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../constants.dart';
 
+import 'package:gsc2023_food_app/backend.dart';
+
 void displayItemInfo(
     BuildContext context, DocumentSnapshot<Map<String, dynamic>> doc) async {
   return showModalBottomSheet(
@@ -39,7 +41,84 @@ class PostItem extends StatelessWidget {
         color: white,
         borderRadius: BorderRadius.circular(5),
       ),
-      child: Text(doc['title']),
+      child: Column(children: [
+        Row(
+          children: [
+            Column(
+              children: [
+                Text("Community Listing"),
+                Text(doc['title']),
+                Text(doc['description']),
+                IconButton(
+                    icon: const Icon(Icons.location_on),
+                    onPressed: () {},
+                    tooltip: "Location"),
+                IconButton(
+                    icon: const Icon(Icons.access_time),
+                    onPressed: () {},
+                    tooltip: "Time"),
+              ],
+            ),
+            doc['imageUrl'] != null
+                ? Image.network(
+                    doc['imageUrl'],
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    'assets/images/placeholder.png',
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                  ),
+          ],
+        ),
+        Row(children: [
+          InkWell(
+            onTap: () {},
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: const Text(
+                "Item not here",
+                style: TextStyle(color: white),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {},
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: const Text(
+                "Claim full item",
+                style: TextStyle(color: white),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {},
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: const Text(
+                "Claim part of item",
+                style: TextStyle(color: white),
+              ),
+            ),
+          )
+        ])
+      ]),
     );
   }
 }
