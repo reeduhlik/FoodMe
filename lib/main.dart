@@ -47,7 +47,7 @@ class _UserInitializationState extends State<UserInitialization> {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    return FutureBuilder<dynamic>(
+    return FutureBuilder<int>(
       future: getUser,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
