@@ -5,6 +5,15 @@ import 'package:gsc2023_food_app/login/signupform.dart';
 import 'package:gsc2023_food_app/login/signinscreen.dart';
 
 class Backend {
+  static Future<int> getUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
   static Future<void> claimFullItem() async {
     //update the firebase document where the doc id matched so status is complete
   }

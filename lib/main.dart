@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gsc2023_food_app/login/loginscreen.dart';
 import 'package:gsc2023_food_app/sizeconfig.dart';
+import 'backend.dart';
 import 'firebase_options.dart';
 import 'constants.dart';
 import 'mainview.dart';
@@ -39,7 +40,7 @@ class _UserInitializationState extends State<UserInitialization> {
   Widget build(BuildContext context) {
     SizeConfig.init(context);
     return FutureBuilder<dynamic>(
-      future: getUser(),
+      future: Backend.getUser(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == 0) {
@@ -50,14 +51,7 @@ class _UserInitializationState extends State<UserInitialization> {
         } else {
           return const Placeholder();
         }
-        //return MainView();
       },
     );
   }
-}
-
-Future<dynamic> getUser() async {
-  //TODO: See if user logged in
-  await Future.delayed(const Duration(seconds: 2));
-  return 0;
 }
