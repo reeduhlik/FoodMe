@@ -36,11 +36,19 @@ class UserInitialization extends StatefulWidget {
 }
 
 class _UserInitializationState extends State<UserInitialization> {
+  late final Future<void> getUser;
+
+  @override
+  void initState() {
+    super.initState();
+    getUser = Backend.getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
     return FutureBuilder<dynamic>(
-      future: Backend.getUser(),
+      future: getUser,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == 0) {
