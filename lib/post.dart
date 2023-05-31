@@ -1,8 +1,9 @@
-import 'dart:io'; 
+import 'dart:io';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gsc2023_food_app/backend.dart';
 import 'package:gsc2023_food_app/texts.dart';
 import 'package:location_geocoder/location_geocoder.dart';
@@ -51,7 +52,7 @@ class _InsertDataState extends State<BusinessAdd> {
   final userTimeController = TextEditingController();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  String imageUrl = ''; 
+  String imageUrl = '';
 
   DateTime selectedDate = DateTime.now();
 
@@ -110,60 +111,70 @@ class _InsertDataState extends State<BusinessAdd> {
                       ),
                     ),
                     const Spacer(),
-                    IconButton(onPressed: () async{
-                      ImagePicker imagePicker = ImagePicker();
-                      XFile? file = await imagePicker.pickImage(source: ImageSource.camera); 
+                    IconButton(
+                        onPressed: () async {
+                          ImagePicker imagePicker = ImagePicker();
+                          XFile? file = await imagePicker.pickImage(
+                              source: ImageSource.camera);
 
-                      if(file==null) return; //throw an error here, maybe like "no image added"
+                          if (file == null)
+                            return; //throw an error here, maybe like "no image added"
 
-                      String fileID = DateTime.now().microsecondsSinceEpoch.toString();
+                          String fileID =
+                              DateTime.now().microsecondsSinceEpoch.toString();
 
-                      Reference  referenceRoot=FirebaseStorage.instance.ref(); 
-                      Reference referenceDirImages=referenceRoot.child('images');
+                          Reference referenceRoot =
+                              FirebaseStorage.instance.ref();
+                          Reference referenceDirImages =
+                              referenceRoot.child('images');
 
-                      Reference referenceImageToUpload=referenceDirImages.child(fileID); 
+                          Reference referenceImageToUpload =
+                              referenceDirImages.child(fileID);
 
-                      try {
-                        await referenceImageToUpload.putFile(File(file!.path));
-                        //success: now get the download URL
-                        imageUrl = await referenceImageToUpload.getDownloadURL();
-                      } catch (e) {
-                        //some error occured
-                      }
-                    }, icon: Icon(Icons.camera_alt)),
+                          try {
+                            await referenceImageToUpload
+                                .putFile(File(file!.path));
+                            //success: now get the download URL
+                            imageUrl =
+                                await referenceImageToUpload.getDownloadURL();
+                          } catch (e) {
+                            //some error occured
+                          }
+                        },
+                        icon: Icon(Icons.camera_alt)),
                     /*
                     1. Pick image
                     2. Upload image
                     3. Get the URL of the uploaded image
                     4. Store the image inside the corresponding document
                     5. Display image on the list
-                    */                   
+                    */
                   ],
                 ),
               ),
 
               GestureDetector(
                 onTap: () async {
-
-                  String id = await Backend.getUserId(); 
-                  DateTime dateTime = DateTime.now(); 
-                  final address = await geocoder
-                      .findAddressesFromQuery(userLocationController.text);
-                  var place = address.first.coordinates;
-                  dynamic check = Timestamp.fromDate(dateTime); 
-                  print("For debugging, the timestamp is: $check , and the imageUrl is: $imageUrl"); 
+                  String id = await Backend.getUserId();
+                  DateTime dateTime = DateTime.now();
+                  //get the user's device current location
+                  final userLoc = await Geolocator.getCurrentPosition(
+                      desiredAccuracy: LocationAccuracy.high);
+                  dynamic check = Timestamp.fromDate(dateTime);
+                  print(
+                      "For debugging, the timestamp is: $check , and the imageUrl is: $imageUrl");
                   GeoPoint listing =
-                      GeoPoint(place.latitude!, place.longitude!);
+                      GeoPoint(userLoc.latitude!, userLoc.longitude!);
                   Map<String, dynamic> foodPost = {
                     'title': userNameController.text,
                     'description': userDescriptionController.text,
                     'location': listing,
                     'type': 'business', //TODO: GET WHAT TYPE OF USER
-                    'timestamp' : Timestamp.fromDate(dateTime),
+                    'timestamp': Timestamp.fromDate(dateTime),
                     'place': userLocationController.text,
-                    'imageUrl': imageUrl, 
-                    'userID': id, 
-                    'status' : 'open', 
+                    'imageUrl': imageUrl,
+                    'userID': id,
+                    'status': 'open',
                   };
                   await firestore.collection('food-posts').add(foodPost);
                   Navigator.of(context).pop();

@@ -18,21 +18,21 @@ class Backend {
   static Future<String> getUserId() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      return user.uid.toString(); 
+      return user.uid.toString();
     } else {
-      return ''; 
+      return '';
     }
   }
 
-  static Future<DocumentSnapshot> getUserDoc() async {
+  static Future<DocumentSnapshot?> getUserDoc() async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     User? user = FirebaseAuth.instance.currentUser;
-    String check = user!.uid.toString(); 
+    String check = user!.uid.toString();
 
     QuerySnapshot querySnapshot = await firestore
-      .collection('users')
-      .where('userId', isEqualTo: check)
-      .get();
+        .collection('users')
+        .where('userId', isEqualTo: check)
+        .get();
 
     // Get the first document from the query snapshot
     DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
@@ -40,13 +40,13 @@ class Backend {
     if (documentSnapshot.exists) {
       return documentSnapshot;
     } else {
-      return null; 
+      return null;
     }
   }
 
   static Future<void> claimFullItem(DocumentSnapshot doc) async {
     if (doc.exists) {
-      DocumentReference documentReference = doc.reference; 
+      DocumentReference documentReference = doc.reference;
       await documentReference.set({'status': 'closed'});
       addTransaction();
     }
@@ -54,7 +54,7 @@ class Backend {
 
   static Future<void> claimPartialItem(DocumentSnapshot doc) async {
     if (doc.exists) {
-      DocumentReference documentReference = doc.reference; 
+      DocumentReference documentReference = doc.reference;
       await documentReference.set({'status': 'partial'});
       addTransaction();
     }
@@ -63,14 +63,14 @@ class Backend {
   static Future<void> deleteItem(DocumentSnapshot doc) async {
     if (doc.exists) {
       DocumentReference documentReference = doc.reference;
-      await documentReference.delete(); 
+      await documentReference.delete();
     }
   }
 
   static Future<void> addTransaction() async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     Map<String, dynamic> event = {
-      'String' : 'test', 
+      'String': 'test',
     };
     await firestore.collection('transactions').add(event);
   }

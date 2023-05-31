@@ -7,7 +7,11 @@ import 'package:gsc2023_food_app/item_info.dart';
 class ListItem extends StatelessWidget {
   //doc received from firebase
   final DocumentSnapshot<Map<String, dynamic>> doc;
-  const ListItem(this.doc, {Key? key}) : super(key: key);
+  final String distanceAway;
+  final String timePostedAgo;
+
+  const ListItem(this.doc, this.distanceAway, this.timePostedAgo, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,8 @@ class ListItem extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
         padding: const EdgeInsets.all(15),
         child: GestureDetector(
-            onTap: () => displayItemInfo(context, doc),
+            onTap: () =>
+                displayItemInfo(context, doc, distanceAway, timePostedAgo),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -49,17 +54,14 @@ class ListItem extends StatelessWidget {
                         children: [
                           const Icon(Icons.location_on,
                               color: kSecondaryColor, size: 16),
-                          Text(
-                            " 0.1 mile away      ",
-                          ),
+                          Text(distanceAway),
                         ],
                       ),
                       Row(
                         children: [
                           const Icon(Icons.access_time,
                               color: kSecondaryColor, size: 16),
-                          Text(DateFormat(' kk:mm EEE')
-                              .format(doc['timestamp'].toDate())),
+                          Text(timePostedAgo + " ago"),
                         ],
                       ),
                       //place the media image below here

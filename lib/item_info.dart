@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:gsc2023_food_app/sizeconfig.dart';
 import '../../../constants.dart';
 
 import 'package:gsc2023_food_app/backend.dart';
 
 void displayItemInfo(
-  BuildContext context, DocumentSnapshot<Map<String, dynamic>> doc) async {
-  String? id = doc.id; 
+    BuildContext context,
+    DocumentSnapshot<Map<String, dynamic>> doc,
+    String distAway,
+    String timeAgoPosted) async {
+  String? id = doc.id;
   return showModalBottomSheet(
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
@@ -22,7 +27,7 @@ void displayItemInfo(
         heightFactor: 0.6,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return PostItem(doc);
+            return PostItem(doc, distAway, timeAgoPosted);
           },
         ),
       );
@@ -31,8 +36,12 @@ void displayItemInfo(
 }
 
 class PostItem extends StatelessWidget {
-  const PostItem(this.doc, {Key? key}) : super(key: key);
+  PostItem(this.doc, this.distAway, this.timeAgoPosted, {Key? key})
+      : super(key: key);
+
   final DocumentSnapshot<Map<String, dynamic>> doc;
+  final String distAway;
+  final String timeAgoPosted;
 
   @override
   Widget build(BuildContext context) {
@@ -44,32 +53,44 @@ class PostItem extends StatelessWidget {
       child: Column(children: [
         Row(
           children: [
-            Column(
-              children: [
-                Text("Community Listing"),
-                Text(doc['title']),
-                Text(doc['description']),
-                IconButton(
-                    icon: const Icon(Icons.location_on),
-                    onPressed: () {},
-                    tooltip: "Location"),
-                IconButton(
-                    icon: const Icon(Icons.access_time),
-                    onPressed: () {},
-                    tooltip: "Time"),
-              ],
+            Container(
+              width: getProportionateScreenWidth(187.5),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Community Listing"),
+                    Text(doc['title']),
+                    Text(doc['description']),
+                    Row(
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.location_on,
+                                color: kSecondaryColor, size: 16),
+                            Text(distAway),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Icon(Icons.access_time,
+                                color: kSecondaryColor, size: 16),
+                            Text(timeAgoPosted),
+                          ],
+                        ),
+                        //place the media image below here
+                      ],
+                    ),
+                  ]),
             ),
             doc['imageUrl'] != ''
                 ? Image.network(
                     doc['imageUrl'],
-                    width: 50,
-                    height: 50,
+                    width: getProportionateScreenWidth(187.5),
                     fit: BoxFit.cover,
                   )
                 : Image.asset(
                     'assets/images/placeholder.png',
-                    width: 50,
-                    height: 50,
+                    width: getProportionateScreenWidth(187.5),
                     fit: BoxFit.cover,
                   ),
           ],
@@ -93,7 +114,7 @@ class PostItem extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              Backend.claimFullItem(doc); 
+              Backend.claimFullItem(doc);
             },
             child: Container(
               padding: const EdgeInsets.all(10),
@@ -109,7 +130,7 @@ class PostItem extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              Backend.claimPartialItem(doc); 
+              Backend.claimPartialItem(doc);
             },
             child: Container(
               padding: const EdgeInsets.all(10),

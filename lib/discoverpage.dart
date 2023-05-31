@@ -7,6 +7,7 @@ import 'package:gsc2023_food_app/listitem.dart';
 import 'package:gsc2023_food_app/post.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:time_elapsed/time_elapsed.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -34,6 +35,26 @@ class _DiscoverPageState extends State<DiscoverPage> {
     setState(() {
       _initialPosition = LatLng(position.latitude, position.longitude);
     });
+  }
+
+  String getDistanceFromPoint(postPosition) {
+    double distance = Geolocator.distanceBetween(
+        postPosition.latitude,
+        postPosition.longitude,
+        _initialPosition.latitude,
+        _initialPosition.longitude);
+
+    if (distance < 400) {
+      return (distance * 3.28084).toStringAsFixed(1) + "ft away";
+    } else if (distance < 1000000) {
+      return (distance * .00062137).toStringAsFixed(1) + "mi away";
+    } else {
+      return (distance * .00000062137).toStringAsFixed(1) + "k miles away";
+    }
+  }
+
+  String getTimeElapsed(timestamp) {
+    return TimeElapsed.elapsedTimeDynamic(timestamp.toDate());
   }
 
   @override
@@ -76,7 +97,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     itemCount: documents.length,
                     itemBuilder: (context, index) {
                       final doc = documents[index];
-                      return ListItem(doc);
+                      return ListItem(
+                          doc,
+                          getDistanceFromPoint(doc["location"]),
+                          getTimeElapsed(doc["timestamp"]));
                     },
                   ),
             //the toggle buttons
@@ -154,11 +178,11 @@ class _DiscoverPageState extends State<DiscoverPage> {
               ),
             ),
             Align(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: SizedBox(
-                  width: 50,
+                  width: 150,
                   height: 50,
                   child: GestureDetector(
                     onTap: () {
