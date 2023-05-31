@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/buttons.dart';
 import 'package:gsc2023_food_app/constants.dart';
@@ -6,6 +7,9 @@ import 'package:gsc2023_food_app/sizeconfig.dart';
 import 'login/signinscreen.dart';
 import 'login/signupscreen.dart';
 import 'texts.dart';
+import 'backend.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

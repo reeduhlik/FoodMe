@@ -5,7 +5,8 @@ import '../../../constants.dart';
 import 'package:gsc2023_food_app/backend.dart';
 
 void displayItemInfo(
-    BuildContext context, DocumentSnapshot<Map<String, dynamic>> doc) async {
+  BuildContext context, DocumentSnapshot<Map<String, dynamic>> doc) async {
+  String? id = doc.id; 
   return showModalBottomSheet(
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
@@ -31,7 +32,6 @@ void displayItemInfo(
 
 class PostItem extends StatelessWidget {
   const PostItem(this.doc, {Key? key}) : super(key: key);
-
   final DocumentSnapshot<Map<String, dynamic>> doc;
 
   @override
@@ -59,7 +59,7 @@ class PostItem extends StatelessWidget {
                     tooltip: "Time"),
               ],
             ),
-            doc['imageUrl'] != null
+            doc['imageUrl'] != ''
                 ? Image.network(
                     doc['imageUrl'],
                     width: 50,
@@ -76,7 +76,9 @@ class PostItem extends StatelessWidget {
         ),
         Row(children: [
           InkWell(
-            onTap: () {},
+            onTap: () async {
+              Backend.deleteItem(doc);
+            },
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -90,7 +92,9 @@ class PostItem extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () async {
+              Backend.claimFullItem(doc); 
+            },
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -104,7 +108,9 @@ class PostItem extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () async {
+              Backend.claimPartialItem(doc); 
+            },
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(

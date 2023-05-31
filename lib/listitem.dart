@@ -7,7 +7,6 @@ import 'package:gsc2023_food_app/item_info.dart';
 class ListItem extends StatelessWidget {
   //doc received from firebase
   final DocumentSnapshot<Map<String, dynamic>> doc;
-
   const ListItem(this.doc, {Key? key}) : super(key: key);
 
   @override

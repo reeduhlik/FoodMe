@@ -8,34 +8,85 @@ class Backend {
   static Future<int> getUser() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
+      print(user.uid.toString()); //might remove toString method
       return 1;
     } else {
       return 0;
     }
   }
 
-  static Future<void> claimFullItem() async {
-    //update the firebase document where the doc id matched so status is complete
+  static Future<String> getUserId() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return user.uid.toString(); 
+    } else {
+      return ''; 
+    }
   }
 
-  static Future<void> claimPartialItem() async {
-    //update the firebase document where the doc id matched so status is partial
+  static Future<DocumentSnapshot> getUserDoc() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    User? user = FirebaseAuth.instance.currentUser;
+    String check = user!.uid.toString(); 
+
+    QuerySnapshot querySnapshot = await firestore
+      .collection('users')
+      .where('userId', isEqualTo: check)
+      .get();
+
+    // Get the first document from the query snapshot
+    DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+
+    if (documentSnapshot.exists) {
+      return documentSnapshot;
+    } else {
+      return null; 
+    }
   }
 
-  static Future<void> deleteItem() async {
-    //delete the firebase document where the doc id matched
+  static Future<void> claimFullItem(DocumentSnapshot doc) async {
+    if (doc.exists) {
+      DocumentReference documentReference = doc.reference; 
+      await documentReference.set({'status': 'closed'});
+      addTransaction();
+    }
+  }
+
+  static Future<void> claimPartialItem(DocumentSnapshot doc) async {
+    if (doc.exists) {
+      DocumentReference documentReference = doc.reference; 
+      await documentReference.set({'status': 'partial'});
+      addTransaction();
+    }
+  }
+
+  static Future<void> deleteItem(DocumentSnapshot doc) async {
+    if (doc.exists) {
+      DocumentReference documentReference = doc.reference;
+      await documentReference.delete(); 
+    }
   }
 
   static Future<void> addTransaction() async {
-    //add a transaction to the firebase collection "Transactions" where the doc id matched
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    Map<String, dynamic> event = {
+      'String' : 'test', 
+    };
+    await firestore.collection('transactions').add(event);
   }
 
   static Future<void> getUserStatistics() async {
     //get the user statistics
+    /*
+    1. Return the amount of documents containing the ID of the user
+    */
   }
 
   static Future<void> getGlobalStatistics() async {
     //get the food post statistics
+    /*
+    1. Return the amount of documents and transactions
+    */
   }
 
   static Future<void> firebaseFunction() async {

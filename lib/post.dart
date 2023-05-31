@@ -3,6 +3,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gsc2023_food_app/backend.dart';
 import 'package:gsc2023_food_app/texts.dart';
 import 'package:location_geocoder/location_geocoder.dart';
 import '../../../constants.dart';
@@ -144,6 +145,7 @@ class _InsertDataState extends State<BusinessAdd> {
               GestureDetector(
                 onTap: () async {
 
+                  String id = await Backend.getUserId(); 
                   DateTime dateTime = DateTime.now(); 
                   final address = await geocoder
                       .findAddressesFromQuery(userLocationController.text);
@@ -160,6 +162,8 @@ class _InsertDataState extends State<BusinessAdd> {
                     'timestamp' : Timestamp.fromDate(dateTime),
                     'place': userLocationController.text,
                     'imageUrl': imageUrl, 
+                    'userID': id, 
+                    'status' : 'open', 
                   };
                   await firestore.collection('food-posts').add(foodPost);
                   Navigator.of(context).pop();
