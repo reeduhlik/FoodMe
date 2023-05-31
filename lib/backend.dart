@@ -25,25 +25,22 @@ class Backend {
     }
   }
 
-  static Future<DocumentSnapshot?> getUserDoc() async {
+  static Future<dynamic> getUserDoc() async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     User? user = FirebaseAuth.instance.currentUser;
     String check = user!.uid.toString();
 
     QuerySnapshot querySnapshot = await firestore
-        .collection('users')
-        .where('userId', isEqualTo: check)
-        .get();
+      .collection('users')
+      .where('userID', isEqualTo: check)
+      .get();
 
     // Get the first document from the query snapshot
     DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
-
     if (documentSnapshot.exists) {
       return documentSnapshot;
-    } else {
-      return null;
     }
-  }
+  } // throw in a try catch block maybe? 
 
   static Future<void> claimFullItem(DocumentSnapshot doc) async {
     if (doc.exists) {
@@ -83,11 +80,24 @@ class Backend {
     */
   }
 
-  static Future<void> getGlobalStatistics() async {
-    //get the food post statistics
-    /*
-    1. Return the amount of documents and transactions
-    */
+//global methods
+
+  static Future <int> amountOfUsers() async {
+    try{
+      CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('users');
+      QuerySnapshot querySnapshot = await usersCollection.get();
+      int count = querySnapshot.size;
+    return count; 
+    } catch(e) {
+      print(e); 
+      return 0; 
+    }
+  }
+
+  static Future<int> peopleImpacted() async {
+    return 1;
+    //just return the amount of documents in the transactions colelction
   }
 
   // Method for signing up a user with email and password

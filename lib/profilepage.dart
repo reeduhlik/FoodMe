@@ -1,9 +1,13 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/buttons.dart';
 import 'package:gsc2023_food_app/constants.dart';
 import 'package:gsc2023_food_app/login/loginscreen.dart';
 import 'texts.dart';
 import 'backend.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,7 +17,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late String firstName = 'John Doe';
+  late String email ='example@example.com';
+  late DocumentSnapshot<Map<String, dynamic>>? doc;
+
+  Future<void> fetchUserDetails() async {
+    doc = await Backend.getUserDoc();
+    String id = doc!.id; 
+    setState(() {
+      firstName = doc!['firstName'];
+      email = doc!['email'];
+    });
+  }
+
   @override
+  void initState() {
+    super.initState();
+    fetchUserDetails();
+  }
+
   Widget build(BuildContext context) {
     return SafeArea(
       child: LayoutBuilder(
@@ -43,9 +65,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     Column(
-                      children: const [
-                        ProfileText(text: "John Doe"),
-                        PrimaryText(text: "johndoe@gmail.com")
+                      children: [
+                        ProfileText(text: firstName),
+                        PrimaryText(text: email, )
                       ],
                     ),
                   ],

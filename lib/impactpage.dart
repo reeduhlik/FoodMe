@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/constants.dart';
 import 'package:gsc2023_food_app/sizeconfig.dart';
+import 'backend.dart'; 
 
 class ImpactPage extends StatefulWidget {
   const ImpactPage({super.key});
@@ -9,7 +10,19 @@ class ImpactPage extends StatefulWidget {
   State<ImpactPage> createState() => _ImpactPageState();
 }
 
-class _ImpactPageState extends State<ImpactPage> {
+  class _ImpactPageState extends State<ImpactPage> {
+  int userCount = 0;
+
+  Future<void> fetchUserCount() async {
+    userCount = await Backend.amountOfUsers();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserCount();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +102,7 @@ class _ImpactPageState extends State<ImpactPage> {
                                     child: Column(
                                       children: [
                                         Text(
-                                          "25",
+                                          userCount.toString(),
                                           style: TextStyle(
                                             fontSize: getProportionateScreenWidth(40),
                                             color: kPrimaryLightColor,
