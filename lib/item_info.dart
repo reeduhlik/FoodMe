@@ -13,17 +13,18 @@ void displayItemInfo(
   //String? id = doc.id;
   return showModalBottomSheet(
     isScrollControlled: true,
+    backgroundColor: Color.fromARGB(200, 255, 255, 255),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(10.0),
-        topRight: Radius.circular(10.0),
+        topLeft: Radius.circular(15.0),
+        topRight: Radius.circular(15.0),
       ),
     ),
     clipBehavior: Clip.hardEdge,
     context: context,
     builder: (context) {
       return FractionallySizedBox(
-        heightFactor: 0.6,
+        heightFactor: 0.5,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             return PostItem(doc, distAway, timeAgoPosted);
@@ -46,104 +47,127 @@ class PostItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: white,
+        color: Color.fromARGB(200, 255, 255, 255),
         borderRadius: BorderRadius.circular(5),
       ),
-      child: Column(children: [
-        Row(
-          children: [
-            Container(
-              width: getProportionateScreenWidth(187.5),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Community Listing"),
-                    Text(doc['title']),
-                    Text(doc['description']),
-                    Row(
+      padding: const EdgeInsets.only(bottom: 80),
+      child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Container(
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 255, 255, 255),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: getProportionateScreenWidth(177.5),
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            const Icon(Icons.location_on,
-                                color: kSecondaryColor, size: 16),
-                            Text(distAway),
-                          ],
+                        Text(
+                          doc['title'],
+                          style: TextStyle(fontSize: 20, color: kPrimaryColor),
                         ),
-                        Row(
-                          children: [
-                            const Icon(Icons.access_time,
-                                color: kSecondaryColor, size: 16),
-                            Text(timeAgoPosted),
-                          ],
+                        Text(
+                          doc['description'],
+                          style: TextStyle(fontSize: 14),
                         ),
-                        //place the media image below here
-                      ],
-                    ),
-                  ]),
-            ),
-            doc['imageUrl'] != ''
-                ? Image.network(
-                    doc['imageUrl'],
-                    width: getProportionateScreenWidth(187.5),
-                    fit: BoxFit.cover,
-                  )
-                : Image.asset(
-                    'assets/images/placeholder.png',
-                    width: getProportionateScreenWidth(187.5),
-                    fit: BoxFit.cover,
+                        Container(
+                          margin: EdgeInsets.only(top: 10),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.location_on,
+                                      color: kSecondaryColor, size: 16),
+                                  Text(distAway),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(Icons.access_time,
+                                      color: kSecondaryColor, size: 16),
+                                  Text(timeAgoPosted + " ago"),
+                                ],
+                              ),
+                              //place the media image below here
+                            ],
+                          ),
+                        ),
+                      ]),
+                ),
+                doc['imageUrl'] != ''
+                    ? Image.network(
+                        doc['imageUrl'],
+                        width: getProportionateScreenWidth(177.5),
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        'assets/images/placeholder.png',
+                        width: getProportionateScreenWidth(177.5),
+                        fit: BoxFit.cover,
+                      ),
+              ],
+            )),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () async {
+                  Backend.deleteItem(doc);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: kSecondaryColor,
+                    borderRadius: BorderRadius.circular(0),
                   ),
-          ],
-        ),
-        Row(children: [
-          InkWell(
-            onTap: () async {
-              Backend.deleteItem(doc);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(5),
+                  child: const Text(
+                    "Item not here",
+                    style: TextStyle(color: white),
+                  ),
+                ),
               ),
-              child: const Text(
-                "Item not here",
-                style: TextStyle(color: white),
+              InkWell(
+                onTap: () async {
+                  Backend.claimFullItem(doc);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: kPrimaryColor,
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  child: const Text(
+                    "Claim full item",
+                    style: TextStyle(color: white),
+                  ),
+                ),
               ),
-            ),
-          ),
-          InkWell(
-            onTap: () async {
-              Backend.claimFullItem(doc);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: const Text(
-                "Claim full item",
-                style: TextStyle(color: white),
-              ),
-            ),
-          ),
-          InkWell(
-            onTap: () async {
-              Backend.claimPartialItem(doc);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: const Text(
-                "Claim part of item",
-                style: TextStyle(color: white),
-              ),
-            ),
-          )
-        ])
+              InkWell(
+                onTap: () async {
+                  Backend.claimPartialItem(doc);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: accentGreen,
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  child: const Text(
+                    "Claim part of item",
+                    style: TextStyle(color: white),
+                  ),
+                ),
+              )
+            ])
       ]),
     );
   }

@@ -7,6 +7,8 @@ import 'package:gsc2023_food_app/post.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
+import 'package:gsc2023_food_app/item_info.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -22,11 +24,27 @@ class _DiscoverPageState extends State<DiscoverPage> {
   late String interfaceType;
   late LatLng _initialPosition = const LatLng(37.7749, -122.4194);
 
+  String _mapStyle = "";
+
+  BitmapDescriptor customMarker = BitmapDescriptor.defaultMarker;
+
   @override
   void initState() {
     super.initState();
+    rootBundle.loadString('assets/map_style.txt').then((string) {
+      _mapStyle = string;
+    });
     interfaceType = "map";
     _getUserLocation();
+    getCustomMarker();
+  }
+
+  void getCustomMarker() async {
+    BitmapDescriptor customMarkerIcon = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(), "assets/custom-icon.png");
+    setState(() {
+      customMarker = customMarkerIcon;
+    });
   }
 
   void _getUserLocation() async {
@@ -70,10 +88,13 @@ class _DiscoverPageState extends State<DiscoverPage> {
           );
         }
 
-        final List<DocumentSnapshot<Map<String, dynamic>>> documents =
-            snapshot.data!.docs;
+        final List<DocumentSnapshot<Map<String, dynamic>>>
+            unfiltered_documents = snapshot.data!.docs;
 
         //sorts the documents based on how close they are to the user
+        final documents = unfiltered_documents
+            .where((doc) => doc['status'] == 'open')
+            .toList();
         documents.sort((a, b) {
           GeoPoint aLocation = a['location'];
           GeoPoint bLocation = b['location'];
@@ -100,13 +121,16 @@ class _DiscoverPageState extends State<DiscoverPage> {
           children: [
             (interfaceType == "map")
                 ? GoogleMap(
+                    onMapCreated: (controller) => {
+                      mapController = controller,
+                      mapController.setMapStyle(_mapStyle),
+                    },
                     myLocationEnabled: true,
                     myLocationButtonEnabled: true,
-                    mapType: MapType.hybrid,
                     zoomGesturesEnabled: true,
                     initialCameraPosition: CameraPosition(
                       target: _initialPosition,
-                      zoom: 15,
+                      zoom: 16,
                     ),
                     markers: Set<Marker>.of(markers),
                   )
@@ -269,13 +293,11 @@ class _DiscoverPageState extends State<DiscoverPage> {
           description != null &&
           type != null) {
         return Marker(
-          icon: BitmapDescriptor.defaultMarker,
+          icon: customMarker,
           markerId: markerId,
+          onTap: () => displayItemInfo(context, doc,
+              getDistanceFromPoint(location), getTimeElapsed(time)),
           position: LatLng(location.latitude, location.longitude),
-          infoWindow: InfoWindow(
-            title: data['title'],
-            snippet: 'Description: $description\n' 'Time: $fdatetime',
-          ),
         );
       }
     }

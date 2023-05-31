@@ -31,44 +31,49 @@ class Backend {
     String check = user!.uid.toString();
 
     QuerySnapshot querySnapshot = await firestore
-      .collection('users')
-      .where('userID', isEqualTo: check)
-      .get();
+        .collection('users')
+        .where('userID', isEqualTo: check)
+        .get();
 
     // Get the first document from the query snapshot
     DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
     if (documentSnapshot.exists) {
       return documentSnapshot;
     }
-  } // throw in a try catch block maybe? 
+  } // throw in a try catch block maybe?
 
   static Future<void> claimFullItem(DocumentSnapshot doc) async {
     if (doc.exists) {
       DocumentReference documentReference = doc.reference;
-      await documentReference.set({'status': 'closed'});
-      addTransaction();
+      await documentReference.update({'status': 'closed'});
+      addTransaction(documentReference.id);
     }
   }
 
   static Future<void> claimPartialItem(DocumentSnapshot doc) async {
     if (doc.exists) {
       DocumentReference documentReference = doc.reference;
-      await documentReference.set({'status': 'partial'});
-      addTransaction();
+      addTransaction(documentReference.id);
     }
   }
 
   static Future<void> deleteItem(DocumentSnapshot doc) async {
     if (doc.exists) {
       DocumentReference documentReference = doc.reference;
-      await documentReference.delete();
+      await documentReference.update({'status': 'not_found'});
     }
   }
 
-  static Future<void> addTransaction() async {
+  static Future<void> addTransaction(postID) async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    final userId = user!.uid;
+
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     Map<String, dynamic> event = {
-      'String': 'test',
+      'user_id': userId,
+      'timestamp': DateTime.now(),
+      'post_id': postID
     };
     await firestore.collection('transactions').add(event);
   }
@@ -82,16 +87,16 @@ class Backend {
 
 //global methods
 
-  static Future <int> amountOfUsers() async {
-    try{
+  static Future<int> amountOfUsers() async {
+    try {
       CollectionReference usersCollection =
           FirebaseFirestore.instance.collection('users');
       QuerySnapshot querySnapshot = await usersCollection.get();
       int count = querySnapshot.size;
-    return count; 
-    } catch(e) {
-      print(e); 
-      return 0; 
+      return count;
+    } catch (e) {
+      print(e);
+      return 0;
     }
   }
 

@@ -1,0 +1,138 @@
+[
+  {
+    "featureType": "administrative.land_parcel",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.man_made",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#f7f1df"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.natural",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#d0e3b4"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.business",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.medical",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#fbd3da"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#bde6ab"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+
+  {
+    "featureType": "road.arterial",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#ffffff"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#ffe15f"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#efd151"
+      }
+    ]
+  },
+
+  {
+    "featureType": "transit.station.airport",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#cfb2db"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#a2daf2"
+      }
+    ]
+  }
+]

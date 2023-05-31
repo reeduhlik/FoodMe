@@ -22,7 +22,7 @@ Future<void> displayPostDialogue(BuildContext context) async {
     context: context,
     builder: (context) {
       return FractionallySizedBox(
-        heightFactor: 0.8,
+        heightFactor: 0.5,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             return const BusinessAdd();
@@ -67,7 +67,6 @@ class _InsertDataState extends State<BusinessAdd> {
               const SizedBox(height: 30),
               SizedBox(
                 width: constraints.maxWidth,
-                height: constraints.maxHeight * 0.4,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -77,7 +76,7 @@ class _InsertDataState extends State<BusinessAdd> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Title',
-                        hintText: 'Enter Your List Title',
+                        hintText: 'Food Item',
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -87,7 +86,7 @@ class _InsertDataState extends State<BusinessAdd> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Description',
-                        hintText: 'Enter Your Event Description',
+                        hintText: 'Extra details to help find your item',
                       ),
                     ),
                     const SizedBox(height: 10),

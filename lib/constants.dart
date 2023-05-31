@@ -7,13 +7,14 @@ const Color black = Colors.black;
 const Color white = Colors.white;
 const Color backgroundColor = Color.fromRGBO(207, 255, 199, 1);
 const Color kPrimaryColor = Color(0xFF1E5631);
-const Color kPrimaryLightColor = Color.fromRGBO(207, 255, 199, 1);
+const Color kPrimaryLightColor = Color(0xFFCFFFC7);
 const Color kSecondaryColor = Color(0xFF979797);
 const Color kTextColor = Color(0xFF757575);
+const Color accentGreen = Color(0xFF68BB59);
 const LinearGradient gradientkPrimaryGradientColor = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
-  colors: [Color.fromRGBO(207, 255, 199, 1), Color(0xFF1E5631)],
+  colors: [Color(0xFFCFFFC7), Color(0xFF1E5631)],
 );
 
 //Other
