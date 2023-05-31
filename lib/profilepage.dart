@@ -142,7 +142,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       const SizedBox(height: 7),
                       DefaultButton(
                         text: 'Logout',
-                        press: () {
+                        press: () async {
+                          await Backend.logout();
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

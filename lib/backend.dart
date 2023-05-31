@@ -15,6 +15,10 @@ class Backend {
     }
   }
 
+  static Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   static Future<String> getUserId() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -87,10 +91,6 @@ class Backend {
     /*
     1. Return the amount of documents and transactions
     */
-  }
-
-  static Future<void> firebaseFunction() async {
-    await Firebase.initializeApp();
   }
 
   // Method for signing up a user with email and password
