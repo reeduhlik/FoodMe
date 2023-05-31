@@ -2,7 +2,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gsc2023_food_app/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:gsc2023_food_app/item_info.dart';
 import 'package:gsc2023_food_app/listitem.dart';
 import 'package:gsc2023_food_app/post.dart';
 import 'package:intl/intl.dart';

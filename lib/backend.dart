@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:gsc2023_food_app/login/signupform.dart';
-import 'package:gsc2023_food_app/login/signinscreen.dart';
 
 class Backend {
   static Future<int> getUser() async {
@@ -129,7 +126,7 @@ class Backend {
     }
   }
 
-  static Future<dynamic> signIn(String email, String password) async {
+  static Future<bool> signIn(String email, String password) async {
     try {
       final auth = FirebaseAuth.instance;
       await auth.signInWithEmailAndPassword(
@@ -138,6 +135,7 @@ class Backend {
       );
       return true;
     } on FirebaseAuthException catch (e) {
+      print(e);
       return false;
     }
   }

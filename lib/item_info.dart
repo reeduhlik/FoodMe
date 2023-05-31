@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:gsc2023_food_app/sizeconfig.dart';
 import '../../../constants.dart';
 
@@ -11,7 +10,7 @@ void displayItemInfo(
     DocumentSnapshot<Map<String, dynamic>> doc,
     String distAway,
     String timeAgoPosted) async {
-  String? id = doc.id;
+  //String? id = doc.id;
   return showModalBottomSheet(
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(

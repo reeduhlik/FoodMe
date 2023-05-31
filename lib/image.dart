@@ -1,16 +1,11 @@
-import 'dart:io'; 
-import 'dart:core';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gsc2023_food_app/texts.dart';
 import 'package:location_geocoder/location_geocoder.dart';
-import '../../../constants.dart';
-import 'backend.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
+import 'dart:io';
+import 'dart:core';
 
 Future<void> displayPostDialogue(BuildContext context) async {
   return showModalBottomSheet(
@@ -30,7 +25,6 @@ Future<void> displayPostDialogue(BuildContext context) async {
           builder: (BuildContext context, BoxConstraints constraints) {
             return const BusinessAdd();
           },
-
         ),
       );
     },
@@ -50,15 +44,14 @@ class _InsertDataState extends State<BusinessAdd> {
   final userLocationController = TextEditingController();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  File? _photo;
-  final ImagePicker _picker = ImagePicker(); 
+  //File? _photo;
+  //final ImagePicker _picker = ImagePicker();
   String imageUrl = '';
 
   DateTime selectedDate = DateTime.now();
 
-
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
+  //final TextEditingController _dateController = TextEditingController();
+  //final TextEditingController _timeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -107,27 +100,38 @@ class _InsertDataState extends State<BusinessAdd> {
                         hintText: 'Enter Where Your Food Event Is',
                       ),
                     ),
-                    IconButton(onPressed: () async{
-                      ImagePicker imagePicker = ImagePicker();
-                      XFile? file = await imagePicker.pickImage(source: ImageSource.camera); 
+                    IconButton(
+                        onPressed: () async {
+                          ImagePicker imagePicker = ImagePicker();
+                          XFile? file = await imagePicker.pickImage(
+                              source: ImageSource.camera);
 
-                      if(file==null) return; //throw an error here, maybe like "no image added"
+                          if (file == null) {
+                            return; //throw an error here, maybe like "no image added"
+                          }
 
-                      String fileID = DateTime.now().microsecondsSinceEpoch.toString();
+                          String fileID =
+                              DateTime.now().microsecondsSinceEpoch.toString();
 
-                      Reference  referenceRoot=FirebaseStorage.instance.ref(); 
-                      Reference referenceDirImages=referenceRoot.child('images');
+                          Reference referenceRoot =
+                              FirebaseStorage.instance.ref();
+                          Reference referenceDirImages =
+                              referenceRoot.child('images');
 
-                      Reference referenceImageToUpload=referenceDirImages.child(fileID); 
+                          Reference referenceImageToUpload =
+                              referenceDirImages.child(fileID);
 
-                      try {
-                        await referenceImageToUpload.putFile(File(file!.path));
-                        //success: now get the download URL
-                        imageUrl = await referenceImageToUpload.getDownloadURL();
-                      } catch (e) {
-                        //some error occured
-                      }
-                    }, icon: Icon(Icons.camera_alt)),
+                          try {
+                            await referenceImageToUpload
+                                .putFile(File(file.path));
+                            //success: now get the download URL
+                            imageUrl =
+                                await referenceImageToUpload.getDownloadURL();
+                          } catch (e) {
+                            //some error occured
+                          }
+                        },
+                        icon: const Icon(Icons.camera_alt)),
                     /*
                     1. Pick image
                     2. Upload image
@@ -138,14 +142,15 @@ class _InsertDataState extends State<BusinessAdd> {
                   ],
                 ),
               ),
-
               GestureDetector(
                 onTap: () async {
-
-                  if(imageUrl.isNotEmpty) {
-                    ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('Please upload an image')));
-                      return; 
+                  if (imageUrl.isNotEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please upload an image'),
+                      ),
+                    );
+                    return;
                   }
 
                   final address = await geocoder
@@ -159,7 +164,7 @@ class _InsertDataState extends State<BusinessAdd> {
                     'location': listing,
                     'type': 'business', //TODO: GET WHAT TYPE OF USER
                     'place': userLocationController.text,
-                    'imageUrl': imageUrl, 
+                    'imageUrl': imageUrl,
                   };
                   await firestore.collection('food-posts').add(foodPost);
                   Navigator.of(context).pop();

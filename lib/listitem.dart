@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gsc2023_food_app/constants.dart';
-import 'package:intl/intl.dart';
 import 'package:gsc2023_food_app/item_info.dart';
 
 class ListItem extends StatelessWidget {

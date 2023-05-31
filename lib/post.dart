@@ -1,18 +1,13 @@
-import 'dart:io';
-import 'dart:core';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gsc2023_food_app/backend.dart';
 import 'package:gsc2023_food_app/texts.dart';
-import 'package:location_geocoder/location_geocoder.dart';
 import '../../../constants.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
-import 'package:intl/intl.dart';
+import 'dart:io';
+import 'dart:core';
 
 Future<void> displayPostDialogue(BuildContext context) async {
   return showModalBottomSheet(
@@ -164,7 +159,7 @@ class _InsertDataState extends State<BusinessAdd> {
                   print(
                       "For debugging, the timestamp is: $check , and the imageUrl is: $imageUrl");
                   GeoPoint listing =
-                      GeoPoint(userLoc.latitude!, userLoc.longitude!);
+                      GeoPoint(userLoc.latitude, userLoc.longitude);
                   Map<String, dynamic> foodPost = {
                     'title': userNameController.text,
                     'description': userDescriptionController.text,

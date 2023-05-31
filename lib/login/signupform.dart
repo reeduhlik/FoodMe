@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gsc2023_food_app/login/loginscreen.dart';
 import 'package:gsc2023_food_app/login/signupscreen.dart';
 import 'package:gsc2023_food_app/mainview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
