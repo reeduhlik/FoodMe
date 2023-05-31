@@ -64,6 +64,7 @@ class _SignUpFormState extends State<SignUpForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF1E5631)),
@@ -223,15 +224,15 @@ class _SignUpFormState extends State<SignUpForm> {
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
-      if (value.isNotEmpty) {
-        removeError(error: kEmailNullError);
-        checkEmailExists(value); // Check if email already exists
-      } else if (emailValidatorRegExp.hasMatch(value)) {
-        removeError(error: kInvalidEmailError);
-      }
-      setState(() {}); // Trigger a rebuild
-      return null;
-    },
+        if (value.isNotEmpty) {
+          removeError(error: kEmailNullError);
+          checkEmailExists(value); // Check if email already exists
+        } else if (emailValidatorRegExp.hasMatch(value)) {
+          removeError(error: kInvalidEmailError);
+        }
+        setState(() {}); // Trigger a rebuild
+        return null;
+      },
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kEmailNullError);
@@ -253,18 +254,18 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-void checkEmailExists(String email) async {
-  try {
-    final existingUser = await _auth.fetchSignInMethodsForEmail(email);
-    if (existingUser.isNotEmpty) {
-      addError(error: 'Email is already in use.');
-    } else {
-      removeError(error: 'Email is already in use.');
+  void checkEmailExists(String email) async {
+    try {
+      final existingUser = await _auth.fetchSignInMethodsForEmail(email);
+      if (existingUser.isNotEmpty) {
+        addError(error: 'Email is already in use.');
+      } else {
+        removeError(error: 'Email is already in use.');
+      }
+    } catch (e) {
+      //print('Error checking email existence: $e');
     }
-  } catch (e) {
-    //print('Error checking email existence: $e');
   }
-}
 
   TextFormField buildAddressFormField() {
     return TextFormField(
