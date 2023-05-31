@@ -48,7 +48,6 @@ class BusinessAdd extends StatefulWidget {
 class _InsertDataState extends State<BusinessAdd> {
   final userNameController = TextEditingController();
   final userDescriptionController = TextEditingController();
-  final userLocationController = TextEditingController();
   final userTimeController = TextEditingController();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -61,8 +60,6 @@ class _InsertDataState extends State<BusinessAdd> {
   @override
   Widget build(BuildContext context) {
     //Using Google Maps API Call to use Google GeoLocation
-    const apiKey = "AIzaSyC0IIiLl6i89dT9IiieDhayF1xcWRJgHs4";
-    final LocatitonGeocoder geocoder = LocatitonGeocoder(apiKey);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -72,7 +69,7 @@ class _InsertDataState extends State<BusinessAdd> {
             children: [
               const HeaderText(text: "Add a Listing"),
               //const Spacer(), /* this spacer is a problem all of a sudden, not sure why*/
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               SizedBox(
                 width: constraints.maxWidth,
                 height: constraints.maxHeight * 0.4,
@@ -88,8 +85,7 @@ class _InsertDataState extends State<BusinessAdd> {
                         hintText: 'Enter Your List Title',
                       ),
                     ),
-                    const Spacer(),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 15),
                     TextField(
                       controller: userDescriptionController,
                       keyboardType: TextInputType.text,
@@ -99,49 +95,53 @@ class _InsertDataState extends State<BusinessAdd> {
                         hintText: 'Enter Your Event Description',
                       ),
                     ),
-                    const Spacer(),
-                    SizedBox(height: 8),
-                    TextField(
-                      controller: userLocationController,
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Location',
-                        hintText: 'Enter Where Your Food Event Is',
-                      ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: constraints.maxWidth,
+                      height: 60,
+                      child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            primary: kPrimaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          onPressed: () async {
+                            ImagePicker imagePicker = ImagePicker();
+                            XFile? file = await imagePicker.pickImage(
+                                source: ImageSource.camera,
+                                imageQuality: 80,
+                                maxWidth: 400,
+                                maxHeight: 400);
+
+                            if (file == null)
+                              return; //throw an error here, maybe like "no image added"
+
+                            String fileID = DateTime.now()
+                                .microsecondsSinceEpoch
+                                .toString();
+
+                            Reference referenceRoot =
+                                FirebaseStorage.instance.ref();
+                            Reference referenceDirImages =
+                                referenceRoot.child('images');
+
+                            Reference referenceImageToUpload =
+                                referenceDirImages.child(fileID);
+
+                            try {
+                              await referenceImageToUpload
+                                  .putFile(File(file.path));
+                              //success: now get the download URL
+                              imageUrl =
+                                  await referenceImageToUpload.getDownloadURL();
+                            } catch (e) {
+                              //some error occured
+                            }
+                          },
+                          icon: Icon(Icons.camera_alt),
+                          label: Text("Upload Image")),
                     ),
-                    const Spacer(),
-                    IconButton(
-                        onPressed: () async {
-                          ImagePicker imagePicker = ImagePicker();
-                          XFile? file = await imagePicker.pickImage(
-                              source: ImageSource.camera);
-
-                          if (file == null)
-                            return; //throw an error here, maybe like "no image added"
-
-                          String fileID =
-                              DateTime.now().microsecondsSinceEpoch.toString();
-
-                          Reference referenceRoot =
-                              FirebaseStorage.instance.ref();
-                          Reference referenceDirImages =
-                              referenceRoot.child('images');
-
-                          Reference referenceImageToUpload =
-                              referenceDirImages.child(fileID);
-
-                          try {
-                            await referenceImageToUpload
-                                .putFile(File(file!.path));
-                            //success: now get the download URL
-                            imageUrl =
-                                await referenceImageToUpload.getDownloadURL();
-                          } catch (e) {
-                            //some error occured
-                          }
-                        },
-                        icon: Icon(Icons.camera_alt)),
                     /*
                     1. Pick image
                     2. Upload image
@@ -152,7 +152,7 @@ class _InsertDataState extends State<BusinessAdd> {
                   ],
                 ),
               ),
-
+              const SizedBox(height: 10),
               GestureDetector(
                 onTap: () async {
                   String id = await Backend.getUserId();
@@ -171,7 +171,6 @@ class _InsertDataState extends State<BusinessAdd> {
                     'location': listing,
                     'type': 'business', //TODO: GET WHAT TYPE OF USER
                     'timestamp': Timestamp.fromDate(dateTime),
-                    'place': userLocationController.text,
                     'imageUrl': imageUrl,
                     'userID': id,
                     'status': 'open',
@@ -180,16 +179,19 @@ class _InsertDataState extends State<BusinessAdd> {
                   Navigator.of(context).pop();
                 },
                 child: Container(
-                  width: constraints.maxWidth * 0.9,
-                  height: constraints.maxHeight * 0.075,
+                  width: constraints.maxWidth,
+                  height: 60,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25.0),
-                    color: const Color(0xFF1E5631),
+                    border: Border.all(
+                      width: 2.0,
+                      color: const Color(0xFF1E5631),
+                    ),
                   ),
                   child: const PrimaryText(
                     text: "Submit Post",
-                    color: white,
+                    color: kPrimaryColor,
                   ),
                 ),
               ),

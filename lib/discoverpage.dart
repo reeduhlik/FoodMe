@@ -44,7 +44,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
         _initialPosition.latitude,
         _initialPosition.longitude);
 
-    if (distance < 400) {
+    if (distance < 20) {
+      return "Right by you";
+    } else if (distance < 1000000) {
       return (distance * 3.28084).toStringAsFixed(1) + "ft away";
     } else if (distance < 1000000) {
       return (distance * .00062137).toStringAsFixed(1) + "mi away";
@@ -72,6 +74,23 @@ class _DiscoverPageState extends State<DiscoverPage> {
         final List<DocumentSnapshot<Map<String, dynamic>>> documents =
             snapshot.data!.docs;
 
+        //sorts the documents based on how close they are to the user
+        documents.sort((a, b) {
+          GeoPoint aLocation = a['location'];
+          GeoPoint bLocation = b['location'];
+          double aDistance = Geolocator.distanceBetween(
+              aLocation.latitude,
+              aLocation.longitude,
+              _initialPosition.latitude,
+              _initialPosition.longitude);
+          double bDistance = Geolocator.distanceBetween(
+              bLocation.latitude,
+              bLocation.longitude,
+              _initialPosition.latitude,
+              _initialPosition.longitude);
+          return aDistance.compareTo(bDistance);
+        });
+
         //generates the markers to use to pass to the googlemap constructor
         final markers =
             documents.map((doc) => buildMarker(doc)).toList(growable: false);
@@ -92,17 +111,38 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     ),
                     markers: Set<Marker>.of(markers),
                   )
-                : ListView.builder(
-                    //iterate through all documents and create ListItems
-                    itemCount: documents.length,
-                    itemBuilder: (context, index) {
-                      final doc = documents[index];
-                      return ListItem(
-                          doc,
-                          getDistanceFromPoint(doc["location"]),
-                          getTimeElapsed(doc["timestamp"]));
-                    },
-                  ),
+                : Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                          padding:
+                              EdgeInsets.only(top: 70, left: 20, bottom: 10),
+                          child: const Text(
+                            "Food near you...",
+                            style:
+                                TextStyle(fontSize: 28, color: kPrimaryColor),
+                          )),
+                    ),
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          _getUserLocation();
+                        },
+                        child: ListView.builder(
+                          //iterate through all documents and create ListItems
+                          itemCount: documents.length,
+                          itemBuilder: (context, index) {
+                            final doc = documents[index];
+                            return ListItem(
+                                doc,
+                                getDistanceFromPoint(doc["location"]),
+                                getTimeElapsed(doc["timestamp"]));
+                          },
+                        ),
+                      ),
+                    ),
+                  ]),
+
             //the toggle buttons
             Align(
               alignment: Alignment.topRight,

@@ -50,12 +50,15 @@ class ListItem extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 5),
                   child: Row(
                     children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.location_on,
-                              color: kSecondaryColor, size: 16),
-                          Text(distanceAway),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.location_on,
+                                color: kSecondaryColor, size: 16),
+                            Text(distanceAway),
+                          ],
+                        ),
                       ),
                       Row(
                         children: [
