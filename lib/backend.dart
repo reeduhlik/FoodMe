@@ -5,7 +5,6 @@ class Backend {
   static Future<int> getUser() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      print(user.uid.toString()); //might remove toString method
       return 1;
     } else {
       return 0;
@@ -96,7 +95,6 @@ class Backend {
         .get();
 
     int count = querySnapshot.size;
-    print('The count is $count');
     return count;
   }
 
@@ -139,13 +137,25 @@ class Backend {
     }
   }
 
+  static Future<int> amountOfPosts() async {
+    try {
+      CollectionReference postsCollection =
+          FirebaseFirestore.instance.collection('food-posts');
+      QuerySnapshot querySnapshot = await postsCollection.get();
+      int count = querySnapshot.size;
+      return count;
+    } catch (e) {
+      print(e);
+      return 0;
+    }
+  }
+
   static Future<int> amountOfTransactions() async {
     try {
       CollectionReference transactionsCollection =
           FirebaseFirestore.instance.collection('transactions');
       QuerySnapshot querySnapshot = await transactionsCollection.get();
       int count = querySnapshot.size;
-      print(count);
       return count;
     } catch (e) {
       print(e);

@@ -19,7 +19,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late String firstName = 'John Doe';
   late String email ='example@example.com';
-  late int itemsPosted = 5;
+  late int itemsPosted = 0;
   late int itemsCollected = 0;
   late int peopleImpacted = 0;
   late DocumentSnapshot<Map<String, dynamic>>? doc;

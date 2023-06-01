@@ -23,25 +23,25 @@ class _ImpactPageState extends State<ImpactPage> {
   }
 
   Future<void> globalItemsCollected() async {
-    int collected = await Backend.amountOfTransactions();
+    int collected = await Backend.amountOfPosts();
     setState(() {
       itemsCollected = collected;
     });
   }
 
-  /*Future<void> globalPeopleImpacted() async {
-    int impacted = await Backend.globalPeopleImpacted();
+  Future<void> globalPeopleImpacted() async {
+    int impacted = await Backend.amountOfTransactions();
     setState(() {
       peopleImpacted = impacted;
     });
-  }*/
+  }
 
   @override
   void initState() {
     super.initState();
     fetchUserCount();
     globalItemsCollected();
-    //globalPeopleImpacted();
+    globalPeopleImpacted();
   }
 
   @override
@@ -164,7 +164,7 @@ class _ImpactPageState extends State<ImpactPage> {
                                           ),
                                         ),
                                         Text(
-                                          "Items collected",
+                                          "Total Posts",
                                           style: TextStyle(
                                             fontSize:
                                                 getProportionateScreenWidth(10),
@@ -180,7 +180,7 @@ class _ImpactPageState extends State<ImpactPage> {
                                     child: Column(
                                       children: [
                                         Text(
-                                          "42",
+                                          peopleImpacted.toString(),
                                           style: TextStyle(
                                             fontSize:
                                                 getProportionateScreenWidth(40),
