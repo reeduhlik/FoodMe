@@ -6,14 +6,14 @@ import 'impactpage.dart';
 import 'discoverpage.dart';
 import 'profilepage.dart';
 
-class MainView extends StatefulWidget {
-  const MainView({super.key});
+class MainViewBusiness extends StatefulWidget {
+  const MainViewBusiness({super.key});
 
   @override
-  State<MainView> createState() => _MainViewState();
+  State<MainViewBusiness> createState() => _MainViewBusinessState();
 }
 
-class _MainViewState extends State<MainView> {
+class _MainViewBusinessState extends State<MainViewBusiness> {
   late int pageIndex;
   late final PageController pageController;
 

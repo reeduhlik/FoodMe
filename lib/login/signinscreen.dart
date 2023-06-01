@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gsc2023_food_app/login/signupscreen.dart';
-import 'package:gsc2023_food_app/mainview_business.dart';
-import 'package:gsc2023_food_app/mainview_provider.dart';
+import '../mainview_business.dart';
+import '../mainview_provider.dart';
 import '../backend.dart';
 import '../buttons.dart';
 import '../constants.dart';
