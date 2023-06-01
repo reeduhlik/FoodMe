@@ -141,17 +141,27 @@ class Backend {
     }
   }
 
-  static Future<bool> signIn(String email, String password) async {
+  static Future<int> signIn(String email, String password) async {
     try {
       final auth = FirebaseAuth.instance;
       await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return true;
+
+      //figure out which type of user it is
+      DocumentSnapshot doc = await getUserDoc();
+      String type = doc.get('type');
+
+      if (type == "personal") {
+        return 1;
+      } else if (type == "provider") {
+        return 2;
+      } else {
+        return 3;
+      }
     } on FirebaseAuthException catch (e) {
-      print(e);
-      return false;
+      return 0;
     }
   }
 }

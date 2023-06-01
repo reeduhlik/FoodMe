@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gsc2023_food_app/login/signupscreen.dart';
+import 'package:gsc2023_food_app/mainview_business.dart';
+import 'package:gsc2023_food_app/mainview_provider.dart';
 import '../backend.dart';
 import '../buttons.dart';
 import '../constants.dart';
@@ -52,43 +54,43 @@ class _SignInScreenState extends State<SignInScreen> {
               const SizedBox(height: 150),
               const SignInForm(),
               const Spacer(flex: 2),
-              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-              SizedBox(height: getProportionateScreenHeight(20)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don’t have an account? ",
-                    style: TextStyle(fontSize: getProportionateScreenWidth(16)),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignUpScreen(),
+                  SizedBox(height: getProportionateScreenHeight(20)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don’t have an account? ",
+                        style: TextStyle(
+                            fontSize: getProportionateScreenWidth(16)),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignUpScreen(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(16),
+                              color: kPrimaryColor),
                         ),
-                      );
-                    },
-                    child: Text(
-                      "Sign Up",
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(16),
-                          color: kPrimaryColor),
-                    ),
+                      ),
+                    ],
                   ),
+                  const Spacer(),
                 ],
               ),
-              const Spacer(),
             ],
           ),
-            ],
         ),
       ),
-      ), 
     );
   }
 }
@@ -163,21 +165,39 @@ class _SignInFormState extends State<SignInForm> {
                 setState(() {
                   errors.clear(); // Clear the existing errors
                 });
-                final result = await Backend.signIn(email!, password!);
+
+                //result - 0 is failed login, 1 is personal, 2 is provider, 3 is business
+                final int result = await Backend.signIn(email!, password!);
 
                 //failure
-                if (result == false) {
+                if (result == 0) {
                   print('sign in failed and was caught');
                   setState(() {
                     errors.clear();
                     addError(error: 'Wrong email or password');
                   });
-                } else {
-                  //success
+                } else if (result == 1) {
+                  //success - personal view
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const MainView(),
+                    ),
+                  );
+                } else if (result == 2) {
+                  //success - provider view
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainViewProvider(),
+                    ),
+                  );
+                } else {
+                  //success - business view
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainViewBusiness(),
                     ),
                   );
                 }
