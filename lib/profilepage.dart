@@ -19,21 +19,48 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late String firstName = 'John Doe';
   late String email ='example@example.com';
+  late int itemsPosted = 5;
+  late int itemsCollected = 0;
+  late int peopleImpacted = 0;
   late DocumentSnapshot<Map<String, dynamic>>? doc;
 
   Future<void> fetchUserDetails() async {
     doc = await Backend.getUserDoc();
     String id = doc!.id; 
-    setState(() {
-      firstName = doc!['firstName'];
-      email = doc!['email'];
-    });
+    if (mounted) {
+      setState(() {
+        firstName = doc!['firstName'];
+        email = doc!['email'];
+      });
+    }
   }
+
+  Future<void> fetchPosted() async {
+    itemsPosted = await Backend.localItemsPosted();  
+  }
+
+  Future<void> fetchCollected() async {
+    itemsCollected = await Backend.localItemsCollected(); 
+  }
+
+  Future<void> fetchImpacted() async {
+    peopleImpacted = await Backend.localPeopleImpacted(); 
+  }
+
 
   @override
   void initState() {
     super.initState();
     fetchUserDetails();
+    fetchPosted();
+    fetchCollected();
+    fetchImpacted();
+  }
+
+  
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -85,9 +112,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(
                           width: constraints.maxWidth / 3,
                           child: Column(
-                            children: const [
+                            children:  [
                               ProfileText(
-                                text: "25",
+                                text: itemsPosted.toString(),
                                 color: kPrimaryLightColor,
                               ),
                               SecondaryText(
@@ -100,9 +127,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(
                           width: constraints.maxWidth / 3,
                           child: Column(
-                            children: const [
+                            children: [
                               ProfileText(
-                                text: "8",
+                                text: itemsCollected.toString(),
                                 color: kPrimaryLightColor,
                               ),
                               SecondaryText(
@@ -115,9 +142,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(
                           width: constraints.maxWidth / 3,
                           child: Column(
-                            children: const [
+                            children: [
                               ProfileText(
-                                text: "42",
+                                text: peopleImpacted.toString(),
                                 color: kPrimaryLightColor,
                               ),
                               SecondaryText(

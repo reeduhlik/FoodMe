@@ -45,15 +45,21 @@ class Backend {
   static Future<void> claimFullItem(DocumentSnapshot doc) async {
     if (doc.exists) {
       DocumentReference documentReference = doc.reference;
-      await documentReference.update({'status': 'closed'});
-      addTransaction(documentReference.id);
+      await documentReference.set({'status': 'closed'});
+
+      DocumentSnapshot<Map<String, dynamic>> updatedDoc = await documentReference.get() as DocumentSnapshot<Map<String, dynamic>>;
+      String userID = updatedDoc['userID'];
+      addTransaction(userID);
     }
   }
 
   static Future<void> claimPartialItem(DocumentSnapshot doc) async {
     if (doc.exists) {
       DocumentReference documentReference = doc.reference;
-      addTransaction(documentReference.id);
+
+      DocumentSnapshot<Map<String, dynamic>> updatedDoc = await documentReference.get() as DocumentSnapshot<Map<String, dynamic>>;
+      String userID = updatedDoc['userID'];
+      addTransaction(userID);
     }
   }
 
@@ -64,25 +70,52 @@ class Backend {
     }
   }
 
-  static Future<void> addTransaction(postID) async {
-    User? user = FirebaseAuth.instance.currentUser;
-
-    final userId = user!.uid;
-
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    Map<String, dynamic> event = {
-      'user_id': userId,
-      'timestamp': DateTime.now(),
-      'post_id': postID
-    };
-    await firestore.collection('transactions').add(event);
+  static Future<void> addTransaction(String senderID) async {
+    try {
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      String recipientID = await getUserId(); 
+      Map<String, dynamic> transaction = {
+        'senderID': senderID,
+        'recipientID': recipientID,
+        'timestamp': DateTime.now()
+      };
+      await firestore.collection('transactions').add(transaction);     
+    } catch(e) {
+    }
   }
 
-  static Future<void> getUserStatistics() async {
-    //get the user statistics
-    /*
-    1. Return the amount of documents containing the ID of the user
-    */
+  static Future<int> localItemsPosted() async {
+    String userID = await getUserId(); 
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+      .collection('food-posts')
+      .where('userID', isEqualTo: userID)
+      .get();
+
+  int count = querySnapshot.size;
+  print('The count is $count'); 
+  return count;
+  }
+
+  static Future<int> localItemsCollected() async {
+    String userID = await getUserId(); 
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+      .collection('transactions')
+      .where('recipientId', isEqualTo: userID)
+      .get();
+
+  int count = querySnapshot.size;
+  return count;
+  }
+
+  static Future<int> localPeopleImpacted() async {
+    String userID = await getUserId(); 
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+      .collection('transactions')
+      .where('senderId', isEqualTo: userID)
+      .get();
+
+  int count = querySnapshot.size;
+  return count;
   }
 
 //global methods
@@ -100,10 +133,24 @@ class Backend {
     }
   }
 
-  static Future<int> peopleImpacted() async {
+  static Future<int> amountOfTransactions() async {
+    try {
+      CollectionReference transactionsCollection = 
+        FirebaseFirestore.instance.collection('transactions');
+      QuerySnapshot querySnapshot = await transactionsCollection.get();
+      int count = querySnapshot.size;
+      print(count); 
+      return count;
+    } catch(e) {
+      print(e);
+      return 0;
+    }
+  }
+
+  /*static Future<int> globalPeopleImpacted() async {
     return 1;
     //just return the amount of documents in the transactions colelction
-  }
+  }*/
 
   // Method for signing up a user with email and password
   static Future<void> signUpWithEmailAndPassword(

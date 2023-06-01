@@ -12,15 +12,41 @@ class ImpactPage extends StatefulWidget {
 
   class _ImpactPageState extends State<ImpactPage> {
   int userCount = 0;
+  int itemsCollected = 0; 
+  int peopleImpacted = 0;
 
   Future<void> fetchUserCount() async {
-    userCount = await Backend.amountOfUsers();
+    int count = await Backend.amountOfUsers();
+    setState(() {
+      userCount = count;
+    });
   }
+
+  Future<void> globalItemsCollected() async {
+    int collected = await Backend.amountOfTransactions();
+    setState(() {
+      itemsCollected = collected;
+    });
+  }
+
+  /*Future<void> globalPeopleImpacted() async {
+    int impacted = await Backend.globalPeopleImpacted();
+    setState(() {
+      peopleImpacted = impacted;
+    });
+  }*/
 
   @override
   void initState() {
     super.initState();
     fetchUserCount();
+    globalItemsCollected();
+    //globalPeopleImpacted();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -125,7 +151,7 @@ class ImpactPage extends StatefulWidget {
                                     child: Column(
                                       children: [
                                         Text(
-                                          "8",
+                                          itemsCollected.toString(),
                                           style: TextStyle(
                                             fontSize: getProportionateScreenWidth(40),
                                             color: kPrimaryLightColor,
