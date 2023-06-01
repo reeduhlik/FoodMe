@@ -49,6 +49,12 @@ class PostItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: Color.fromARGB(200, 255, 255, 255),
         borderRadius: BorderRadius.circular(5),
+        border: doc['type'] == "provider"
+            ? Border.all(
+                color: kPrimaryColor,
+                width: 2,
+              )
+            : null,
       ),
       padding: const EdgeInsets.only(bottom: 80),
       child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [

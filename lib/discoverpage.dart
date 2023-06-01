@@ -21,7 +21,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   final CollectionReference<Map<String, dynamic>> foodPostRef =
       FirebaseFirestore.instance.collection('food-posts');
   late final GoogleMapController mapController;
-  late String interfaceType;
+  late String interfaceType = "map";
   late LatLng _initialPosition = const LatLng(37.7749, -122.4194);
 
   String _mapStyle = "";
@@ -30,13 +30,22 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
   @override
   void initState() {
-    super.initState();
-    rootBundle.loadString('assets/map_style.txt').then((string) {
-      _mapStyle = string;
-    });
-    interfaceType = "map";
-    _getUserLocation();
-    getCustomMarker();
+    if (mounted) {
+      super.initState();
+      rootBundle.loadString('assets/map_style.txt').then((string) {
+        _mapStyle = string;
+      });
+      interfaceType = "map";
+
+      _getUserLocation();
+      getCustomMarker();
+    }
+  }
+
+  @override
+  void dispose() {
+    mapController.dispose();
+    super.dispose();
   }
 
   void getCustomMarker() async {
@@ -149,7 +158,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: () async {
-                          _getUserLocation();
+                          if (mounted) {
+                            _getUserLocation();
+                          }
                         },
                         child: ListView.builder(
                           //iterate through all documents and create ListItems

@@ -25,6 +25,12 @@ class _MainViewState extends State<MainView> {
   }
 
   @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -36,6 +42,11 @@ class _MainViewState extends State<MainView> {
             Expanded(
               child: PageView(
                 controller: pageController,
+                onPageChanged: (int index) {
+                  setState(() {
+                    pageIndex = index;
+                  });
+                },
                 physics: const NeverScrollableScrollPhysics(),
                 children: const [
                   ImpactPage(),
@@ -58,7 +69,7 @@ class _MainViewState extends State<MainView> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                animateToPage(0);
+                                pageController.jumpToPage(0);
                               },
                               child: SvgPicture.asset(
                                 "assets/icons/Flash Icon.svg",
@@ -80,7 +91,7 @@ class _MainViewState extends State<MainView> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                animateToPage(1);
+                                pageController.jumpToPage(1);
                               },
                               child: SvgPicture.asset(
                                 "assets/icons/Discover.svg",
@@ -102,7 +113,7 @@ class _MainViewState extends State<MainView> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                animateToPage(2);
+                                pageController.jumpToPage(2);
                               },
                               child: SvgPicture.asset(
                                 "assets/icons/User Icon.svg",
@@ -132,6 +143,5 @@ class _MainViewState extends State<MainView> {
     pageIndex = index;
     pageController.animateToPage(pageIndex,
         duration: const Duration(milliseconds: 200), curve: Curves.decelerate);
-    setState(() {});
   }
 }

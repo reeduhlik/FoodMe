@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/constants.dart';
 import 'package:gsc2023_food_app/sizeconfig.dart';
-import 'backend.dart'; 
+import 'backend.dart';
 
 class ImpactPage extends StatefulWidget {
   const ImpactPage({super.key});
@@ -10,9 +10,9 @@ class ImpactPage extends StatefulWidget {
   State<ImpactPage> createState() => _ImpactPageState();
 }
 
-  class _ImpactPageState extends State<ImpactPage> {
+class _ImpactPageState extends State<ImpactPage> {
   int userCount = 0;
-  int itemsCollected = 0; 
+  int itemsCollected = 0;
   int peopleImpacted = 0;
 
   Future<void> fetchUserCount() async {
@@ -54,7 +54,8 @@ class ImpactPage extends StatefulWidget {
     return Scaffold(
       body: SafeArea(
         child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+          constraints:
+              BoxConstraints(minHeight: MediaQuery.of(context).size.height),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -81,7 +82,8 @@ class ImpactPage extends StatefulWidget {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: getProportionateScreenWidth(20)),
                         child: Text(
                           "We are on a mission to simultaneously eliminate food waste and food insecurity.",
                           textAlign: TextAlign.center,
@@ -95,7 +97,7 @@ class ImpactPage extends StatefulWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -110,13 +112,13 @@ class ImpactPage extends StatefulWidget {
                   ],
                 ),
                 SizedBox(height: 7),
-                Container( 
+                Container(
                   child: SafeArea(
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         return Container(
                           width: constraints.maxWidth,
-                          height: 115,
+                          height: 145,
                           color: kPrimaryColor,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -130,7 +132,8 @@ class ImpactPage extends StatefulWidget {
                                         Text(
                                           userCount.toString(),
                                           style: TextStyle(
-                                            fontSize: getProportionateScreenWidth(40),
+                                            fontSize:
+                                                getProportionateScreenWidth(40),
                                             color: kPrimaryLightColor,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -138,7 +141,8 @@ class ImpactPage extends StatefulWidget {
                                         Text(
                                           "Users",
                                           style: TextStyle(
-                                            fontSize: getProportionateScreenWidth(10),
+                                            fontSize:
+                                                getProportionateScreenWidth(10),
                                             color: kPrimaryLightColor,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -153,7 +157,8 @@ class ImpactPage extends StatefulWidget {
                                         Text(
                                           itemsCollected.toString(),
                                           style: TextStyle(
-                                            fontSize: getProportionateScreenWidth(40),
+                                            fontSize:
+                                                getProportionateScreenWidth(40),
                                             color: kPrimaryLightColor,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -161,7 +166,8 @@ class ImpactPage extends StatefulWidget {
                                         Text(
                                           "Items collected",
                                           style: TextStyle(
-                                            fontSize: getProportionateScreenWidth(10),
+                                            fontSize:
+                                                getProportionateScreenWidth(10),
                                             color: kPrimaryLightColor,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -176,7 +182,8 @@ class ImpactPage extends StatefulWidget {
                                         Text(
                                           "42",
                                           style: TextStyle(
-                                            fontSize: getProportionateScreenWidth(40),
+                                            fontSize:
+                                                getProportionateScreenWidth(40),
                                             color: kPrimaryLightColor,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -184,7 +191,8 @@ class ImpactPage extends StatefulWidget {
                                         Text(
                                           "People Impacted",
                                           style: TextStyle(
-                                            fontSize: getProportionateScreenWidth(10),
+                                            fontSize:
+                                                getProportionateScreenWidth(10),
                                             color: kPrimaryLightColor,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -203,10 +211,10 @@ class ImpactPage extends StatefulWidget {
                 ),
                 SizedBox(height: 16),
                 SizedBox(
-                      height: getProportionateScreenWidth(150),
-                      width: getProportionateScreenWidth(150),
-                      child: Image.asset('assets/images/udcollab.png'),
-                    ),
+                  height: getProportionateScreenWidth(150),
+                  width: getProportionateScreenWidth(150),
+                  child: Image.asset('assets/images/udcollab.png'),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -225,7 +233,8 @@ class ImpactPage extends StatefulWidget {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: getProportionateScreenWidth(20)),
                         child: Text(
                           "Large-scale food waste is a byproduct of the lack of sufficient infrastructure capable of connecting leftover food resources from places including supermarkets, food banks, and company events to people who are struggling with food insecurity. Our app, FoodMe, facilitates the connection of surplus resources to those who need them within local communities. By doing so, we aim to alleviate food insecurity and bridge the gap that exists between different socioeconomic groups.",
                           textAlign: TextAlign.center,
@@ -240,10 +249,10 @@ class ImpactPage extends StatefulWidget {
                 ),
                 SizedBox(height: 15),
                 SizedBox(
-                      height: getProportionateScreenWidth(150),
-                      width: getProportionateScreenWidth(150),
-                      child: Image.asset('assets/images/udlight.png'),
-                    ),
+                  height: getProportionateScreenWidth(150),
+                  width: getProportionateScreenWidth(150),
+                  child: Image.asset('assets/images/udlight.png'),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -262,7 +271,8 @@ class ImpactPage extends StatefulWidget {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: getProportionateScreenWidth(20)),
                         child: Text(
                           "Our initial inspiration for this app came from a GroupMe at Georgetown University, where we are students, where students and faculty announce if they have food left over from club meetings or other such events. We loved this idea of community food waste reduction and wanted to expand the concept to our greater community of Washington DC and beyond.",
                           textAlign: TextAlign.center,
@@ -283,4 +293,3 @@ class ImpactPage extends StatefulWidget {
     );
   }
 }
-

@@ -47,7 +47,9 @@ class Backend {
       DocumentReference documentReference = doc.reference;
       await documentReference.set({'status': 'closed'});
 
-      DocumentSnapshot<Map<String, dynamic>> updatedDoc = await documentReference.get() as DocumentSnapshot<Map<String, dynamic>>;
+      DocumentSnapshot<Map<String, dynamic>> updatedDoc =
+          await documentReference.get()
+              as DocumentSnapshot<Map<String, dynamic>>;
       String userID = updatedDoc['userID'];
       addTransaction(userID);
     }
@@ -57,7 +59,9 @@ class Backend {
     if (doc.exists) {
       DocumentReference documentReference = doc.reference;
 
-      DocumentSnapshot<Map<String, dynamic>> updatedDoc = await documentReference.get() as DocumentSnapshot<Map<String, dynamic>>;
+      DocumentSnapshot<Map<String, dynamic>> updatedDoc =
+          await documentReference.get()
+              as DocumentSnapshot<Map<String, dynamic>>;
       String userID = updatedDoc['userID'];
       addTransaction(userID);
     }
@@ -73,49 +77,51 @@ class Backend {
   static Future<void> addTransaction(String senderID) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
-      String recipientID = await getUserId(); 
+      String recipientID = await getUserId();
       Map<String, dynamic> transaction = {
         'senderID': senderID,
         'recipientID': recipientID,
         'timestamp': DateTime.now()
       };
-      await firestore.collection('transactions').add(transaction);     
-    } catch(e) {
-    }
+      await firestore.collection('transactions').add(transaction);
+    } catch (e) {}
   }
 
   static Future<int> localItemsPosted() async {
-    String userID = await getUserId(); 
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
-      .collection('food-posts')
-      .where('userID', isEqualTo: userID)
-      .get();
+    String userID = await getUserId();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('food-posts')
+        .where('userID', isEqualTo: userID)
+        .get();
 
-  int count = querySnapshot.size;
-  print('The count is $count'); 
-  return count;
+    int count = querySnapshot.size;
+    print('The count is $count');
+    return count;
   }
 
   static Future<int> localItemsCollected() async {
-    String userID = await getUserId(); 
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
-      .collection('transactions')
-      .where('recipientId', isEqualTo: userID)
-      .get();
+    String userID = await getUserId();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('transactions')
+        .where('recipientID', isEqualTo: userID)
+        .get();
 
-  int count = querySnapshot.size;
-  return count;
+    int count = querySnapshot.size;
+    return count;
   }
 
   static Future<int> localPeopleImpacted() async {
-    String userID = await getUserId(); 
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
-      .collection('transactions')
-      .where('senderId', isEqualTo: userID)
-      .get();
+    String userID = await getUserId();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('transactions')
+        .where('senderID', isEqualTo: userID)
+        .get();
 
-  int count = querySnapshot.size;
-  return count;
+    int count = querySnapshot.size;
+    return count;
   }
 
 //global methods
@@ -135,13 +141,13 @@ class Backend {
 
   static Future<int> amountOfTransactions() async {
     try {
-      CollectionReference transactionsCollection = 
-        FirebaseFirestore.instance.collection('transactions');
+      CollectionReference transactionsCollection =
+          FirebaseFirestore.instance.collection('transactions');
       QuerySnapshot querySnapshot = await transactionsCollection.get();
       int count = querySnapshot.size;
-      print(count); 
+      print(count);
       return count;
-    } catch(e) {
+    } catch (e) {
       print(e);
       return 0;
     }
