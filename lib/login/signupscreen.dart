@@ -47,6 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF1E5631)),
@@ -62,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Column(
           children: [
             Expanded(
-              flex: 3,
+              flex: 4,
               child: PageView.builder(
                 onPageChanged: (value) {
                   setState(() {
@@ -85,24 +86,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(
                   children: [
                     const Spacer(),
-                    if (currentPage > 0)
-                      DefaultButton(
-                        text: userData[currentPage]['button'],
-                        press: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignUpForm(
-                                type: (currentPage == 1)
-                                    ? "personal"
-                                    : (currentPage == 2)
-                                        ? "provider"
-                                        : "business",
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                    (currentPage > 0)
+                        ? DefaultButton(
+                            text: userData[currentPage]['button'],
+                            press: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SignUpForm(
+                                    type: (currentPage == 1)
+                                        ? "personal"
+                                        : (currentPage == 2)
+                                            ? "provider"
+                                            : "business",
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        : const AnimatedArrow(),
                     const Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -172,6 +174,61 @@ class UserTypes extends StatelessWidget {
           width: getProportionateScreenWidth(205),
         ),
       ],
+    );
+  }
+}
+
+class AnimatedArrow extends StatefulWidget {
+  const AnimatedArrow({super.key});
+
+  @override
+  State<AnimatedArrow> createState() => _AnimatedArrowState();
+}
+
+class _AnimatedArrowState extends State<AnimatedArrow> {
+  late Alignment alignment;
+
+  @override
+  void initState() {
+    super.initState();
+    alignment = Alignment.centerLeft;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      alignment = Alignment.centerRight;
+      setState(() {});
+      print("b");
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: getProportionateScreenWidth(70),
+      height: getProportionateScreenWidth(40),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          AnimatedAlign(
+            duration: const Duration(
+              milliseconds: 500,
+            ),
+            curve: Curves.decelerate,
+            alignment: alignment,
+            onEnd: () {
+              if (alignment == Alignment.centerLeft) {
+                alignment = Alignment.centerRight;
+              } else {
+                alignment = Alignment.centerLeft;
+              }
+              setState(() {});
+            },
+            child: Icon(
+              Icons.arrow_forward_rounded,
+              color: kPrimaryColor,
+              size: getProportionateScreenWidth(40),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
