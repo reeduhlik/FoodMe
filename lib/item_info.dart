@@ -124,7 +124,7 @@ class PostItem extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () async {
-                  Backend.deleteItem(doc);
+                  Backend.notFoundItem(doc);
                   Navigator.pop(context);
                 },
                 child: Container(

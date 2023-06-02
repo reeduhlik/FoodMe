@@ -163,7 +163,7 @@ class _InsertDataState extends State<BusinessAdd> {
                     'title': userNameController.text,
                     'description': userDescriptionController.text,
                     'location': listing,
-                    'type': 'business', //TODO: GET WHAT TYPE OF USER
+                    'type': 'personal', //TODO: GET WHAT TYPE OF USER
                     'timestamp': Timestamp.fromDate(dateTime),
                     'imageUrl': imageUrl,
                     'userID': id,

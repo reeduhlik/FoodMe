@@ -21,6 +21,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   final CollectionReference<Map<String, dynamic>> foodPostRef =
       FirebaseFirestore.instance.collection('food-posts');
   late final GoogleMapController mapController;
+  bool mapHasBeenInitialized = false;
   late String interfaceType = "map";
   late LatLng _initialPosition = const LatLng(37.7749, -122.4194);
 

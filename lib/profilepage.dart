@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/buttons.dart';
 import 'package:gsc2023_food_app/constants.dart';
+import 'package:gsc2023_food_app/listitem_profile.dart';
 import 'package:gsc2023_food_app/login/loginscreen.dart';
 import 'texts.dart';
 import 'backend.dart';
@@ -18,15 +19,17 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late String firstName = 'John Doe';
-  late String email ='example@example.com';
+  late String email = 'example@example.com';
   late int itemsPosted = 5;
   late int itemsCollected = 0;
   late int peopleImpacted = 0;
   late DocumentSnapshot<Map<String, dynamic>>? doc;
 
+  late List<DocumentSnapshot<Map<String, dynamic>>>? localItemsPosted = null;
+
   Future<void> fetchUserDetails() async {
     doc = await Backend.getUserDoc();
-    String id = doc!.id; 
+    String id = doc!.id;
     if (mounted) {
       setState(() {
         firstName = doc!['firstName'];
@@ -36,17 +39,36 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> fetchPosted() async {
-    itemsPosted = await Backend.localItemsPosted();  
+    var newItemsPosted = await Backend.localItemsPosted();
+
+    setState(() {
+      itemsPosted = newItemsPosted;
+    });
   }
 
   Future<void> fetchCollected() async {
-    itemsCollected = await Backend.localItemsCollected(); 
+    var newItemsCollected = await Backend.localItemsCollected();
+
+    setState(() {
+      itemsCollected = newItemsCollected;
+    });
   }
 
   Future<void> fetchImpacted() async {
-    peopleImpacted = await Backend.localPeopleImpacted(); 
+    var newPeopleImpacted = await Backend.localPeopleImpacted();
+
+    setState(() {
+      peopleImpacted = newPeopleImpacted;
+    });
   }
 
+  Future<void> getLocalItems() async {
+    var newLocalItemsPosted = await Backend.getLocalItems();
+
+    setState(() {
+      localItemsPosted = newLocalItemsPosted;
+    });
+  }
 
   @override
   void initState() {
@@ -55,13 +77,11 @@ class _ProfilePageState extends State<ProfilePage> {
     fetchPosted();
     fetchCollected();
     fetchImpacted();
+    getLocalItems();
   }
 
-  
   @override
   void dispose() {
-    
-
     super.dispose();
   }
 
@@ -69,10 +89,14 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return  Column(
+          return SingleChildScrollView(
+              child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("User Profile", style: TextStyle(fontSize: 16, color: black),)
+              Text(
+                "User Profile",
+                style: TextStyle(fontSize: 16, color: black),
+              ),
               SizedBox(
                 width: constraints.maxWidth,
                 height: constraints.maxHeight * 0.35,
@@ -81,8 +105,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     const SizedBox(height: 7),
                     Container(
-                      width: constraints.maxHeight * 0.125,
-                      height: constraints.maxHeight * 0.125,
+                      width: constraints.maxHeight * 0.175,
+                      height: constraints.maxHeight * 0.175,
                       decoration: BoxDecoration(
                         color: kPrimaryLightColor,
                         image: const DecorationImage(
@@ -98,7 +122,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     Column(
                       children: [
                         ProfileText(text: firstName),
-                        PrimaryText(text: email, )
+                        PrimaryText(
+                          text: email,
+                        )
                       ],
                     ),
                   ],
@@ -116,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(
                           width: constraints.maxWidth / 3,
                           child: Column(
-                            children:  [
+                            children: [
                               ProfileText(
                                 text: itemsPosted.toString(),
                                 color: kPrimaryLightColor,
@@ -165,29 +191,49 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               SizedBox(
                 width: constraints.maxWidth,
-                height: constraints.maxHeight * 0.45,
-                child: Padding(
-                  padding: EdgeInsets.all(constraints.maxWidth * 0.08),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Account Options",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: kPrimaryColor,
-                        ),
+                height: constraints.maxHeight * 0.7,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 25),
+                    const Text(
+                      "Your Current Listings",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: kPrimaryColor,
                       ),
-                      const SizedBox(height: 7),
-                      DefaultButton(
-                        text: 'Change Password',
-                        press: () {
-                          //PLACE CODE HERE TO DO WHEN CHANGE PASSWORD
-                        },
+                    ),
+                    const SizedBox(height: 7),
+                    //list view to display current listings
+                    Expanded(
+                      child: localItemsPosted != null &&
+                              localItemsPosted!.isNotEmpty
+                          ? ListView.builder(
+                              itemCount: localItemsPosted!.length,
+                              itemBuilder: (context, index) {
+                                return ListItemProfile(
+                                    localItemsPosted![index]);
+                              },
+                            )
+                          : Text(
+                              "No active items posted :(",
+                              style: TextStyle(color: kTextColor, fontSize: 16),
+                            ),
+                    ),
+                    const Text(
+                      "Account Options",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: kPrimaryColor,
                       ),
-                      const SizedBox(height: 7),
-                      DefaultButton(
+                    ),
+                    const SizedBox(height: 7),
+                    Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: SecondaryButton(
                         text: 'Logout',
                         press: () async {
                           await Backend.logout();
@@ -199,21 +245,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           );
                         },
                       ),
-                      const SizedBox(height: 25),
-                      const Text(
-                        "Current Listings",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],
-          );
+          ));
         },
       ),
     );

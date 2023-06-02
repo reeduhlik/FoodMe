@@ -41,7 +41,7 @@ class ListItem extends StatelessWidget {
                             style:
                                 TextStyle(color: kPrimaryColor, fontSize: 16))
                         : const Text(
-                            "Community Listing",
+                            "Personal Listing",
                             style: TextStyle(color: kTextColor, fontSize: 16),
                           ),
                     SizedBox(width: 20),

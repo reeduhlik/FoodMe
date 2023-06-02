@@ -44,7 +44,7 @@ class Backend {
   static Future<void> claimFullItem(DocumentSnapshot doc) async {
     if (doc.exists) {
       DocumentReference documentReference = doc.reference;
-      await documentReference.set({'status': 'closed'});
+      await documentReference.update({'status': 'closed'});
 
       DocumentSnapshot<Map<String, dynamic>> updatedDoc =
           await documentReference.get()
@@ -52,6 +52,21 @@ class Backend {
       String userID = updatedDoc['userID'];
       addTransaction(userID);
     }
+  }
+
+  //return list of all documents in food-posts collection posted by user
+  static Future<List<DocumentSnapshot<Map<String, dynamic>>>>
+      getLocalItems() async {
+    String userID = await getUserId();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('food-posts')
+        .where('userID', isEqualTo: userID)
+        .get();
+
+    List<DocumentSnapshot<Map<String, dynamic>>> docs =
+        querySnapshot.docs.where((doc) => doc['status'] != 'closed').toList();
+    return docs;
   }
 
   static Future<void> claimPartialItem(DocumentSnapshot doc) async {
@@ -66,10 +81,17 @@ class Backend {
     }
   }
 
-  static Future<void> deleteItem(DocumentSnapshot doc) async {
+  static Future<void> notFoundItem(DocumentSnapshot doc) async {
     if (doc.exists) {
       DocumentReference documentReference = doc.reference;
       await documentReference.update({'status': 'not_found'});
+    }
+  }
+
+  static Future<void> deleteItem(DocumentSnapshot doc) async {
+    if (doc.exists) {
+      DocumentReference documentReference = doc.reference;
+      await documentReference.delete();
     }
   }
 
