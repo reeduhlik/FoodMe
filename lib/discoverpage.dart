@@ -102,7 +102,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
         //sorts the documents based on how close they are to the user
         final documents = unfiltered_documents
-            .where((doc) => doc['status'] == 'open')
+            .where(
+                (doc) => doc['status'] == 'open' && doc['status'] != 'business')
             .toList();
         documents.sort((a, b) {
           GeoPoint aLocation = a['location'];

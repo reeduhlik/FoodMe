@@ -19,7 +19,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late String firstName = 'John Doe';
   late String email ='example@example.com';
-  late int itemsPosted = 0;
+  late int itemsPosted = 5;
   late int itemsCollected = 0;
   late int peopleImpacted = 0;
   late DocumentSnapshot<Map<String, dynamic>>? doc;
@@ -60,6 +60,8 @@ class _ProfilePageState extends State<ProfilePage> {
   
   @override
   void dispose() {
+    
+
     super.dispose();
   }
 
@@ -67,8 +69,10 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return Column(
+          return  Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Text("User Profile", style: TextStyle(fontSize: 16, color: black),)
               SizedBox(
                 width: constraints.maxWidth,
                 height: constraints.maxHeight * 0.35,
