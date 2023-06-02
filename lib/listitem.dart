@@ -16,15 +16,19 @@ class ListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-          color: white,
-          borderRadius: BorderRadius.circular(5),
-          border: doc['type'] == "provider"
-              ? Border.all(
-                  color: kPrimaryColor,
-                  width: 2,
-                )
-              : null,
-        ),
+            color: white,
+            borderRadius: BorderRadius.circular(5),
+            border: doc['type'] == "provider"
+                ? Border.all(
+                    color: kPrimaryColor,
+                    width: 2,
+                  )
+                : doc['type'] == "business"
+                    ? Border.all(
+                        color: accentGreen,
+                        width: 2,
+                      )
+                    : null),
         margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
         padding: const EdgeInsets.all(15),
         child: GestureDetector(

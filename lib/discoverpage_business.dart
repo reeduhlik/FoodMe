@@ -10,14 +10,14 @@ import 'package:time_elapsed/time_elapsed.dart';
 import 'package:gsc2023_food_app/item_info.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
-class DiscoverPage extends StatefulWidget {
-  const DiscoverPage({super.key});
+class DiscoverPageBusiness extends StatefulWidget {
+  const DiscoverPageBusiness({super.key});
 
   @override
-  State<DiscoverPage> createState() => _DiscoverPageState();
+  State<DiscoverPageBusiness> createState() => _DiscoverPageState();
 }
 
-class _DiscoverPageState extends State<DiscoverPage> {
+class _DiscoverPageState extends State<DiscoverPageBusiness> {
   final CollectionReference<Map<String, dynamic>> foodPostRef =
       FirebaseFirestore.instance.collection('food-posts');
   late final GoogleMapController mapController;
@@ -104,7 +104,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
         //sorts the documents based on how close they are to the user
         final documents = unfiltered_documents
             .where(
-                (doc) => doc['status'] == 'open' && doc['type'] != 'business')
+                (doc) => doc['status'] == 'open' && doc['type'] == 'business')
             .toList();
         documents.sort((a, b) {
           GeoPoint aLocation = a['location'];
@@ -152,9 +152,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
                           padding:
                               EdgeInsets.only(top: 70, left: 20, bottom: 10),
                           child: const Text(
-                            "Food near you...",
+                            "See what other businesses are posting...",
                             style:
-                                TextStyle(fontSize: 28, color: kPrimaryColor),
+                                TextStyle(fontSize: 24, color: kPrimaryColor),
                           )),
                     ),
                     Expanded(

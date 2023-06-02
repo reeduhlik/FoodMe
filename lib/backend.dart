@@ -213,7 +213,6 @@ class Backend {
       Map<String, dynamic> data = {
         'type': type,
         'email': email,
-        'password': password,
         'firstName': firstName,
         'phoneNumber': phoneNumber,
         'address': address,
@@ -223,6 +222,21 @@ class Backend {
     } catch (e) {
       // Handle any errors that occur during sign-up
       print('Sign-up failed: $e');
+    }
+  }
+
+  //get the email associated from a business userID
+  static Future<String> getBusinessEmail(String userID) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> doc = await FirebaseFirestore
+          .instance
+          .collection('users')
+          .where('userID', isEqualTo: userID)
+          .get()
+          .then((value) => value.docs.first);
+      return doc['email'];
+    } catch (e) {
+      return "";
     }
   }
 

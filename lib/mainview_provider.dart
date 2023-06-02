@@ -3,8 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/texts.dart';
 import 'impactpage.dart';
-import 'discoverpage.dart';
-import 'profilepage.dart';
+import 'discoverpage_provider.dart';
+import 'profilepage_provider.dart';
 
 class MainViewProvider extends StatefulWidget {
   const MainViewProvider({super.key});
@@ -39,8 +39,8 @@ class _MainViewProviderState extends State<MainViewProvider> {
                 physics: const NeverScrollableScrollPhysics(),
                 children: const [
                   ImpactPage(),
-                  DiscoverPage(),
-                  ProfilePage(),
+                  DiscoverPageProvider(),
+                  ProfilePageProvider(),
                 ],
               ),
             ),

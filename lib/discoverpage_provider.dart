@@ -3,21 +3,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gsc2023_food_app/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/listitem.dart';
+import 'package:gsc2023_food_app/listitem_business.dart';
 import 'package:gsc2023_food_app/post.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:gsc2023_food_app/item_info.dart';
+import 'backend.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
-class DiscoverPage extends StatefulWidget {
-  const DiscoverPage({super.key});
+class DiscoverPageProvider extends StatefulWidget {
+  const DiscoverPageProvider({super.key});
 
   @override
-  State<DiscoverPage> createState() => _DiscoverPageState();
+  State<DiscoverPageProvider> createState() => _DiscoverPageState();
 }
 
-class _DiscoverPageState extends State<DiscoverPage> {
+class _DiscoverPageState extends State<DiscoverPageProvider> {
   final CollectionReference<Map<String, dynamic>> foodPostRef =
       FirebaseFirestore.instance.collection('food-posts');
   late final GoogleMapController mapController;
@@ -104,7 +106,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
         //sorts the documents based on how close they are to the user
         final documents = unfiltered_documents
             .where(
-                (doc) => doc['status'] == 'open' && doc['type'] != 'business')
+                (doc) => doc['status'] == 'open' && doc['type'] != 'personal')
             .toList();
         documents.sort((a, b) {
           GeoPoint aLocation = a['location'];
@@ -152,7 +154,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                           padding:
                               EdgeInsets.only(top: 70, left: 20, bottom: 10),
                           child: const Text(
-                            "Food near you...",
+                            "Listings near you...",
                             style:
                                 TextStyle(fontSize: 28, color: kPrimaryColor),
                           )),
@@ -169,10 +171,14 @@ class _DiscoverPageState extends State<DiscoverPage> {
                           itemCount: documents.length,
                           itemBuilder: (context, index) {
                             final doc = documents[index];
-                            return ListItem(
-                                doc,
-                                getDistanceFromPoint(doc["location"]),
-                                getTimeElapsed(doc["timestamp"]));
+
+                            return doc['type'] == "provider"
+                                ? ListItem(
+                                    doc,
+                                    getDistanceFromPoint(doc["location"]),
+                                    getTimeElapsed(doc["timestamp"]))
+                                : ListItemBusiness(
+                                    doc, getDistanceFromPoint(doc["location"]));
                           },
                         ),
                       ),

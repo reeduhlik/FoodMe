@@ -150,6 +150,7 @@ class _InsertDataState extends State<BusinessAdd> {
               GestureDetector(
                 onTap: () async {
                   String id = await Backend.getUserId();
+                  String email = await Backend.getBusinessEmail(id);
                   DateTime dateTime = DateTime.now();
                   //get the user's device current location
                   final userLoc = await Geolocator.getCurrentPosition(
@@ -167,6 +168,7 @@ class _InsertDataState extends State<BusinessAdd> {
                     'timestamp': Timestamp.fromDate(dateTime),
                     'imageUrl': imageUrl,
                     'userID': id,
+                    'businessEmail': email,
                     'status': 'open',
                   };
                   await firestore.collection('food-posts').add(foodPost);
