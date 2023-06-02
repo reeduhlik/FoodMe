@@ -22,10 +22,10 @@ Future<void> displayPostDialogue(BuildContext context) async {
     context: context,
     builder: (context) {
       return FractionallySizedBox(
-        heightFactor: 0.5,
+        heightFactor: 0.6,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return const BusinessAdd();
+            return const PostListing();
           },
         ),
       );
@@ -33,14 +33,14 @@ Future<void> displayPostDialogue(BuildContext context) async {
   );
 }
 
-class BusinessAdd extends StatefulWidget {
-  const BusinessAdd({Key? key}) : super(key: key);
+class PostListing extends StatefulWidget {
+  const PostListing({Key? key}) : super(key: key);
 
   @override
-  State<BusinessAdd> createState() => _InsertDataState();
+  State<PostListing> createState() => _PostListingState();
 }
 
-class _InsertDataState extends State<BusinessAdd> {
+class _PostListingState extends State<PostListing> {
   final userNameController = TextEditingController();
   final userDescriptionController = TextEditingController();
   final userTimeController = TextEditingController();
@@ -89,13 +89,15 @@ class _InsertDataState extends State<BusinessAdd> {
                         hintText: 'Extra details to help find your item',
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
+                    const TypeDropdown(),
+                    const SizedBox(height: 15),
                     SizedBox(
                       width: constraints.maxWidth,
                       height: 60,
                       child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            primary: kPrimaryColor,
+                            backgroundColor: kPrimaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
@@ -195,6 +197,39 @@ class _InsertDataState extends State<BusinessAdd> {
           );
         },
       ),
+    );
+  }
+}
+
+class TypeDropdown extends StatefulWidget {
+  const TypeDropdown({super.key});
+
+  @override
+  State<TypeDropdown> createState() => _TypeDropdownState();
+}
+
+class _TypeDropdownState extends State<TypeDropdown> {
+  late String _selectedOption = "1";
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      value: _selectedOption,
+      decoration: const InputDecoration(
+        labelText: 'Select an option',
+      ),
+      onChanged: (newValue) {
+        setState(() {
+          _selectedOption = newValue!;
+        });
+      },
+      items: <String>['1', '2', '3', '4']
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
     );
   }
 }

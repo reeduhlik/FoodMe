@@ -197,7 +197,6 @@ class Backend {
     String password,
     String firstName,
     String phoneNumber,
-    String address,
   ) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -215,7 +214,6 @@ class Backend {
         'email': email,
         'firstName': firstName,
         'phoneNumber': phoneNumber,
-        'address': address,
         'userID': userCredential.user!.uid,
       };
       await firestore.collection('users').add(data);

@@ -195,7 +195,6 @@ class _AnimatedArrowState extends State<AnimatedArrow> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       alignment = Alignment.centerRight;
       setState(() {});
-      print("b");
     });
   }
 

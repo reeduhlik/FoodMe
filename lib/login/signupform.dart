@@ -44,6 +44,7 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void removeError({String? error}) {
+    print(errors);
     if (errors.contains(error)) {
       setState(() {
         errors.remove(error);
@@ -109,13 +110,12 @@ class _SignUpFormState extends State<SignUpForm> {
                       SizedBox(height: getProportionateScreenHeight(20)),
                       buildPhoneNumberFormField(),
                       SizedBox(height: getProportionateScreenHeight(20)),
-                      buildAddressFormField(),
-                      SizedBox(height: getProportionateScreenHeight(20)),
                       buildEmailFormField(),
                       SizedBox(height: getProportionateScreenHeight(20)),
                       buildPasswordFormField(),
                       SizedBox(height: getProportionateScreenHeight(20)),
                       buildConformPassFormField(),
+                      SizedBox(height: getProportionateScreenHeight(20)),
                       FormError(errors: errors),
                       SizedBox(height: getProportionateScreenHeight(20)),
                       DefaultButton(
@@ -130,7 +130,6 @@ class _SignUpFormState extends State<SignUpForm> {
                                 password!,
                                 firstName!,
                                 phoneNumber!,
-                                address!,
                               );
 
                               if (widget.type == "business") {
