@@ -118,62 +118,67 @@ class PostItem extends StatelessWidget {
                       ),
               ],
             )),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () async {
-                  Backend.notFoundItem(doc);
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: kSecondaryColor,
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  child: const Text(
-                    "Item not here",
-                    style: TextStyle(color: white),
-                  ),
-                ),
+        doc['type'] != 'business'
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                    InkWell(
+                      onTap: () async {
+                        Backend.notFoundItem(doc);
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: kSecondaryColor,
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        child: const Text(
+                          "Item not here",
+                          style: TextStyle(color: white),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        Backend.claimFullItem(doc);
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: kPrimaryColor,
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        child: const Text(
+                          "Claim full item",
+                          style: TextStyle(color: white),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        Backend.claimPartialItem(doc);
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: accentGreen,
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        child: const Text(
+                          "Claim part of item",
+                          style: TextStyle(color: white),
+                        ),
+                      ),
+                    )
+                  ])
+            : Text(
+                doc['businessEmail'],
+                style: TextStyle(fontSize: 22, color: kPrimaryColor),
               ),
-              InkWell(
-                onTap: () async {
-                  Backend.claimFullItem(doc);
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor,
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  child: const Text(
-                    "Claim full item",
-                    style: TextStyle(color: white),
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () async {
-                  Backend.claimPartialItem(doc);
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: accentGreen,
-                    borderRadius: BorderRadius.circular(0),
-                  ),
-                  child: const Text(
-                    "Claim part of item",
-                    style: TextStyle(color: white),
-                  ),
-                ),
-              )
-            ])
       ]),
     );
   }
