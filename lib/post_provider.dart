@@ -22,7 +22,7 @@ Future<void> displayPostProviderDialogue(BuildContext context) async {
     context: context,
     builder: (context) {
       return FractionallySizedBox(
-        heightFactor: 0.5,
+        heightFactor: 0.6,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             return const ProviderAdd();
@@ -89,7 +89,9 @@ class _InsertDataState extends State<ProviderAdd> {
                         hintText: 'Extra details to help find your item',
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
+                    const TypeDropdown(),
+                    const SizedBox(height: 15),
                     SizedBox(
                       width: constraints.maxWidth,
                       height: 60,
@@ -193,6 +195,42 @@ class _InsertDataState extends State<ProviderAdd> {
           );
         },
       ),
+    );
+  }
+}
+
+class TypeDropdown extends StatefulWidget {
+  const TypeDropdown({super.key});
+
+  @override
+  State<TypeDropdown> createState() => _TypeDropdownState();
+}
+
+class _TypeDropdownState extends State<TypeDropdown> {
+  late String _selectedOption = "One Time";
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      value: _selectedOption,
+      decoration: const InputDecoration(
+        labelText: "Pick Event Type",
+      ),
+      onChanged: (newValue) {
+        setState(() {
+          _selectedOption = newValue!;
+        });
+      },
+      items: <String>[
+        "One Time",
+        "All Day",
+        "Reoccurring",
+      ].map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
     );
   }
 }

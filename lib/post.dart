@@ -22,7 +22,7 @@ Future<void> displayPostDialogue(BuildContext context) async {
     context: context,
     builder: (context) {
       return FractionallySizedBox(
-        heightFactor: 0.6,
+        heightFactor: 0.5,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             return const PostListing();
@@ -89,8 +89,6 @@ class _PostListingState extends State<PostListing> {
                         hintText: 'Extra details to help find your item',
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    const TypeDropdown(),
                     const SizedBox(height: 15),
                     SizedBox(
                       width: constraints.maxWidth,
@@ -195,39 +193,6 @@ class _PostListingState extends State<PostListing> {
           );
         },
       ),
-    );
-  }
-}
-
-class TypeDropdown extends StatefulWidget {
-  const TypeDropdown({super.key});
-
-  @override
-  State<TypeDropdown> createState() => _TypeDropdownState();
-}
-
-class _TypeDropdownState extends State<TypeDropdown> {
-  late String _selectedOption = "1";
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      value: _selectedOption,
-      decoration: const InputDecoration(
-        labelText: 'Select an option',
-      ),
-      onChanged: (newValue) {
-        setState(() {
-          _selectedOption = newValue!;
-        });
-      },
-      items: <String>['1', '2', '3', '4', '5+']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 }
