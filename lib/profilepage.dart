@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +7,6 @@ import 'package:gsc2023_food_app/listitem_profile.dart';
 import 'package:gsc2023_food_app/login/loginscreen.dart';
 import 'texts.dart';
 import 'backend.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -30,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> fetchUserDetails() async {
     doc = await Backend.getUserDoc();
-    String id = doc!.id;
+    //String id = doc!.id;
     if (mounted) {
       setState(() {
         firstName = doc!['firstName'];

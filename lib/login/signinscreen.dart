@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gsc2023_food_app/login/signupscreen.dart';
-import '../mainview_business.dart';
-import '../mainview_provider.dart';
 import '../backend.dart';
 import '../buttons.dart';
 import '../constants.dart';
-import '../mainview.dart';
 import '../sizeconfig.dart';
 import 'formerror.dart';
 import 'loginscreen.dart';
@@ -167,7 +165,7 @@ class _SignInFormState extends State<SignInForm> {
                   errors.clear(); // Clear the existing errors
                 });
 
-                //result - 0 is failed login, 1 is personal, 2 is provider, 3 is business
+                // 0 - failure, 1 - success
                 final int result = await Backend.signIn(email!, password!);
 
                 //failure
@@ -177,30 +175,8 @@ class _SignInFormState extends State<SignInForm> {
                     errors.clear();
                     addError(error: 'Wrong email or password');
                   });
-                } else if (result == 1) {
-                  //success - personal view
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainView(),
-                    ),
-                  );
-                } else if (result == 2) {
-                  //success - provider view
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainViewProvider(),
-                    ),
-                  );
                 } else {
-                  //success - business view
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainViewBusiness(),
-                    ),
-                  );
+                  Phoenix.rebirth(context);
                 }
               }
             },

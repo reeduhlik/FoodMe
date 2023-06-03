@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gsc2023_food_app/login/loginscreen.dart';
-import 'package:gsc2023_food_app/mainview_business.dart';
-import 'package:gsc2023_food_app/mainview_provider.dart';
+import 'package:gsc2023_food_app/mainview.dart';
 import 'package:gsc2023_food_app/sizeconfig.dart';
 import 'backend.dart';
 import 'firebase_options.dart';
 import 'constants.dart';
-import 'mainview.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const FoodMe());
+  runApp(Phoenix(child: const FoodMe()));
 }
 
 class FoodMe extends StatelessWidget {
@@ -38,7 +37,7 @@ class UserInitialization extends StatefulWidget {
 }
 
 class _UserInitializationState extends State<UserInitialization> {
-  late int userStatus = -1;
+  int userStatus = -1;
 
   @override
   void initState() {
@@ -56,14 +55,10 @@ class _UserInitializationState extends State<UserInitialization> {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    if (userStatus < 0) {
+    if (userStatus == -1) {
       return const Placeholder();
-    } else if (userStatus == 1) {
-      return const MainView();
-    } else if (userStatus == 2) {
-      return const MainViewProvider();
-    } else if (userStatus == 3) {
-      return const MainViewBusiness();
+    } else if (userStatus > 0) {
+      return MainView(userType: userStatus);
     } else {
       return const LoginScreen();
     }

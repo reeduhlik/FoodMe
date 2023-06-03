@@ -257,19 +257,9 @@ class Backend {
         email: email,
         password: password,
       );
-
-      //figure out which type of user it is
-      DocumentSnapshot doc = await getUserDoc();
-      String type = doc.get('type');
-
-      if (type == "personal") {
-        return 1;
-      } else if (type == "provider") {
-        return 2;
-      } else {
-        return 3;
-      }
+      return 1;
     } on FirebaseAuthException catch (e) {
+      print(e);
       return 0;
     }
   }

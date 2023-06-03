@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gsc2023_food_app/login/signupscreen.dart';
-import 'package:gsc2023_food_app/mainview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gsc2023_food_app/mainview_business.dart';
-import 'package:gsc2023_food_app/mainview_provider.dart';
 import '../backend.dart';
 import '../buttons.dart';
 import 'formerror.dart';
@@ -131,31 +129,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                 firstName!,
                                 phoneNumber!,
                               );
-
-                              if (widget.type == "business") {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const MainViewBusiness(),
-                                  ),
-                                );
-                              } else if (widget.type == "provider") {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const MainViewProvider(),
-                                  ),
-                                );
-                              } else if (widget.type == "personal") {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MainView(),
-                                  ),
-                                );
-                              }
+                              Phoenix.rebirth(context);
                             }
                           }
                         },

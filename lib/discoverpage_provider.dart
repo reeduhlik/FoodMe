@@ -4,13 +4,11 @@ import 'package:gsc2023_food_app/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/listitem.dart';
 import 'package:gsc2023_food_app/listitem_business.dart';
-import 'package:gsc2023_food_app/post.dart';
 import 'package:gsc2023_food_app/post_provider.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
 import 'package:gsc2023_food_app/item_info.dart';
-import 'backend.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class DiscoverPageProvider extends StatefulWidget {
@@ -304,8 +302,8 @@ class _DiscoverPageState extends State<DiscoverPageProvider> {
 
     if (time != null && imageUrl != null) {
       //was && imageUrl == 'provider'
-      DateTime timeDate = time.toDate();
-      String fdatetime = DateFormat('MM-dd-yy hh:mm a').format(timeDate);
+      //DateTime timeDate = time.toDate();
+      //String fdatetime = DateFormat('MM-dd-yy hh:mm a').format(timeDate);
 
       if (location != null &&
           title != null &&

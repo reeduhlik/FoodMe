@@ -47,6 +47,7 @@ dependencies:
   path_provider: ^2.0.15
   cached_network_image: ^3.2.3
   time_elapsed: ^0.2.6
+  flutter_phoenix: ^1.1.1
 
 dev_dependencies:
   flutter_test:
