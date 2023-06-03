@@ -107,8 +107,8 @@ class _ProfilePageProviderState extends State<ProfilePageProvider> {
                       decoration: BoxDecoration(
                         color: kPrimaryLightColor,
                         image: const DecorationImage(
-                            image:
-                                AssetImage("assets/images/Profile Image.png")),
+                            image: AssetImage(
+                                "assets/images/providerprofile.png")),
                         shape: BoxShape.circle,
                         border: Border.all(
                           width: 2,

@@ -258,7 +258,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: SizedBox(
-                  width: 150,
+                  width: 100,
                   height: 50,
                   child: GestureDetector(
                     onTap: () {

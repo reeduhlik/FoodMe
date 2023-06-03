@@ -107,8 +107,8 @@ class _ProfilePageBusinessState extends State<ProfilePageBusiness> {
                       decoration: BoxDecoration(
                         color: kPrimaryLightColor,
                         image: const DecorationImage(
-                            image:
-                                AssetImage("assets/images/Profile Image.png")),
+                            image: AssetImage(
+                                "assets/images/businessprofile.png")),
                         shape: BoxShape.circle,
                         border: Border.all(
                           width: 2,
