@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gsc2023_food_app/constants.dart';
-import 'package:gsc2023_food_app/item_info.dart';
 
 class ListItemBusiness extends StatelessWidget {
   //doc received from firebase
@@ -15,19 +14,13 @@ class ListItemBusiness extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            color: white,
-            borderRadius: BorderRadius.circular(5),
-            border: doc['type'] == "provider"
-                ? Border.all(
-                    color: kPrimaryColor,
-                    width: 2,
-                  )
-                : doc['type'] == "business"
-                    ? Border.all(
-                        color: accentGreen,
-                        width: 2,
-                      )
-                    : null),
+          color: white,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: accentGreen,
+            width: 4,
+          ),
+        ),
         margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
         padding: const EdgeInsets.all(15),
         child: GestureDetector(
@@ -37,13 +30,10 @@ class ListItemBusiness extends StatelessWidget {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                doc['type'] == 'provider'
-                    ? const Text('Provider Listing',
-                        style: TextStyle(color: kPrimaryColor, fontSize: 16))
-                    : const Text(
-                        "Personal Listing",
-                        style: TextStyle(color: kTextColor, fontSize: 16),
-                      ),
+                Text(
+                  "Business Listing",
+                  style: TextStyle(color: accentGreen, fontSize: 16),
+                ),
                 SizedBox(width: 20),
                 Text(doc['title'],
                     style: const TextStyle(
@@ -51,7 +41,7 @@ class ListItemBusiness extends StatelessWidget {
                 Text(doc['description']),
                 Container(
                   margin: const EdgeInsets.only(top: 5),
-                  child: Row(
+                  child: Column(
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
@@ -59,6 +49,7 @@ class ListItemBusiness extends StatelessWidget {
                           children: [
                             const Icon(Icons.location_on,
                                 color: kSecondaryColor, size: 16),
+                            SizedBox(width: 5),
                             Text(distanceAway),
                           ],
                         ),
@@ -67,6 +58,7 @@ class ListItemBusiness extends StatelessWidget {
                         children: [
                           const Icon(Icons.email_outlined,
                               color: kSecondaryColor, size: 16),
+                          SizedBox(width: 5),
                           Text(doc['businessEmail'] != ''
                               ? doc['businessEmail']
                               : "No email provided."),

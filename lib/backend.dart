@@ -2,10 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Backend {
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   static Future<int> getUser() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      return 1;
+      DocumentSnapshot doc = await getUserDoc();
+      String type = doc.get('type');
+
+      if (type == "personal") {
+        return 1;
+      } else if (type == "provider") {
+        return 2;
+      } else {
+        return 3;
+      }
     } else {
       return 0;
     }
@@ -13,6 +24,7 @@ class Backend {
 
   static Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
+    await FirebaseFirestore.instance.terminate();
   }
 
   static Future<String> getUserId() async {

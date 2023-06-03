@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/buttons.dart';
 import 'package:gsc2023_food_app/constants.dart';
@@ -11,17 +10,17 @@ import 'texts.dart';
 import 'backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfilePageBusiness extends StatefulWidget {
+  const ProfilePageBusiness({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePageBusiness> createState() => _ProfilePageBusinessState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  late String firstName = 'John Doe';
+class _ProfilePageBusinessState extends State<ProfilePageBusiness> {
+  late String firstName = 'Company Name';
   late String email = 'example@example.com';
-  late int itemsPosted = 5;
+  late int itemsPosted = 0;
   late int itemsCollected = 0;
   late int peopleImpacted = 0;
   late DocumentSnapshot<Map<String, dynamic>>? doc;
@@ -95,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "User Profile",
+                "Business Profile",
                 style: TextStyle(fontSize: 16, color: black),
               ),
               SizedBox(
@@ -238,7 +237,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         text: 'Logout',
                         press: () async {
                           await Backend.logout();
-                          FirebaseAuth.instance.signOut();
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

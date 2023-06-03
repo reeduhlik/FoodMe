@@ -59,6 +59,7 @@ class _ImpactPageState extends State<ImpactPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

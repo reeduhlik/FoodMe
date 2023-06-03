@@ -14,10 +14,10 @@ class ProfilePageProvider extends StatefulWidget {
   const ProfilePageProvider({super.key});
 
   @override
-  State<ProfilePageProvider> createState() => _ProfilePageState();
+  State<ProfilePageProvider> createState() => _ProfilePageProviderState();
 }
 
-class _ProfilePageState extends State<ProfilePageProvider> {
+class _ProfilePageProviderState extends State<ProfilePageProvider> {
   late String firstName = 'John Doe';
   late String email = 'example@example.com';
   late int itemsPosted = 5;

@@ -1,10 +1,11 @@
 import 'package:gsc2023_food_app/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:gsc2023_food_app/discoverpage_business.dart';
 import 'package:gsc2023_food_app/texts.dart';
 import 'impactpage.dart';
-import 'discoverpage.dart';
-import 'profilepage.dart';
+import 'discoverpage_business.dart';
+import 'profilepage_business.dart';
 
 class MainViewBusiness extends StatefulWidget {
   const MainViewBusiness({super.key});
@@ -39,8 +40,8 @@ class _MainViewBusinessState extends State<MainViewBusiness> {
                 physics: const NeverScrollableScrollPhysics(),
                 children: const [
                   ImpactPage(),
-                  DiscoverPage(),
-                  ProfilePage(),
+                  DiscoverPageBusiness(),
+                  ProfilePageBusiness(),
                 ],
               ),
             ),
@@ -58,7 +59,7 @@ class _MainViewBusinessState extends State<MainViewBusiness> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                animateToPage(0);
+                                pageController.jumpToPage(0);
                               },
                               child: SvgPicture.asset(
                                 "assets/icons/Flash Icon.svg",
@@ -80,7 +81,7 @@ class _MainViewBusinessState extends State<MainViewBusiness> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                animateToPage(1);
+                                pageController.jumpToPage(1);
                               },
                               child: SvgPicture.asset(
                                 "assets/icons/Discover.svg",
@@ -102,7 +103,7 @@ class _MainViewBusinessState extends State<MainViewBusiness> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                animateToPage(2);
+                                pageController.jumpToPage(2);
                               },
                               child: SvgPicture.asset(
                                 "assets/icons/User Icon.svg",

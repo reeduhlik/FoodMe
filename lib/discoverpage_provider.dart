@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gsc2023_food_app/listitem.dart';
 import 'package:gsc2023_food_app/listitem_business.dart';
 import 'package:gsc2023_food_app/post.dart';
+import 'package:gsc2023_food_app/post_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:time_elapsed/time_elapsed.dart';
@@ -105,8 +106,7 @@ class _DiscoverPageState extends State<DiscoverPageProvider> {
 
         //sorts the documents based on how close they are to the user
         final documents = unfiltered_documents
-            .where(
-                (doc) => doc['status'] == 'open' && doc['type'] != 'personal')
+            .where((doc) => doc['status'] == 'open')
             .toList();
         documents.sort((a, b) {
           GeoPoint aLocation = a['location'];
@@ -172,7 +172,7 @@ class _DiscoverPageState extends State<DiscoverPageProvider> {
                           itemBuilder: (context, index) {
                             final doc = documents[index];
 
-                            return doc['type'] == "provider"
+                            return doc['type'] != "business"
                                 ? ListItem(
                                     doc,
                                     getDistanceFromPoint(doc["location"]),
@@ -268,7 +268,7 @@ class _DiscoverPageState extends State<DiscoverPageProvider> {
                   height: 50,
                   child: GestureDetector(
                     onTap: () {
-                      displayPostDialogue(context);
+                      displayPostProviderDialogue(context);
                     },
                     child: Material(
                       elevation: 5,

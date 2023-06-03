@@ -58,7 +58,7 @@ class _MainViewProviderState extends State<MainViewProvider> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                animateToPage(0);
+                                pageController.jumpToPage(0);
                               },
                               child: SvgPicture.asset(
                                 "assets/icons/Flash Icon.svg",
@@ -80,7 +80,7 @@ class _MainViewProviderState extends State<MainViewProvider> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                animateToPage(1);
+                                pageController.jumpToPage(1);
                               },
                               child: SvgPicture.asset(
                                 "assets/icons/Discover.svg",
@@ -102,7 +102,7 @@ class _MainViewProviderState extends State<MainViewProvider> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                animateToPage(2);
+                                pageController.jumpToPage(2);
                               },
                               child: SvgPicture.asset(
                                 "assets/icons/User Icon.svg",

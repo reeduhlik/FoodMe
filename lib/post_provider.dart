@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'dart:core';
 
-Future<void> displayPostDialogue(BuildContext context) async {
+Future<void> displayPostProviderDialogue(BuildContext context) async {
   return showModalBottomSheet(
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
@@ -22,10 +22,10 @@ Future<void> displayPostDialogue(BuildContext context) async {
     context: context,
     builder: (context) {
       return FractionallySizedBox(
-        heightFactor: 0.6,
+        heightFactor: 0.5,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return const PostListing();
+            return const ProviderAdd();
           },
         ),
       );
@@ -33,14 +33,14 @@ Future<void> displayPostDialogue(BuildContext context) async {
   );
 }
 
-class PostListing extends StatefulWidget {
-  const PostListing({Key? key}) : super(key: key);
+class ProviderAdd extends StatefulWidget {
+  const ProviderAdd({Key? key}) : super(key: key);
 
   @override
-  State<PostListing> createState() => _PostListingState();
+  State<ProviderAdd> createState() => _InsertDataState();
 }
 
-class _PostListingState extends State<PostListing> {
+class _InsertDataState extends State<ProviderAdd> {
   final userNameController = TextEditingController();
   final userDescriptionController = TextEditingController();
   final userTimeController = TextEditingController();
@@ -89,15 +89,13 @@ class _PostListingState extends State<PostListing> {
                         hintText: 'Extra details to help find your item',
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    const TypeDropdown(),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: constraints.maxWidth,
                       height: 60,
                       child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: kPrimaryColor,
+                            primary: kPrimaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
@@ -165,7 +163,7 @@ class _PostListingState extends State<PostListing> {
                     'title': userNameController.text,
                     'description': userDescriptionController.text,
                     'location': listing,
-                    'type': 'personal', //TODO: GET WHAT TYPE OF USER
+                    'type': 'provider',
                     'timestamp': Timestamp.fromDate(dateTime),
                     'imageUrl': imageUrl,
                     'userID': id,
@@ -195,39 +193,6 @@ class _PostListingState extends State<PostListing> {
           );
         },
       ),
-    );
-  }
-}
-
-class TypeDropdown extends StatefulWidget {
-  const TypeDropdown({super.key});
-
-  @override
-  State<TypeDropdown> createState() => _TypeDropdownState();
-}
-
-class _TypeDropdownState extends State<TypeDropdown> {
-  late String _selectedOption = "1";
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      value: _selectedOption,
-      decoration: const InputDecoration(
-        labelText: 'Select an option',
-      ),
-      onChanged: (newValue) {
-        setState(() {
-          _selectedOption = newValue!;
-        });
-      },
-      items: <String>['1', '2', '3', '4', '5+']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gsc2023_food_app/login/loginscreen.dart';
+import 'package:gsc2023_food_app/mainview_business.dart';
+import 'package:gsc2023_food_app/mainview_provider.dart';
 import 'package:gsc2023_food_app/sizeconfig.dart';
 import 'backend.dart';
 import 'firebase_options.dart';
@@ -36,30 +38,34 @@ class UserInitialization extends StatefulWidget {
 }
 
 class _UserInitializationState extends State<UserInitialization> {
-  late final Future<int> getUser;
+  late int userStatus = -1;
 
   @override
   void initState() {
     super.initState();
-    getUser = Backend.getUser();
+    getUser();
+  }
+
+  void getUser() async {
+    var returnedVal = await Backend.getUser();
+    setState(() {
+      userStatus = returnedVal;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    return FutureBuilder<int>(
-      future: getUser,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.data == 0) {
-            return const LoginScreen();
-          } else {
-            return const MainView();
-          }
-        } else {
-          return const Placeholder();
-        }
-      },
-    );
+    if (userStatus < 0) {
+      return const Placeholder();
+    } else if (userStatus == 1) {
+      return const MainView();
+    } else if (userStatus == 2) {
+      return const MainViewProvider();
+    } else if (userStatus == 3) {
+      return const MainViewBusiness();
+    } else {
+      return const LoginScreen();
+    }
   }
 }

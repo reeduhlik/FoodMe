@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'dart:core';
 
-Future<void> displayPostDialogue(BuildContext context) async {
+Future<void> displayPostBusinessDialogue(BuildContext context) async {
   return showModalBottomSheet(
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
@@ -22,10 +22,10 @@ Future<void> displayPostDialogue(BuildContext context) async {
     context: context,
     builder: (context) {
       return FractionallySizedBox(
-        heightFactor: 0.6,
+        heightFactor: 0.5,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return const PostListing();
+            return const BusinessAdd();
           },
         ),
       );
@@ -33,14 +33,14 @@ Future<void> displayPostDialogue(BuildContext context) async {
   );
 }
 
-class PostListing extends StatefulWidget {
-  const PostListing({Key? key}) : super(key: key);
+class BusinessAdd extends StatefulWidget {
+  const BusinessAdd({Key? key}) : super(key: key);
 
   @override
-  State<PostListing> createState() => _PostListingState();
+  State<BusinessAdd> createState() => _InsertDataState();
 }
 
-class _PostListingState extends State<PostListing> {
+class _InsertDataState extends State<BusinessAdd> {
   final userNameController = TextEditingController();
   final userDescriptionController = TextEditingController();
   final userTimeController = TextEditingController();
@@ -76,7 +76,7 @@ class _PostListingState extends State<PostListing> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Title',
-                        hintText: 'Food Item',
+                        hintText: 'Post Title',
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -86,18 +86,17 @@ class _PostListingState extends State<PostListing> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Description',
-                        hintText: 'Extra details to help find your item',
+                        hintText:
+                            'Extra info about your available food quantities and pick-up dates.',
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    const TypeDropdown(),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: constraints.maxWidth,
                       height: 60,
                       child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: kPrimaryColor,
+                            primary: kPrimaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
@@ -152,6 +151,7 @@ class _PostListingState extends State<PostListing> {
               GestureDetector(
                 onTap: () async {
                   String id = await Backend.getUserId();
+                  String email = await Backend.getBusinessEmail(id);
                   DateTime dateTime = DateTime.now();
                   //get the user's device current location
                   final userLoc = await Geolocator.getCurrentPosition(
@@ -165,10 +165,11 @@ class _PostListingState extends State<PostListing> {
                     'title': userNameController.text,
                     'description': userDescriptionController.text,
                     'location': listing,
-                    'type': 'personal', //TODO: GET WHAT TYPE OF USER
+                    'type': 'business', //TODO: GET WHAT TYPE OF USER
                     'timestamp': Timestamp.fromDate(dateTime),
                     'imageUrl': imageUrl,
                     'userID': id,
+                    'businessEmail': email,
                     'status': 'open',
                   };
                   await firestore.collection('food-posts').add(foodPost);
@@ -195,39 +196,6 @@ class _PostListingState extends State<PostListing> {
           );
         },
       ),
-    );
-  }
-}
-
-class TypeDropdown extends StatefulWidget {
-  const TypeDropdown({super.key});
-
-  @override
-  State<TypeDropdown> createState() => _TypeDropdownState();
-}
-
-class _TypeDropdownState extends State<TypeDropdown> {
-  late String _selectedOption = "1";
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      value: _selectedOption,
-      decoration: const InputDecoration(
-        labelText: 'Select an option',
-      ),
-      onChanged: (newValue) {
-        setState(() {
-          _selectedOption = newValue!;
-        });
-      },
-      items: <String>['1', '2', '3', '4', '5+']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 }
