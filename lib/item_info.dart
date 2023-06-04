@@ -67,7 +67,7 @@ class PostItem extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  width: getProportionateScreenWidth(177.5),
+                  width: MediaQuery.of(context).size.width / 2 - 12,
                   padding: EdgeInsets.all(10),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,12 +108,12 @@ class PostItem extends StatelessWidget {
                 doc['imageUrl'] != ''
                     ? Image.network(
                         doc['imageUrl'],
-                        width: getProportionateScreenWidth(177.5),
+                        width: MediaQuery.of(context).size.width / 2 - 12,
                         fit: BoxFit.cover,
                       )
                     : Image.asset(
                         'assets/images/placeholder.png',
-                        width: getProportionateScreenWidth(177.5),
+                        width: MediaQuery.of(context).size.width / 2 - 12,
                         fit: BoxFit.cover,
                       ),
               ],
@@ -136,7 +136,7 @@ class PostItem extends StatelessWidget {
                         ),
                         child: const Text(
                           "Item not here",
-                          style: TextStyle(color: white),
+                          style: TextStyle(color: white, fontSize: 12),
                         ),
                       ),
                     ),
@@ -153,7 +153,7 @@ class PostItem extends StatelessWidget {
                         ),
                         child: const Text(
                           "Claim full item",
-                          style: TextStyle(color: white),
+                          style: TextStyle(color: white, fontSize: 12),
                         ),
                       ),
                     ),
@@ -170,7 +170,7 @@ class PostItem extends StatelessWidget {
                         ),
                         child: const Text(
                           "Claim part of item",
-                          style: TextStyle(color: white),
+                          style: TextStyle(color: white, fontSize: 12),
                         ),
                       ),
                     )

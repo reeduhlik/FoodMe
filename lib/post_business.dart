@@ -90,7 +90,7 @@ class _InsertDataState extends State<BusinessAdd> {
                             'Extra info about your available food quantities and pick-up dates.',
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     SizedBox(
                       width: constraints.maxWidth,
                       height: 60,
